@@ -1,0 +1,17 @@
+dependencies {
+    compile "id.yoframework:core:${version}"
+
+    compile "org.mongodb.morphia:morphia:${morphiaVersion}"
+    compile "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
+
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework Web. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Web version ${project.version}."
+        }
+    }
+}
