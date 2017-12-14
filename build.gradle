@@ -1,6 +1,9 @@
 buildscript {
     ext {
         version = project.property('version')
+        bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+        bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+
         vertxVersion = '3.5.0'
         pebbleVersion = '2.4.0'
 
@@ -46,17 +49,25 @@ buildscript {
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.0" apply false
     id "org.jetbrains.kotlin.kapt" version "1.2.0" apply false
+    id "com.jfrog.bintray" version "1.7.3" apply false
 }
 
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.kapt'
+    apply plugin: 'com.jfrog.bintray'
 
     repositories {
         mavenLocal()
         mavenCentral()
         jcenter()
+    }
+
+    dependencies {
+        compile "com.google.dagger:dagger:$daggerVersion"
+        kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+        kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
     }
 
     kotlin {
@@ -99,10 +110,35 @@ subprojects {
         }
     }
 
-    dependencies {
-        compile "com.google.dagger:dagger:$daggerVersion"
-        kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-        kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+    task compile(dependsOn: "testClasses")
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives sourcesJar
+    }
+
+    bintray {
+        user = "${bintrayUser}"
+        key = "${bintrayApiKey}"
+        configurations = ['archives']
+        publish = true
+        pkg {
+            userOrg = user
+            repo = 'id.yoframework'
+            licenses = ['Apache-2.0']
+            vcsUrl = 'https://github.com/jasoet/yoframework.git'
+            issueTrackerUrl = 'https://github.com/jasoet/yoframework/issues'
+            labels = ['kotlin', 'vertx', 'dsl']
+            publicDownloadNumbers = true
+            version {
+                name = "${project.version}"
+                vcsTag = "${project.version}"
+            }
+        }
     }
 }
 
