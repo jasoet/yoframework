@@ -13,10 +13,11 @@ dependencies {
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
 
     compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
+    compile "commons-io:commons-io:${commonsIOVersion}"
 
-    compile "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+    compile "de.svenkubiak:jBCrypt:${jBCryptVersion}"
+
+    compile "com.google.guava:guava:${guavaVersion}"
 
     compile "ch.qos.logback:logback-core:$logbackVersion"
     compile "ch.qos.logback:logback-classic:$logbackVersion"

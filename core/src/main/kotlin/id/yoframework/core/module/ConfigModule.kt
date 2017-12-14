@@ -16,16 +16,31 @@
 
 package id.yoframework.core.module
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import dagger.Module
 import dagger.Provides
-import id.yoframework.core.extension.logger.logger
+import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import javax.inject.Singleton
 
 @Module
 class ConfigModule(private val config: JsonObject) {
 
-    private val log = logger(ConfigModule::class)
+    init {
+        Json.mapper.apply {
+            registerKotlinModule()
+            registerModule(ParameterNamesModule())
+            registerModule(JavaTimeModule())
+        }
+
+        Json.prettyMapper.apply {
+            registerKotlinModule()
+            registerModule(ParameterNamesModule())
+            registerModule(JavaTimeModule())
+        }
+    }
 
     @Provides
     @Singleton
