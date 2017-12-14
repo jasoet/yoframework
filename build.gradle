@@ -74,6 +74,7 @@ subprojects {
         kapt "com.google.dagger:dagger-compiler:$daggerVersion"
         kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 
+        testCompile "io.vertx:vertx-unit:$vertxVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
         testCompile "junit:junit:$jUnitVersion"
