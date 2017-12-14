@@ -33,6 +33,12 @@ buildscript {
         jBCryptVersion = '0.4.1'
         guavaVersion = '23.5-jre'
 
+        ebeanVersion = "11.7.1"
+        ebeanQueryBeanVersion = "11.1.1"
+
+        hikariCPVersion = "2.6.3"
+        flywayVersion = "4.2.0"
+
         jUnitVersion = '4.12'
         restAssuredVersion = '3.0.3'
         embeddedMongoVersion = '2.0.0'
@@ -43,6 +49,10 @@ buildscript {
         mavenCentral()
         mavenCentral()
         jcenter()
+    }
+
+    dependencies {
+        classpath "io.ebean:ebean-gradle-plugin:11.5.1"
     }
 
 }

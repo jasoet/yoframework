@@ -1,0 +1,26 @@
+apply plugin: 'ebean'
+
+dependencies {
+    compile "id.yoframework:core:${version}"
+
+    compile "io.ebean:ebean:$ebeanVersion"
+    compile "io.ebean:ebean-querybean:$ebeanQueryBeanVersion"
+
+    compile "com.zaxxer:HikariCP:$hikariCPVersion"
+    compile "org.flywaydb:flyway-core:$flywayVersion"
+}
+
+ebean {
+    kotlin = true
+    debugLevel = 1 //1 - 9
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework EBean. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Ebean version ${project.version}."
+        }
+    }
+}
