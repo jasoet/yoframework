@@ -14,27 +14,7 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.string
-
-import org.apache.commons.lang3.RandomStringUtils
-import org.apache.commons.lang3.StringUtils
-
-fun randomAlpha(count: Int): String {
-    return RandomStringUtils.randomAlphanumeric(count)
-}
-
-fun String.slugify(): String {
-    return this.toLowerCase()
-            .replace("[^a-z0-9]".toRegex(), " ")
-            .replace("\\s+".toRegex(), " ")
-            .replace(" ", "-")
-}
+package id.yoframework.core.model
 
 
-fun String.abbreviate(width: Int = 42): String {
-    return StringUtils.abbreviate(this, width)
-}
-
-fun String.getBytesUtf8(): ByteArray {
-    return this.getBytesUtf8()
-}
+interface Model

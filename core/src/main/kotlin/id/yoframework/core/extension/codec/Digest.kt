@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.string
+package id.yoframework.core.extension.codec
 
-import org.apache.commons.lang3.RandomStringUtils
-import org.apache.commons.lang3.StringUtils
+import org.apache.commons.codec.digest.DigestUtils
+import java.io.InputStream
 
-fun randomAlpha(count: Int): String {
-    return RandomStringUtils.randomAlphanumeric(count)
+/**
+ * Calculate SHA1 Digest as Hexadecimal
+ * Do not close [InputStream] after use nor reset
+ * please handle it yourself
+ *
+ * @return Hexadecimal Digest from [InputStream] as String
+ */
+fun InputStream.sha1HexDigest(): String {
+    return DigestUtils.sha1Hex(this)
 }
 
-fun String.slugify(): String {
-    return this.toLowerCase()
-            .replace("[^a-z0-9]".toRegex(), " ")
-            .replace("\\s+".toRegex(), " ")
-            .replace(" ", "-")
-}
-
-
-fun String.abbreviate(width: Int = 42): String {
-    return StringUtils.abbreviate(this, width)
-}
-
-fun String.getBytesUtf8(): ByteArray {
-    return this.getBytesUtf8()
+/**
+ * Calculate SHA1 Digest as Hexadecimal
+ *
+ * @return Hexadecimal Digest from [ByteArray] as String
+ */
+fun ByteArray.sha1HexDigest(): String {
+    return DigestUtils.sha1Hex(this)
 }

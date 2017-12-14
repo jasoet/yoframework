@@ -21,12 +21,18 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import dagger.Module
 import dagger.Provides
+import io.vertx.core.Vertx
+import io.vertx.core.eventbus.EventBus
+import io.vertx.core.file.FileSystem
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import javax.inject.Singleton
+import javax.validation.Validation
+import javax.validation.Validator
 
 @Module
-class ConfigModule(private val config: JsonObject) {
+class CoreModule(private val config: JsonObject,
+                 private val vertx: Vertx) {
 
     init {
         Json.mapper.apply {
@@ -46,6 +52,31 @@ class ConfigModule(private val config: JsonObject) {
     @Singleton
     fun provideConfig(): JsonObject {
         return config
+    }
+
+    @Singleton
+    @Provides
+    fun provideEventBus(): EventBus {
+        return vertx.eventBus()
+    }
+
+    @Provides
+    @Singleton
+    fun provideVertx(): Vertx {
+        return vertx
+    }
+
+    @Provides
+    @Singleton
+    fun provideFileSystem(): FileSystem {
+        return vertx.fileSystem()
+    }
+
+    @Provides
+    @Singleton
+    fun provideValidator(): Validator {
+        val validatorFactory = Validation.buildDefaultValidatorFactory()
+        return validatorFactory.validator
     }
 
 }

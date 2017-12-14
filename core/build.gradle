@@ -1,6 +1,6 @@
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-reflect"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
     compile "io.vertx:vertx-core:$vertxVersion"
@@ -8,8 +8,11 @@ dependencies {
     compile "io.vertx:vertx-lang-kotlin:$vertxVersion"
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
 
+    compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+
     compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
     compile "commons-io:commons-io:${commonsIOVersion}"
+    compile "commons-codec:commons-codec:${commonsCodecVersion}"
 
     compile "de.svenkubiak:jBCrypt:${jBCryptVersion}"
 
@@ -22,18 +25,14 @@ dependencies {
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
     compile "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion"
-
-    testCompile "org.jetbrains.kotlin:kotlin-test"
-    testCompile "org.jetbrains.kotlin:kotlin-test-junit"
-    testCompile "junit:junit:$jUnitVersion"
 }
 
 bintray {
     pkg {
-        name = 'core'
+        name = "${project.name}"
         desc = "Yo Framework Core. Kotlin DSL on top of Dagger and Vertx"
         version {
-            desc = "Yo Framework core version ${project.version}."
+            desc = "Yo Framework Core version ${project.version}."
         }
     }
 }

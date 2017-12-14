@@ -4,6 +4,7 @@ buildscript {
         bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
         bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
+        kotlinVersion = "1.2.0"
         vertxVersion = '3.5.0'
         pebbleVersion = '2.4.0'
 
@@ -54,11 +55,15 @@ plugins {
 
 subprojects {
     apply plugin: 'idea'
+    apply plugin: 'maven-publish'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.kapt'
     apply plugin: 'com.jfrog.bintray'
 
     repositories {
+        maven {
+            url  "https://dl.bintray.com/jasoet/yoframework"
+        }
         mavenLocal()
         mavenCentral()
         jcenter()
@@ -68,6 +73,10 @@ subprojects {
         compile "com.google.dagger:dagger:$daggerVersion"
         kapt "com.google.dagger:dagger-compiler:$daggerVersion"
         kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+
+        testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        testCompile "junit:junit:$jUnitVersion"
     }
 
     kotlin {
@@ -121,16 +130,56 @@ subprojects {
         archives sourcesJar
     }
 
+    def pomConfig = {
+        licenses {
+            license {
+                name "The Apache Software License, Version 2.0"
+                url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution "repo"
+            }
+        }
+        developers {
+            developer {
+                id "jasoet"
+                name "Deny Prasetyo"
+                email "jasoet87@gmail.com"
+            }
+        }
+
+        scm {
+            url "https://github.com/jasoet/yoframework"
+        }
+    }
+
+    publishing {
+        publications {
+            YoPublication(MavenPublication) {
+                from components.java
+                artifact sourcesJar
+                groupId 'id.yoframework'
+                artifactId "${project.name}"
+                version "${version}"
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('description', 'Thin Kotlin DSL on top of Dagger and Vert.x')
+                    root.appendNode('name', 'Yo Framework')
+                    root.appendNode('url', 'https://yoframework.id')
+                    root.children().last() + pomConfig
+                }
+            }
+        }
+    }
+
     bintray {
         user = "${bintrayUser}"
         key = "${bintrayApiKey}"
-        configurations = ['archives']
+        publications = ['YoPublication']
         publish = true
+        override = true
         pkg {
-            userOrg = user
-            repo = 'id.yoframework'
+            repo = 'yoframework'
             licenses = ['Apache-2.0']
-            vcsUrl = 'https://github.com/jasoet/yoframework.git'
+            vcsUrl = 'https://github.com/jasoet/yoframework'
             issueTrackerUrl = 'https://github.com/jasoet/yoframework/issues'
             labels = ['kotlin', 'vertx', 'dsl']
             publicDownloadNumbers = true
