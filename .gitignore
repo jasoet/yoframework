@@ -1,0 +1,30 @@
+.gradle/
+build/
+classes/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# IDE
+.idea/
+.vertx/
+file-uploads/
+*.iml
+*.ipr
+*.iws
+node_modules/
+
+src/main/resources/webroot/assets/
+src/main/resources/application-config.json
+
+# Docker
+Dockerfile
+deployment/docker-compose.yml
+#services/docker-compose.yml
+/gradle.properties

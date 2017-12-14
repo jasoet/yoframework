@@ -1,0 +1,66 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-reflect"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+
+    compile "io.vertx:vertx-core:$vertxVersion"
+    compile "io.vertx:vertx-config:$vertxVersion"
+    compile "io.vertx:vertx-lang-kotlin:$vertxVersion"
+    compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
+
+    compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
+
+    compile "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    compile "ch.qos.logback:logback-core:$logbackVersion"
+    compile "ch.qos.logback:logback-classic:$logbackVersion"
+    compile "net.logstash.logback:logstash-logback-encoder:${logstashLogbackEncoderVersion}"
+
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
+    compile "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion"
+
+    testCompile "org.jetbrains.kotlin:kotlin-test"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit"
+    testCompile "junit:junit:$jUnitVersion"
+}
+
+task compile(dependsOn: "testClasses")
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+    configurations = ['archives']
+    publish = true
+    pkg {
+        userOrg = user
+        repo = 'id.yoframework'
+        name = 'core'
+        desc = "Yo Framework Core. Kotlin DSL on top of Dagger and Vertx"
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/jasoet/yoframework.git'
+        issueTrackerUrl = 'https://github.com/jasoet/yoframework/issues'
+        labels = ['kotlin', 'vertx', 'dsl']
+        publicDownloadNumbers = true
+        version {
+            name = "${project.version}"
+            desc = "Yo Framework core version ${project.version}."
+            vcsTag = "${project.version}"
+        }
+    }
+}
