@@ -202,13 +202,13 @@ subprojects {
     }
 }
 
-task build(dependsOn: ["core:build", "web:build", "morphia:build", "ebean:build"])
+task build(dependsOn: ["core:build", "extra:build", "web:build", "morphia:build", "ebean:build"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload"])
+task artifactUpload(dependsOn: ["core:bintrayUpload", "extra:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload"])
 
-task clean(dependsOn: ["core:clean", "web:clean", "morphia:clean", "ebean:clean"])
+task clean(dependsOn: ["core:clean", "extra:clean", "web:clean", "morphia:clean", "ebean:clean"])
 
-task compile(dependsOn: ["core:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses"])
+task compile(dependsOn: ["core:testClasses", "extra:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses"])
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4'

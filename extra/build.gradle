@@ -1,0 +1,16 @@
+dependencies {
+    compile "id.yoframework:core:${version}"
+    compile "commons-codec:commons-codec:${commonsCodecVersion}"
+    compile "de.svenkubiak:jBCrypt:${jBCryptVersion}"
+    compile "com.google.guava:guava:${guavaVersion}"
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework Extra. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Extra version ${project.version}."
+        }
+    }
+}

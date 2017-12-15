@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package  id.yoframework.core.extension.codec
+package  id.yoframework.extra.extension.codec
 
 import id.yoframework.core.extension.string.abbreviate
 import id.yoframework.core.extension.string.getBytesUtf8
@@ -58,7 +58,7 @@ fun ByteArray.base64Encode(): ByteArray {
 @Throws(DecodeBase64Exception::class)
 fun String.base64Decode(): String {
     return try {
-        org.apache.commons.codec.binary.StringUtils.newStringUtf8(base64Codec.decode(this))
+        CodecStringUtils.newStringUtf8(base64Codec.decode(this))
     } catch (e: Exception) {
         throw  DecodeBase64Exception("Exception when Decode ${this.abbreviate()}", e)
     }

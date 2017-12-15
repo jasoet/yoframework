@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.command
+package id.yoframework.extra.extension.command
 
 import id.yoframework.core.extension.logger.logger
 import org.apache.commons.io.FileUtils

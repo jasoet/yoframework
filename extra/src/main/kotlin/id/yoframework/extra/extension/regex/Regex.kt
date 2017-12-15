@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.regex
+package id.yoframework.extra.extension.regex
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.snowflake
+package id.yoframework.extra.snowflake
 
 import com.google.common.cache.CacheBuilder
 import id.yoframework.core.extension.time.toLocalDateTime
@@ -33,8 +33,8 @@ private class SnowFlake(private val machineId: Int) {
     }
 
     init {
-        if (machineId >= SnowFlake.MAX_MACHINE_ID || machineId < 0) {
-            throw IllegalArgumentException("Machine Number must between 0 - ${SnowFlake.MAX_MACHINE_ID - 1}")
+        if (machineId >= MAX_MACHINE_ID || machineId < 0) {
+            throw IllegalArgumentException("Machine Number must between 0 - ${MAX_MACHINE_ID - 1}")
         }
     }
 
@@ -49,7 +49,7 @@ private class SnowFlake(private val machineId: Int) {
                 ATOMIC_INCREMENT.set(0)
             }
             val i = ATOMIC_INCREMENT.incrementAndGet()
-            return (ts shl SnowFlake.TIME_STAMP_SHIFT) or (this.machineId shl SnowFlake.MACHINE_ID_SHIFT).toLong() or i.toLong()
+            return (ts shl TIME_STAMP_SHIFT) or (this.machineId shl MACHINE_ID_SHIFT).toLong() or i.toLong()
         }
     }
 }

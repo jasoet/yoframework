@@ -14,27 +14,17 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.codec
+package id.yoframework.extra.extension.password
 
-import org.apache.commons.codec.digest.DigestUtils
-import java.io.InputStream
+import org.mindrot.jbcrypt.BCrypt
 
-/**
- * Calculate SHA1 Digest as Hexadecimal
- * Do not close [InputStream] after use nor reset
- * please handle it yourself
- *
- * @return Hexadecimal Digest from [InputStream] as String
- */
-fun InputStream.sha1HexDigest(): String {
-    return DigestUtils.sha1Hex(this)
+typealias PlainPassword = String
+typealias Password = String
+
+fun PlainPassword.encode(): Password {
+    return BCrypt.hashpw(this, BCrypt.gensalt())
 }
 
-/**
- * Calculate SHA1 Digest as Hexadecimal
- *
- * @return Hexadecimal Digest from [ByteArray] as String
- */
-fun ByteArray.sha1HexDigest(): String {
-    return DigestUtils.sha1Hex(this)
+fun PlainPassword.match(password: Password): Boolean {
+    return BCrypt.checkpw(this, password)
 }
