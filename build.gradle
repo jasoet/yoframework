@@ -72,7 +72,7 @@ subprojects {
 
     repositories {
         maven {
-            url  "https://dl.bintray.com/jasoet/yoframework"
+            url "https://dl.bintray.com/jasoet/yoframework"
         }
         mavenLocal()
         mavenCentral()
@@ -201,6 +201,14 @@ subprojects {
         }
     }
 }
+
+task build(dependsOn: ["core:build", "web:build", "morphia:build", "ebean:build"])
+
+task artifactUpload(dependsOn: ["core:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload"])
+
+task clean(dependsOn: ["core:clean", "web:clean", "morphia:clean", "ebean:clean"])
+
+task compile(dependsOn: ["core:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses"])
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4'
