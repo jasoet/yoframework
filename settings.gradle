@@ -1,1 +1,1 @@
-include 'core', 'extra', 'web', 'morphia', 'ebean'
+include 'core', 'extra', 'quartz', 'web', 'morphia', 'ebean'

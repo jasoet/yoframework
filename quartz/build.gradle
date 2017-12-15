@@ -1,0 +1,15 @@
+dependencies {
+    compile "id.yoframework:core:${version}"
+
+    compile "org.quartz-scheduler:quartz:$quartzVersion"
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework Scheduler. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Scheduler version ${project.version}."
+        }
+    }
+}
