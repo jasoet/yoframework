@@ -4,7 +4,7 @@ buildscript {
         bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
         bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
-        kotlinVersion = "1.2.0"
+        kotlinVersion = "1.2.10"
         vertxVersion = '3.5.0'
         pebbleVersion = '2.4.0'
 
@@ -58,8 +58,8 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.0" apply false
-    id "org.jetbrains.kotlin.kapt" version "1.2.0" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.2.10" apply false
+    id "org.jetbrains.kotlin.kapt" version "1.2.10" apply false
     id "com.jfrog.bintray" version "1.7.3" apply false
 }
 

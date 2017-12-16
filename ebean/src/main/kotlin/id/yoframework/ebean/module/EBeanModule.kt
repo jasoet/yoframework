@@ -99,7 +99,7 @@ class EBeanModule {
     @Provides
     fun ebeanServer(dataSource: DataSource): EbeanServer {
         val config = ServerConfig().apply {
-            name = "pg"
+            name = "ebeands"
             setDataSource(dataSource)
         }
 
