@@ -16,6 +16,8 @@
 
 package id.yoframework.web.exception
 
+import id.yoframework.core.exception.DataInconsistentException
+import id.yoframework.core.exception.NullObjectException
 import io.vertx.ext.web.client.HttpResponse
 
 data class NotAllowedException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
@@ -31,4 +33,29 @@ data class RequestException(override val message: String? = "", private val resp
     val statusCode = response.statusCode()
     val stringBody = response.bodyAsString()
     val jsonBody = response.bodyAsJsonObject()
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline infix fun <T> T?.orNotFound(message: String): T {
+    return this ?: throw  NullObjectException(message)
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline infix fun <T> T?.orBadRequest(message: String): T {
+    return this ?: throw  BadRequestException(message)
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline infix fun <T> T?.orUnauthorized(message: String): T {
+    return this ?: throw UnauthorizedException(message)
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline infix fun <T> T?.orForbidden(message: String): T {
+    return this ?: throw InvalidCredentials(message)
+}
+
+@Suppress("NOTHING_TO_INLINE")
+inline infix fun <T> T?.orDataError(message: String): T {
+    return this ?: throw DataInconsistentException(message)
 }
