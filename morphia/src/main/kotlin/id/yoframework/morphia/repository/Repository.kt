@@ -83,8 +83,8 @@ abstract class Repository<T : Model, in ID : Any>(private val datastore: Datasto
         return query.field(idField).`in`(ids)
     }
 
-    suspend open fun findByIds(ids: Iterable<*>): T? {
-        return createQueryByIds(ids).get()
+    suspend open fun findAllByIds(ids: Iterable<*>, findOptions: FindOptions = FindOptions()): List<T> {
+        return createQueryByIds(ids).asList(findOptions)
     }
 
     suspend open fun createQueryByFields(vararg fieldList: Pair<String, Any?>): Query<T> {
