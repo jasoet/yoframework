@@ -17,13 +17,16 @@
 package id.yoframework.core.extension.vertx
 
 import io.vertx.core.DeploymentOptions
+import io.vertx.core.Future
 import io.vertx.core.Verticle
 import io.vertx.core.Vertx
+import io.vertx.core.VertxException
 import io.vertx.core.VertxOptions
 import io.vertx.core.http.HttpServer
 import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
+import kotlinx.coroutines.experimental.Deferred
 
 suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -> Unit): HttpServer {
     val httpServer = this.createHttpServer()
@@ -50,4 +53,22 @@ fun buildVertx(option: VertxOptions): Vertx {
 
 fun buildVertx(): Vertx {
     return buildVertx(VertxOptions())
+}
+
+/**
+ * Converts this deferred value to the instance of Future.
+ * The deferred value is cancelled when the resulting future is cancelled or otherwise completed.
+ */
+fun <T> Deferred<T>.toFuture(future: Future<T>) {
+    future.setHandler({ asyncResult ->
+        //if fail, we cancel this job
+        if (asyncResult.failed()) cancel(asyncResult.cause())
+    })
+    invokeOnCompletion {
+        try {
+            future.complete(getCompleted())
+        } catch (t: Throwable) {
+            future.fail(VertxException(t))
+        }
+    }
 }

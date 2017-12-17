@@ -210,6 +210,8 @@ task clean(dependsOn: ["core:clean", "extra:clean", "quartz:build", "web:clean",
 
 task compile(dependsOn: ["core:testClasses", "extra:testClasses", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses"])
 
+task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"] )
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4'
 }
