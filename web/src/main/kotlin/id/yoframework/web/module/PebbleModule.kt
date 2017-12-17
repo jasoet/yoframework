@@ -20,22 +20,19 @@ import dagger.Module
 import dagger.Provides
 import id.yoframework.core.module.CoreModule
 import io.vertx.core.Vertx
-import io.vertx.ext.web.Router
-import io.vertx.ext.web.client.WebClient
+import io.vertx.ext.web.templ.PebbleTemplateEngine
+import io.vertx.ext.web.templ.TemplateEngine
+import javax.inject.Named
 import javax.inject.Singleton
 
-@Module(includes = [CoreModule::class])
-class WebModule {
 
-    @Provides
-    fun provideRouter(vertx: Vertx): Router {
-        return Router.router(vertx)
-    }
+@Module(includes = [CoreModule::class])
+class PebbleModule {
 
     @Provides
     @Singleton
-    fun provideWebClient(vertx: Vertx): WebClient {
-        return WebClient.create(vertx)
+    @Named("pebbleTempl")
+    fun providePebbleTemplate(vertx: Vertx): TemplateEngine {
+        return PebbleTemplateEngine.create(vertx)
     }
-
 }
