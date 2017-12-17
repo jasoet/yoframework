@@ -27,9 +27,9 @@ import io.yoframework.grpc.startServer
 
 
 open class GrpcServerVerticle(private val host: String,
-                         private val port: Int,
-                         private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it },
-                         private vararg val services: BindableService) : CoroutineVerticle() {
+                              private val port: Int,
+                              private vararg val services: BindableService,
+                              private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }) : CoroutineVerticle() {
     private val log = logger<GrpcServerVerticle>()
     lateinit var server: VertxServer
 
@@ -40,7 +40,7 @@ open class GrpcServerVerticle(private val host: String,
             services.forEach {
                 log.debug("${it::class.qualifiedName}")
             }
-            server = vertx.buildGrpcServer(host, port, configuration, *services)
+            server = vertx.buildGrpcServer(host, port, *services, configuration = configuration)
             log.debug("Starting Grpc Server")
             server.startServer()
             log.debug("Grpc Server Started on $host:$port")

@@ -26,8 +26,8 @@ import io.vertx.kotlin.coroutines.awaitResult
 
 fun Vertx.buildGrpcServer(host: String,
                           port: Int,
-                          configuration: (VertxServerBuilder) -> VertxServerBuilder = { it },
-                          vararg services: BindableService): VertxServer {
+                          vararg services: BindableService,
+                          configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }): VertxServer {
 
     return VertxServerBuilder
             .forAddress(this, host, port)
