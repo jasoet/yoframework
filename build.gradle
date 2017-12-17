@@ -43,6 +43,8 @@ buildscript {
         restAssuredVersion = '3.0.3'
         embeddedMongoVersion = '2.0.0'
 
+        protocVersion = "3.2.0"
+        vertxProtocGenVersion = "1.6.1"
     }
 
     repositories {
@@ -53,6 +55,7 @@ buildscript {
 
     dependencies {
         classpath "io.ebean:ebean-gradle-plugin:11.5.1"
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
     }
 
 }
@@ -202,15 +205,15 @@ subprojects {
     }
 }
 
-task build(dependsOn: ["core:build", "extra:build", "quartz:build", "web:build", "morphia:build", "ebean:build"])
+task build(dependsOn: ["core:build", "extra:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "extra:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload"])
+task artifactUpload(dependsOn: ["core:bintrayUpload", "extra:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload"])
 
-task clean(dependsOn: ["core:clean", "extra:clean", "quartz:build", "web:clean", "morphia:clean", "ebean:clean"])
+task clean(dependsOn: ["core:clean", "extra:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean"])
 
-task compile(dependsOn: ["core:testClasses", "extra:testClasses", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses"])
+task compile(dependsOn: ["core:testClasses", "extra:testClasses", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses"])
 
-task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"] )
+task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"])
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4'

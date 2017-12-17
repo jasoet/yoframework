@@ -1,0 +1,35 @@
+apply plugin: 'com.google.protobuf'
+
+dependencies {
+    compile "id.yoframework:core:${version}"
+
+    compile "io.vertx:vertx-grpc:$vertxVersion"
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework GRPC. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework GRPC version ${project.version}."
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protocVersion"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.vertx:protoc-gen-grpc-java:$vertxProtocGenVersion"
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {
+            grpc
+        }
+    }
+}
