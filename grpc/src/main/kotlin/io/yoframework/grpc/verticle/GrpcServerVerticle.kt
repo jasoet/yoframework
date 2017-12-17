@@ -26,7 +26,7 @@ import io.yoframework.grpc.shutdownServer
 import io.yoframework.grpc.startServer
 
 
-class GrpcServerVerticle(private val host: String,
+open class GrpcServerVerticle(private val host: String,
                          private val port: Int,
                          private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it },
                          private vararg val services: BindableService) : CoroutineVerticle() {
