@@ -35,27 +35,22 @@ data class RequestException(override val message: String? = "", private val resp
     val jsonBody = response.bodyAsJsonObject()
 }
 
-@Suppress("NOTHING_TO_INLINE")
-inline infix fun <T> T?.orNotFound(message: String): T {
+infix fun <T> T?.orNotFound(message: String): T {
     return this ?: throw  NullObjectException(message)
 }
 
-@Suppress("NOTHING_TO_INLINE")
-inline infix fun <T> T?.orBadRequest(message: String): T {
+infix fun <T> T?.orBadRequest(message: String): T {
     return this ?: throw  BadRequestException(message)
 }
 
-@Suppress("NOTHING_TO_INLINE")
-inline infix fun <T> T?.orUnauthorized(message: String): T {
+infix fun <T> T?.orUnauthorized(message: String): T {
     return this ?: throw UnauthorizedException(message)
 }
 
-@Suppress("NOTHING_TO_INLINE")
-inline infix fun <T> T?.orForbidden(message: String): T {
+infix fun <T> T?.orForbidden(message: String): T {
     return this ?: throw InvalidCredentials(message)
 }
 
-@Suppress("NOTHING_TO_INLINE")
-inline infix fun <T> T?.orDataError(message: String): T {
+infix fun <T> T?.orDataError(message: String): T {
     return this ?: throw DataInconsistentException(message)
 }

@@ -63,7 +63,6 @@ fun calendarIntervalTrigger(scheduleBuilder: CalendarIntervalScheduleBuilder): T
     return TriggerBuilder.newTrigger().withSchedule(scheduleBuilder)
 }
 
-
 inline fun <reified T : Any> JobExecutionContext?.getData(key: String, default: T? = null, missing: (String) -> Unit): T {
     val value = this?.jobDetail?.jobDataMap?.get(key) as T?
     return when {

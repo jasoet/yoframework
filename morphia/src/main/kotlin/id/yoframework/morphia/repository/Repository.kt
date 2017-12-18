@@ -51,85 +51,85 @@ abstract class Repository<T : Model, in ID : Any>(private val datastore: Datasto
 
     abstract fun defaultUpdateOps(model: T): UpdateOperations<T>
 
-    suspend open fun save(model: T): Key<T> {
+    open fun save(model: T): Key<T> {
         return datastore.save(model)
     }
 
-    suspend open fun save(iterableModel: Iterable<T>): Iterable<Key<T>> {
+    open fun save(iterableModel: Iterable<T>): Iterable<Key<T>> {
         return datastore.save(iterableModel)
     }
 
-    suspend open fun findAll(vararg orders: String, findOptions: FindOptions = FindOptions()): List<T> {
+    open fun findAll(vararg orders: String, findOptions: FindOptions = FindOptions()): List<T> {
         return query.orders(*orders).asList(findOptions)
     }
 
-    suspend open fun findByKey(id: Key<T>): T? {
+    open fun findByKey(id: Key<T>): T? {
         return datastore.getByKey(entityClass.java, id)
     }
 
-    suspend open fun findByKeys(id: Iterable<Key<T>>): List<T> {
+    open fun findByKeys(id: Iterable<Key<T>>): List<T> {
         return datastore.getByKeys(entityClass.java, id)
     }
 
-    suspend open fun createQueryById(id: ID): Query<T> {
+    open fun createQueryById(id: ID): Query<T> {
         return query.field(idField).equal(id)
     }
 
-    suspend open fun findById(id: ID): T? {
+    open fun findById(id: ID): T? {
         return createQueryById(id).get()
     }
 
-    suspend open fun createQueryByIds(ids: Iterable<*>): Query<T> {
+    open fun createQueryByIds(ids: Iterable<*>): Query<T> {
         return query.field(idField).`in`(ids)
     }
 
-    suspend open fun findAllByIds(ids: Iterable<*>, findOptions: FindOptions = FindOptions()): List<T> {
+    open fun findAllByIds(ids: Iterable<*>, findOptions: FindOptions = FindOptions()): List<T> {
         return createQueryByIds(ids).asList(findOptions)
     }
 
-    suspend open fun createQueryByFields(vararg fieldList: Pair<String, Any?>): Query<T> {
+    open fun createQueryByFields(vararg fieldList: Pair<String, Any?>): Query<T> {
         return fieldList.fold(query) { q, (field, value) ->
             q.filter(field, value)
         }
     }
 
-    suspend open fun findByFields(vararg fieldList: Pair<String, Any?>, findOptions: FindOptions = FindOptions()): T? {
+    open fun findByFields(vararg fieldList: Pair<String, Any?>, findOptions: FindOptions = FindOptions()): T? {
         return createQueryByFields(*fieldList).get(findOptions)
     }
 
-    suspend open fun findAllByFields(vararg fieldList: Pair<String, Any?>, findOptions: FindOptions = FindOptions()): List<T> {
+    open fun findAllByFields(vararg fieldList: Pair<String, Any?>, findOptions: FindOptions = FindOptions()): List<T> {
         return createQueryByFields(*fieldList).asList(findOptions)
     }
 
-    suspend open fun count(): Long {
+    open fun count(): Long {
         return query.count()
     }
 
-    suspend open fun countByFields(vararg fieldList: Pair<String, Any?>): Long {
+    open fun countByFields(vararg fieldList: Pair<String, Any?>): Long {
         return createQueryByFields(fieldList = *fieldList).count()
     }
 
-    suspend open fun update(id: ID, updateOperation: UpdateOperations<T>): UpdateResults {
+    open fun update(id: ID, updateOperation: UpdateOperations<T>): UpdateResults {
         val query = datastore.createQuery(entityClass.java).field(idField).equal(id)
         return datastore.update(query, updateOperation)
     }
 
-    suspend open fun update(query: Query<T>, updateOperation: UpdateOperations<T>): UpdateResults {
+    open fun update(query: Query<T>, updateOperation: UpdateOperations<T>): UpdateResults {
         return datastore.update(query, updateOperation)
     }
 
-    suspend open fun update(id: ID, model: T): UpdateResults {
+    open fun update(id: ID, model: T): UpdateResults {
         val idQuery = query {
             field(idField).equal(id)
         }
         return update(idQuery, defaultUpdateOps(model))
     }
 
-    suspend open fun updateByMap(vararg updateQuery: Pair<String, Any?>, updateOperation: Map<String, Any?>): UpdateResults {
+    open fun updateByMap(vararg updateQuery: Pair<String, Any?>, updateOperation: Map<String, Any?>): UpdateResults {
         return updateByFields(*updateQuery, updateOperation = updateOperation.toList())
     }
 
-    suspend open fun updateByFields(vararg updateQuery: Pair<String, Any?>, updateOperation: List<Pair<String, Any?>>): UpdateResults {
+    open fun updateByFields(vararg updateQuery: Pair<String, Any?>, updateOperation: List<Pair<String, Any?>>): UpdateResults {
         val queries = updateQuery.fold(query) { q, (field, value) ->
             q.filter(field, value)
         }
@@ -141,19 +141,19 @@ abstract class Repository<T : Model, in ID : Any>(private val datastore: Datasto
         return update(queries, updateOperations)
     }
 
-    suspend open fun delete(model: T): WriteResult {
+    open fun delete(model: T): WriteResult {
         return datastore.delete(model)
     }
 
-    suspend open fun deleteById(id: ID): WriteResult {
+    open fun deleteById(id: ID): WriteResult {
         return datastore.delete(entityClass.java, id)
     }
 
-    suspend open fun deleteByIds(ids: Iterable<ID>): WriteResult {
+    open fun deleteByIds(ids: Iterable<ID>): WriteResult {
         return datastore.delete(entityClass.java, ids)
     }
 
-    suspend open fun deleteByFields(vararg deleteFields: Pair<String, Any?>): WriteResult {
+    open fun deleteByFields(vararg deleteFields: Pair<String, Any?>): WriteResult {
         val queries = deleteFields.fold(query) { q, (field, value) ->
             q.filter(field, value)
         }

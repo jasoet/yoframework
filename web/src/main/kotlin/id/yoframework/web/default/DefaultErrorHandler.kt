@@ -27,9 +27,9 @@ import id.yoframework.web.exception.RegistrationException
 import id.yoframework.web.exception.UnauthorizedException
 import id.yoframework.web.exception.ValidationException
 import id.yoframework.web.extension.ErrorHandler
-import id.yoframework.web.extension.endWithJson
 import id.yoframework.web.extension.header
 import io.netty.handler.codec.http.HttpResponseStatus
+import io.vertx.core.json.Json
 import io.vertx.ext.web.RoutingContext
 import java.io.FileNotFoundException
 
@@ -66,7 +66,7 @@ object DefaultErrorHandler : ErrorHandler {
         if (acceptHeader.contains("/json") || contentTypeHeader.contains("/json")) {
             val result = if (e is ValidationException) {
                 mapOf(
-                        "message" to "Telah terjadi kesalahan. Silahkan periksa kembali data Anda.",
+                        "message" to "Validation Failure",
                         "errors" to e.errors
                 )
             } else {
@@ -75,7 +75,7 @@ object DefaultErrorHandler : ErrorHandler {
                         "errors" to (e.message ?: "")
                 )
             }
-            context.response().setStatusCode(code).endWithJson(result)
+            context.response().setStatusCode(code).end(Json.encode(result))
         } else {
             context.response().setStatusCode(code).end(e.message ?: "")
         }

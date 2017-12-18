@@ -27,47 +27,47 @@ abstract class Repository<T : Model, in I : Any>(protected open val ebean: Ebean
     protected val query: Query<T>
         get() = ebean.createQuery(clazz.java)
 
-    suspend open fun exists(id: I): Boolean {
+    open fun exists(id: I): Boolean {
         return findOne(id) != null
     }
 
-    suspend open fun findOne(id: I): T? {
+    open fun findOne(id: I): T? {
         return ebean.find(clazz.java, id)
     }
 
-    suspend open fun findAll(): List<T> {
+    open fun findAll(): List<T> {
         return ebean.find(clazz.java).findList()
     }
 
-    suspend open fun count(): Int {
+    open fun count(): Int {
         return query.findCount()
     }
 
-    suspend open fun deleteQuery(deleteQuery: Query<T>, transaction: Transaction? = null): Int {
+    open fun deleteQuery(deleteQuery: Query<T>, transaction: Transaction? = null): Int {
         return ebean.delete(deleteQuery, transaction)
     }
 
-    suspend open fun delete(o: T, transaction: Transaction? = null): Boolean {
+    open fun delete(o: T, transaction: Transaction? = null): Boolean {
         return ebean.delete(o, transaction)
     }
 
-    suspend open fun deleteAll(transaction: Transaction? = null): Int {
+    open fun deleteAll(transaction: Transaction? = null): Int {
         return ebean.deleteAll(findAll(), transaction)
     }
 
-    suspend open fun deleteById(id: I, transaction: Transaction? = null): Int {
+    open fun deleteById(id: I, transaction: Transaction? = null): Int {
         return ebean.delete(clazz.java, id, transaction)
     }
 
-    suspend open fun saveAll(list: List<T>, transaction: Transaction? = null): Int {
+    open fun saveAll(list: List<T>, transaction: Transaction? = null): Int {
         return ebean.saveAll(list, transaction)
     }
 
-    suspend open fun save(o: T, transaction: Transaction? = null) {
+    open fun save(o: T, transaction: Transaction? = null) {
         return ebean.save(o, transaction)
     }
 
-    suspend open fun update(code: I, o: T, transaction: Transaction? = null): Boolean {
+    open fun update(code: I, o: T, transaction: Transaction? = null): Boolean {
         return if (exists(code)) {
             ebean.update(o, transaction)
             true

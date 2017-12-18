@@ -70,11 +70,11 @@ fun String.loadJsonObject(): JsonObject {
     return try {
         val inputStream = InputStreamReader(javaClass.getResourceAsStream(this), StandardCharsets.UTF_8)
         val jsonString = inputStream.useLines { it.joinToString("") }
-        logger.info("Load config from $this")
+        logger.debug("Load config from $this")
         JsonObject(jsonString)
     } catch (e: Exception) {
-        logger.info("Config Cannot Loaded, Return Empty JsonObject.  Cause: ${e.message}")
-        JsonObject()
+        logger.debug("Config Cannot Loaded, Return Empty JsonObject.  Cause: ${e.message}")
+        throw e
     }
 }
 
