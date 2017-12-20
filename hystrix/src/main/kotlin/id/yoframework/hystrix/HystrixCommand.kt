@@ -17,13 +17,30 @@
 package id.yoframework.hystrix
 
 import com.netflix.hystrix.HystrixCommand
+import kotlin.coroutines.experimental.Continuation
+import kotlin.coroutines.experimental.suspendCoroutine
 
 open class HystrixCommand<T : Any>(configSetter: Setter,
-                                   private val operation: () -> T) :
+                                   private val operation: () -> T,
+                                   private val fallback: () -> T) :
         HystrixCommand<T>(configSetter) {
 
     override fun run(): T {
         return operation()
     }
 
+    override fun getFallback(): T {
+        return fallback()
+    }
+
+    suspend fun value(): T {
+        val future = super.queue()
+        return suspendCoroutine { cont: Continuation<T> ->
+            try {
+                cont.resume(future.get())
+            } catch (e: Exception) {
+                cont.resumeWithException(e)
+            }
+        }
+    }
 }
