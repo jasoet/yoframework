@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.system
+package id.yoframework.hystrix
 
-internal inline fun <reified T : Any> clazz() = T::class.java
+import com.netflix.hystrix.HystrixCommand
 
-inline fun <T> executeTimeMillis(block: () -> T): Pair<T, Long> {
-    val start = System.currentTimeMillis()
-    val result = block()
-    val timeSpent = System.currentTimeMillis() - start
-    return result to timeSpent
-}
+open class HystrixCommand<T : Any>(configSetter: Setter,
+                                   private val operation: () -> T) :
+        HystrixCommand<T>(configSetter) {
 
-fun <T, R> T.applyIf(property: R?, operation: T.(R) -> T): T {
-    return if (property != null) {
-        operation(this, property)
-    } else {
-        this
+    override fun run(): T {
+        return operation()
     }
+
 }

@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.system
+package id.yoframework.hystrix
 
-internal inline fun <reified T : Any> clazz() = T::class.java
+import com.netflix.hystrix.HystrixObservableCommand
+import rx.Observable
 
-inline fun <T> executeTimeMillis(block: () -> T): Pair<T, Long> {
-    val start = System.currentTimeMillis()
-    val result = block()
-    val timeSpent = System.currentTimeMillis() - start
-    return result to timeSpent
-}
-
-fun <T, R> T.applyIf(property: R?, operation: T.(R) -> T): T {
-    return if (property != null) {
-        operation(this, property)
-    } else {
-        this
+open class HystrixObservableCommand<T : Any>(setter: Setter,
+                                             private val operation: () -> Observable<T>) : HystrixObservableCommand<T>(setter) {
+    override fun construct(): Observable<T> {
+        return operation()
     }
 }

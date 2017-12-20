@@ -43,6 +43,8 @@ buildscript {
         restAssuredVersion = '3.0.3'
         embeddedMongoVersion = '2.0.0'
 
+        hystrixVersion = "1.5.4"
+
         protocVersion = "3.2.0"
         vertxProtocGenVersion = "1.6.1"
     }
@@ -205,13 +207,13 @@ subprojects {
     }
 }
 
-task build(dependsOn: ["core:build", "extra:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build"])
+task build(dependsOn: ["core:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "extra:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload"])
+task artifactUpload(dependsOn: ["core:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload"])
 
-task clean(dependsOn: ["core:clean", "extra:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean"])
+task clean(dependsOn: ["core:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean"])
 
-task compile(dependsOn: ["core:testClasses", "extra:testClasses", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses"])
+task compile(dependsOn: ["core:testClasses", "extra:testClasses", "hystrix:clean", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses"])
 
 task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"])
 
