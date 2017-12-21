@@ -1,4 +1,4 @@
 {
-  "TEST_KEY": "Test Value",
+  "TEST_KEY": "Test Value From JSON",
   "TEST_INT": 1234
 }

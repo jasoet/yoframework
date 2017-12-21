@@ -126,28 +126,34 @@ fun JsonObject?.toMap(): Map<String, Any?> {
     return this?.map ?: emptyMap()
 }
 
-fun JsonObject.getStringExcept(key: String, exceptionMessage: String): String {
-    return this.getString(key) ?: throw IllegalArgumentException(exceptionMessage)
+fun JsonObject.getStringExcept(key: String, exceptionMessage: String = ""): String {
+    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
+    return this.getString(key) ?: throw IllegalArgumentException(message)
 }
 
-fun JsonObject.getIntegerExcept(key: String, exceptionMessage: String): Int {
-    return this.getInteger(key) ?: throw IllegalArgumentException(exceptionMessage)
+fun JsonObject.getIntegerExcept(key: String, exceptionMessage: String = ""): Int {
+    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
+    return this.getInteger(key) ?: throw IllegalArgumentException(message)
 }
 
-fun JsonObject.getDoubleExcept(key: String, exceptionMessage: String): Double {
-    return this.getDouble(key) ?: throw IllegalArgumentException(exceptionMessage)
+fun JsonObject.getDoubleExcept(key: String, exceptionMessage: String = ""): Double {
+    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
+    return this.getDouble(key) ?: throw IllegalArgumentException(message)
 }
 
-fun JsonObject.getBooleanExcept(key: String, exceptionMessage: String): Boolean {
-    return this.getBoolean(key) ?: throw IllegalArgumentException(exceptionMessage)
+fun JsonObject.getBooleanExcept(key: String, exceptionMessage: String = ""): Boolean {
+    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
+    return this.getBoolean(key) ?: throw IllegalArgumentException(message)
 }
 
-fun JsonObject.getJsonObjectExcept(key: String, exceptionMessage: String): JsonObject {
-    return this.getJsonObject(key) ?: throw IllegalArgumentException(exceptionMessage)
+fun JsonObject.getJsonObjectExcept(key: String, exceptionMessage: String = ""): JsonObject {
+    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
+    return this.getJsonObject(key) ?: throw IllegalArgumentException(message)
 }
 
-fun JsonObject.getJsonArrayExcept(key: String, exceptionMessage: String): JsonArray {
-    return this.getJsonArray(key) ?: throw IllegalArgumentException(exceptionMessage)
+fun JsonObject.getJsonArrayExcept(key: String, exceptionMessage: String = ""): JsonArray {
+    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
+    return this.getJsonArray(key) ?: throw IllegalArgumentException(message)
 }
 
 fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {

@@ -36,11 +36,14 @@ buildscript {
 
         ebeanVersion = "11.7.1"
         ebeanQueryBeanVersion = "11.1.1"
+        ebeanGradlePluginVersion = "11.5.1"
+
+        protobufGradlePluginVersion = "0.8.3"
 
         hikariCPVersion = "2.6.3"
         flywayVersion = "4.2.0"
 
-        jUnitVersion = '5.0.2'
+        jUnitVersion = '4.12'
         restAssuredVersion = '3.0.3'
         embeddedMongoVersion = '2.0.0'
 
@@ -59,8 +62,8 @@ buildscript {
     }
 
     dependencies {
-        classpath "io.ebean:ebean-gradle-plugin:11.5.1"
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
+        classpath "io.ebean:ebean-gradle-plugin:$ebeanGradlePluginVersion"
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePluginVersion"
     }
 
 }
@@ -98,11 +101,7 @@ subprojects {
         testCompile "io.vertx:vertx-unit:$vertxVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-        testCompile "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
-        testCompile "org.junit.jupiter:junit-jupiter-engine:$jUnitVersion"
-
-        testRuntime "org.slf4j:slf4j-api:1.7.10"
-
+        testCompile "junit:junit:$jUnitVersion"
     }
 
     kotlin {
@@ -228,5 +227,5 @@ task compile(dependsOn: ["core:testClasses", "extra:testClasses", "hystrix:clean
 task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"])
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.4'
+    gradleVersion = '4.4.1'
 }

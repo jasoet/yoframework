@@ -42,6 +42,8 @@ class CoreModuleTest {
         assertEquals(component.eventBus(), vertx.eventBus())
         assertEquals(component.fileSystem(), vertx.fileSystem())
         assertNotNull(component.validator())
+
+        vertx.close()
     }
 
 }
