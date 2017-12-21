@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2018 - Deny Prasetyo <jasoet87@gmail.com>
+ * Copyright (C) 2018 - Deny Prasetyo <jasoet87@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.yoframework.grpc
+package id.yoframework.grpc
 
 import io.grpc.BindableService
 import io.grpc.ManagedChannel

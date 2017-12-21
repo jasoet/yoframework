@@ -9,6 +9,7 @@ dependencies {
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
 
     compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+    compile "org.glassfish.web:el-impl:$elImplVersion"
 
     compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
     compile "commons-io:commons-io:${commonsIOVersion}"
