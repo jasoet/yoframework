@@ -1,1 +1,5 @@
+if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+    throw new GradleException("This build must be run with java 8")
+}
+
 include 'core', 'extra', 'quartz', 'web', 'morphia', 'ebean', 'grpc', 'hystrix'
