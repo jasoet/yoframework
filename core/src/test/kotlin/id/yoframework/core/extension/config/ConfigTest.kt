@@ -16,8 +16,7 @@
 
 package id.yoframework.core.extension.config
 
-import id.yoframework.core.extension.json.getIntegerExcept
-import id.yoframework.core.extension.json.getStringExcept
+import id.yoframework.core.extension.json.getExcept
 import id.yoframework.core.extension.vertx.buildVertx
 import io.vertx.core.Vertx
 import kotlinx.coroutines.experimental.runBlocking
@@ -46,9 +45,9 @@ class ConfigTest {
         val propertyConfig = propertiesConfig("config-test.properties")
         val config = vertx.retrieveConfig(propertyConfig)
 
-        assertEquals(config.getStringExcept("TEST_KEY"), "Test Value From Properties File")
-        assertEquals(config.getIntegerExcept("TEST_INT"), 1234)
-        assertFailsWith(IllegalArgumentException::class, { config.getIntegerExcept("NOT_EXISTS_KEY") })
+        assertEquals(config.getExcept("TEST_KEY"), "Test Value From Properties File")
+        assertEquals(config.getExcept("TEST_INT"), 1234)
+        assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
 
     }
 
@@ -57,8 +56,8 @@ class ConfigTest {
         val jsonConfig = jsonConfig("config-test.json")
         val config = vertx.retrieveConfig(jsonConfig)
 
-        assertEquals(config.getStringExcept("TEST_KEY"), "Test Value From JSON")
-        assertEquals(config.getIntegerExcept("TEST_INT"), 1234)
-        assertFailsWith(IllegalArgumentException::class, { config.getIntegerExcept("NOT_EXISTS_KEY") })
+        assertEquals(config.getExcept("TEST_KEY"), "Test Value From JSON")
+        assertEquals(config.getExcept("TEST_INT"), 1234)
+        assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
     }
 }

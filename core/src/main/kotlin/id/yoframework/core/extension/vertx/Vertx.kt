@@ -60,10 +60,9 @@ fun buildVertx(): Vertx {
  * The deferred value is cancelled when the resulting future is cancelled or otherwise completed.
  */
 fun <T> Deferred<T>.toFuture(future: Future<T>) {
-    future.setHandler({ asyncResult ->
-        //if fail, we cancel this job
+    future.setHandler { asyncResult ->
         if (asyncResult.failed()) cancel(asyncResult.cause())
-    })
+    }
     invokeOnCompletion {
         try {
             future.complete(getCompleted())

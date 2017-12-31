@@ -1,5 +1,5 @@
 /*
- * Copyright (C)2018 - Deny Prasetyo <jasoet87@gmail.com>
+ * Copyright (C) 2018 - Deny Prasetyo <jasoet87@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.exception
+package id.yoframework.core.extension.system
 
-data class NullObjectException(override val message: String? = null, private val ex: Throwable? = null)
-    : RuntimeException(message, ex)
+import org.junit.Test
+import kotlin.test.assertEquals
 
-data class DataInconsistentException(override val message: String? = null, private val ex: Throwable? = null)
-    : RuntimeException(message, ex)
+class SystemTest {
+    @Test
+    fun `class helper must equals class literal`() {
+        val clazzFromHelper = clazz<SystemTest>()
+        val clazzLiteral = SystemTest::class.java
+        assertEquals(clazzFromHelper, clazzLiteral)
+    }
+
+
+}

@@ -42,118 +42,8 @@ inline fun <reified T : Any> JsonObject?.toValue(): T? {
     }
 }
 
-fun JsonObject?.getString(key: String): String? {
-    return this?.getString(key)
-}
-
-fun JsonObject?.getString(key: String, default: String): String {
-    return this?.getString(key, default) ?: default
-}
-
-fun JsonObject?.getBoolean(key: String): Boolean? {
-    return this?.getBoolean(key)
-}
-
-fun JsonObject?.getBoolean(key: String, default: Boolean): Boolean {
-    return this?.getBoolean(key, default) ?: default
-}
-
-fun JsonObject?.getInteger(key: String): Int? {
-    return this?.getInteger(key)
-}
-
-fun JsonObject?.getInteger(key: String, default: Int): Int {
-    return this?.getInteger(key, default) ?: default
-}
-
-fun JsonObject?.getLong(key: String): Long? {
-    return this?.getLong(key)
-}
-
-fun JsonObject?.getLong(key: String, default: Long): Long {
-    return this?.getLong(key, default) ?: default
-}
-
-fun JsonObject?.getByteArray(key: String): ByteArray? {
-    return this?.getByteArray(key)
-}
-
-fun JsonObject?.getByteArray(key: String, default: ByteArray): ByteArray {
-    return this?.getByteArray(key, default) ?: default
-}
-
-fun JsonObject?.getDouble(key: String): Double? {
-    return this?.getDouble(key)
-}
-
-fun JsonObject?.getDouble(key: String, default: Double): Double {
-    return this?.getDouble(key, default) ?: default
-}
-
-fun JsonObject?.getFloat(key: String): Float? {
-    return this?.getFloat(key)
-}
-
-fun JsonObject?.getFloat(key: String, default: Float): Float {
-    return this?.getFloat(key, default) ?: default
-}
-
-fun JsonObject?.getJsonObject(key: String): JsonObject? {
-    return this?.getJsonObject(key)
-}
-
-fun JsonObject?.getJsonObject(key: String, default: JsonObject): JsonObject {
-    return this?.getJsonObject(key, default) ?: default
-}
-
-fun JsonObject?.getJsonArray(key: String): JsonArray? {
-    return this?.getJsonArray(key)
-}
-
-fun JsonObject?.getJsonArray(key: String, default: JsonArray): JsonArray {
-    return this?.getJsonArray(key, default) ?: default
-}
-
-fun JsonObject?.getValue(key: String): Any? {
-    return this?.getValue(key)
-}
-
-fun JsonObject?.getValue(key: String, default: Any): Any {
-    return this?.getValue(key, default) ?: default
-}
-
 fun JsonObject?.toMap(): Map<String, Any?> {
     return this?.map ?: emptyMap()
-}
-
-fun JsonObject.getStringExcept(key: String, exceptionMessage: String = ""): String {
-    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
-    return this.getString(key) ?: throw IllegalArgumentException(message)
-}
-
-fun JsonObject.getIntegerExcept(key: String, exceptionMessage: String = ""): Int {
-    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
-    return this.getInteger(key) ?: throw IllegalArgumentException(message)
-}
-
-fun JsonObject.getDoubleExcept(key: String, exceptionMessage: String = ""): Double {
-    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
-    return this.getDouble(key) ?: throw IllegalArgumentException(message)
-}
-
-fun JsonObject.getBooleanExcept(key: String, exceptionMessage: String = ""): Boolean {
-    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
-    return this.getBoolean(key) ?: throw IllegalArgumentException(message)
-}
-
-fun JsonObject.getJsonObjectExcept(key: String, exceptionMessage: String = ""): JsonObject {
-    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
-    return this.getJsonObject(key) ?: throw IllegalArgumentException(message)
-}
-
-fun JsonObject.getJsonArrayExcept(key: String, exceptionMessage: String = ""): JsonArray {
-    val message = if (exceptionMessage.isBlank()) "$key is required" else exceptionMessage
-    return this.getJsonArray(key) ?: throw IllegalArgumentException(message)
 }
 
 fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
@@ -177,19 +67,39 @@ inline fun <reified T : Any> JsonArray?.asList(): List<T> {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessage: (String) -> String): T {
+fun <T : Any> JsonObject?.get(clazz: KClass<T>, key: String): T? {
     return when {
-        clazz.isSubclassOf(String::class) -> this.getString(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
-        clazz.isSubclassOf(Int::class) -> this.getInteger(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
-        clazz.isSubclassOf(Double::class) -> this.getDouble(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
-        clazz.isSubclassOf(Boolean::class) -> this.getBoolean(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
-        clazz.isSubclassOf(JsonObject::class) -> this.getJsonObject(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
-        clazz.isSubclassOf(JsonArray::class) -> this.getJsonArray(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
-        clazz.isSubclassOf(ByteArray::class) -> this.getBinary(key) as T? ?: throw IllegalArgumentException(exceptionMessage(key))
+        clazz.isSubclassOf(String::class) -> this?.getString(key) as T?
+        clazz.isSubclassOf(Int::class) -> this?.getInteger(key) as T?
+        clazz.isSubclassOf(Double::class) -> this?.getDouble(key) as T?
+        clazz.isSubclassOf(Boolean::class) -> this?.getBoolean(key) as T?
+        clazz.isSubclassOf(JsonObject::class) -> this?.getJsonObject(key) as T?
+        clazz.isSubclassOf(JsonArray::class) -> this?.getJsonArray(key) as T?
+        clazz.isSubclassOf(ByteArray::class) -> this?.getBinary(key) as T?
         else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
     }
 }
 
-inline fun <reified T : Any> JsonObject.getExcept(key: String, noinline exceptionMessage: (String) -> String = { "$it is required!" }): T {
+inline operator fun <reified T : Any> JsonObject?.get(key: String): T? {
+    return this.get(T::class, key)
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessage: (String) -> String): T {
+    return when {
+        clazz.isSubclassOf(String::class) -> getString(key) as T?
+        clazz.isSubclassOf(Int::class) -> getInteger(key) as T?
+        clazz.isSubclassOf(Double::class) -> getDouble(key) as T?
+        clazz.isSubclassOf(Boolean::class) -> getBoolean(key) as T?
+        clazz.isSubclassOf(JsonObject::class) -> getJsonObject(key) as T?
+        clazz.isSubclassOf(JsonArray::class) -> getJsonArray(key) as T?
+        clazz.isSubclassOf(ByteArray::class) -> getBinary(key) as T?
+        else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
+    } ?: throw IllegalArgumentException(exceptionMessage(key))
+}
+
+inline fun <reified T : Any> JsonObject.getExcept(
+        key: String,
+        noinline exceptionMessage: (String) -> String = { "$it is required!" }): T {
     return this.getExcept(T::class, key, exceptionMessage)
 }

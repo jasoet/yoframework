@@ -19,6 +19,7 @@ package id.yoframework.core.extension.resource
 import id.yoframework.core.extension.logger.logger
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
+import java.io.IOException
 import java.io.InputStreamReader
 import java.lang.IllegalArgumentException
 import java.net.ServerSocket
@@ -50,7 +51,7 @@ inline fun <reified T : Any> applyEnv(key: String, defaultValue: T? = null, oper
     try {
         val value = env(key, defaultValue)
         operation(value)
-    } catch (e: Exception) {
+    } catch (e: IllegalArgumentException) {
         logger.info("Exception occurred ${e.message}, Operation ignored!")
     }
 }

@@ -1,3 +1,7 @@
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6"
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
@@ -22,6 +26,17 @@ dependencies {
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
     compile "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion"
 }
+
+detekt {
+    version = "1.0.0.RC6"
+    profile("main") {
+        input = "$projectDir/src/main/kotlin"
+        config = "$rootDir/detekt.yml"
+        filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+    }
+}
+
+tasks.getByName('test').finalizedBy detektCheck
 
 bintray {
     pkg {
