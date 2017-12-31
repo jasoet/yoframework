@@ -36,7 +36,7 @@ detekt {
     }
 }
 
-tasks.getByName('test').finalizedBy detektCheck
+test.finalizedBy detektCheck
 
 bintray {
     pkg {

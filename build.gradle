@@ -137,6 +137,8 @@ subprojects {
         toolVersion = "0.7.9"
     }
 
+    test.finalizedBy jacocoTestReport
+
     idea {
         module {
             testSourceDirs += file('build/generated/source/kapt/test')
