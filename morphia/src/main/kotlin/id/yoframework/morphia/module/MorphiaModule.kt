@@ -22,7 +22,7 @@ import com.mongodb.ServerAddress
 import com.mongodb.client.MongoDatabase
 import dagger.Module
 import dagger.Provides
-import id.yoframework.core.extension.json.getStringExcept
+import id.yoframework.core.extension.json.getExcept
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.core.module.CoreModule
 import io.vertx.core.json.JsonObject
@@ -40,20 +40,20 @@ class MorphiaModule {
     @Named("morphiaDatabaseName")
     fun databaseName(config: JsonObject): String {
         val key = "MORPHIA_DATABASE"
-        return config.getStringExcept(key, "$key is Required!")
+        return config.getExcept(key)
     }
 
     @Provides
     @Singleton
     fun provideMorphiaClient(config: JsonObject): MongoClient {
-        val host = config.getString("MORPHIA_HOST")
-        val port = config.getInteger("MORPHIA_PORT")
+        val host:String = config.getExcept("MORPHIA_HOST")
+        val port:Int = config.getExcept("MORPHIA_PORT")
         val server = ServerAddress(host, port)
 
-        val mongoUsername = config.getString("MORPHIA_USERNAME", "")
-        val mongoPassword = config.getString("MORPHIA_PASSWORD", "")
+        val mongoUsername:String = config.getString("MORPHIA_USERNAME", "")
+        val mongoPassword:String = config.getString("MORPHIA_PASSWORD", "")
 
-        val databaseName = config.getString("MORPHIA_DATABASE")
+        val databaseName:String = config.getExcept("MORPHIA_DATABASE")
 
         val client = if (mongoUsername.isBlank() && mongoPassword.isBlank()) {
             log.info("Initialize MongoClient with $host:$port without auth")

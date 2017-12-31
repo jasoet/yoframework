@@ -20,7 +20,7 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import dagger.Module
 import dagger.Provides
-import id.yoframework.core.extension.json.getStringExcept
+import id.yoframework.core.extension.json.getExcept
 import id.yoframework.core.module.CoreModule
 import io.ebean.EbeanServer
 import io.ebean.EbeanServerFactory
@@ -38,7 +38,7 @@ class EBeanModule {
     @Named("databaseUser")
     fun username(config: JsonObject): String {
         val key = "DATABASE_USER"
-        return config.getStringExcept(key, "$key Required")
+        return config.getExcept(key)
     }
 
     @Provides
@@ -46,7 +46,7 @@ class EBeanModule {
     @Named("databasePassword")
     fun password(config: JsonObject): String {
         val key = "DATABASE_PASSWORD"
-        return config.getStringExcept(key, "$key Required")
+        return config.getExcept(key)
     }
 
     @Provides
@@ -54,7 +54,7 @@ class EBeanModule {
     @Named("databaseUrl")
     fun url(config: JsonObject): String {
         val key = "DATABASE_URL"
-        return config.getStringExcept(key, "$key Required")
+        return config.getExcept(key)
     }
 
     @Provides
@@ -62,7 +62,7 @@ class EBeanModule {
     @Named("databaseDriver")
     fun driver(config: JsonObject): String {
         val key = "DATABASE_DRIVER_CLASSNAME"
-        return config.getStringExcept(key, "$key Required")
+        return config.getExcept(key)
     }
 
     @Provides
