@@ -28,3 +28,4 @@ Dockerfile
 deployment/docker-compose.yml
 #services/docker-compose.yml
 /gradle.properties
+/*/out/

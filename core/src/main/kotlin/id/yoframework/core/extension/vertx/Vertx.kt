@@ -26,11 +26,13 @@ import io.vertx.core.http.HttpServer
 import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
+import kotlinx.coroutines.experimental.CoroutineStart
 import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
 
 suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -> Unit): HttpServer {
     val httpServer = this.createHttpServer()
-            .requestHandler(handler)
+        .requestHandler(handler)
     return awaitResult { httpServer.listen(port, it) }
 }
 
@@ -60,9 +62,6 @@ fun buildVertx(): Vertx {
  * The deferred value is cancelled when the resulting future is cancelled or otherwise completed.
  */
 fun <T> Deferred<T>.toFuture(future: Future<T>) {
-    future.setHandler { asyncResult ->
-        if (asyncResult.failed()) cancel(asyncResult.cause())
-    }
     invokeOnCompletion {
         try {
             future.complete(getCompleted())
@@ -70,4 +69,12 @@ fun <T> Deferred<T>.toFuture(future: Future<T>) {
             future.fail(VertxException(t))
         }
     }
+}
+
+fun <T> Future<T>.executeAsync(op: suspend () -> T) {
+    val deferred = async(start = CoroutineStart.LAZY) {
+        op()
+    }
+    deferred.toFuture(this)
+    deferred.start()
 }
