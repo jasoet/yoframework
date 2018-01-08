@@ -32,14 +32,18 @@ inline fun <reified T : Any> JsonObject.mapTo(): T {
     return this.mapTo(T::class.java)
 }
 
-inline fun <reified T : Any> JsonObject?.toValue(): T? {
+fun <T : Any> JsonObject?.toValue(clazz: KClass<T>): T? {
     return try {
-        this?.mapTo(T::class.java)
+        this?.mapTo(clazz.java)
     } catch (ie: IllegalArgumentException) {
         val log = logger("Json Extension")
         log.warn(ie.message, ie)
         null
     }
+}
+
+inline fun <reified T : Any> JsonObject?.toValue(): T? {
+    return this.toValue(T::class)
 }
 
 fun JsonObject?.toMap(): Map<String, Any?> {
@@ -99,7 +103,8 @@ fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessa
 }
 
 inline fun <reified T : Any> JsonObject.getExcept(
-        key: String,
-        noinline exceptionMessage: (String) -> String = { "$it is required!" }): T {
+    key: String,
+    noinline exceptionMessage: (String) -> String = { "$it is required!" }
+): T {
     return this.getExcept(T::class, key, exceptionMessage)
 }
