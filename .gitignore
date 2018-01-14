@@ -27,5 +27,4 @@ src/main/resources/application-config.json
 Dockerfile
 deployment/docker-compose.yml
 #services/docker-compose.yml
-/gradle.properties
 /*/out/
