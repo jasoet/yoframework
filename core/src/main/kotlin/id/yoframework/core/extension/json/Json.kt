@@ -16,22 +16,60 @@
 
 package id.yoframework.core.extension.json
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import id.yoframework.core.extension.logger.logger
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
+import io.vertx.kotlin.core.json.Json as KJson
 
+fun KJson.enable() {
+    Json.mapper.apply {
+        registerKotlinModule()
+        registerModule(ParameterNamesModule())
+        registerModule(JavaTimeModule())
+    }
+
+    Json.prettyMapper.apply {
+        registerKotlinModule()
+        registerModule(ParameterNamesModule())
+        registerModule(JavaTimeModule())
+    }
+}
+
+/**
+ * Convert [Any] to [JsonObject] using Vertx's default [Json.mapper].
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @return empty JsonObject if receiver is null
+ * @see id.yoframework.core.module.CoreModule
+ */
 fun Any?.toJson(): JsonObject {
     if (this == null) return JsonObject()
     return JsonObject(Json.mapper.writeValueAsString(this))
 }
 
+/**
+ * Convert [JsonObject] to [T] object, and throws [IllegalArgumentException] if failed.
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @see id.yoframework.core.module.CoreModule
+ */
+@Throws(IllegalArgumentException::class)
 inline fun <reified T : Any> JsonObject.mapTo(): T {
     return this.mapTo(T::class.java)
 }
 
+/**
+ * Convert [JsonObject] to [T] object, and return null if failed or receiver is null .
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @see id.yoframework.core.module.CoreModule
+ */
 fun <T : Any> JsonObject?.toValue(clazz: KClass<T>): T? {
     return try {
         this?.mapTo(clazz.java)
@@ -42,14 +80,24 @@ fun <T : Any> JsonObject?.toValue(clazz: KClass<T>): T? {
     }
 }
 
+/**
+ * Reified version of [toValue]
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @see id.yoframework.core.extension.json.toValue
+ */
 inline fun <reified T : Any> JsonObject?.toValue(): T? {
     return this.toValue(T::class)
 }
 
-fun JsonObject?.toMap(): Map<String, Any?> {
-    return this?.map ?: emptyMap()
-}
-
+/**
+ * Convert [JsonArray] to [List] object, and return empty [List] if receiver is null.
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [IllegalArgumentException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
+@Throws(IllegalArgumentException::class)
 fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
     if (this == null) return emptyList()
 
@@ -66,10 +114,24 @@ fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
     return this.map { ops(it) }
 }
 
+/**
+ * Reified version of [asList]
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [IllegalArgumentException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
 inline fun <reified T : Any> JsonArray?.asList(): List<T> {
     return this.asList(T::class)
 }
 
+/**
+ * Get property from [JsonObject] with [T] type. [List] object, and return empty [List] if receiver is null.
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [IllegalArgumentException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> JsonObject?.get(clazz: KClass<T>, key: String): T? {
     return when {
@@ -84,6 +146,13 @@ fun <T : Any> JsonObject?.get(clazz: KClass<T>, key: String): T? {
     }
 }
 
+/**
+ * Reified version of [get]
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [IllegalArgumentException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
 inline operator fun <reified T : Any> JsonObject?.get(key: String): T? {
     return this.get(T::class, key)
 }
