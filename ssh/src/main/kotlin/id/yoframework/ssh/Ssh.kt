@@ -21,7 +21,7 @@ import com.jcraft.jsch.JSch
 import com.jcraft.jsch.Session
 import id.yoframework.core.extension.resource.homeDir
 import java.io.File
-import java.io.File.pathSeparator
+import java.io.File.separator
 import java.util.Properties
 
 typealias Ssh = JSch
@@ -37,12 +37,12 @@ enum class ChannelType(val type: String) {
     SUBSYSTEM("subsystem");
 }
 
-fun privateKeyLocation(homeDir: String = homeDir(), path: String = ".ssh${pathSeparator}id_rsa"): String {
-    return "$homeDir$pathSeparator$path"
+fun privateKeyLocation(homeDir: String = homeDir(), path: String = ".ssh${separator}id_rsa"): String {
+    return "$homeDir$separator$path"
 }
 
-fun knownHostLocation(homeDir: String = homeDir(), path: String = ".ssh${pathSeparator}known_hosts"): String {
-    return "$homeDir$pathSeparator$path"
+fun knownHostLocation(homeDir: String = homeDir(), path: String = ".ssh${separator}known_hosts"): String {
+    return "$homeDir$separator$path"
 }
 
 fun Session.setConfig(propertyMap: Map<String, String>) {
@@ -76,7 +76,7 @@ fun createSsh(
 fun Ssh.createSession(
     user: String,
     host: String,
-    port: Int,
+    port: Int = 22,
     daemonThread: Boolean = false,
     properties: Map<String, String> = emptyMap(),
     customize: (Session) -> Unit = {}
