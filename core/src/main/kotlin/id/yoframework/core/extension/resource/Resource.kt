@@ -19,7 +19,8 @@ package id.yoframework.core.extension.resource
 import id.yoframework.core.extension.logger.logger
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
-import java.io.IOException
+import org.apache.commons.io.IOUtils
+import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.lang.IllegalArgumentException
 import java.net.ServerSocket
@@ -64,6 +65,13 @@ fun String.resourceToBuffer(): Buffer {
         it.read(byteArray)
     }
     return Buffer.buffer(byteArray)
+}
+
+fun String.pathToByteArray(): ByteArray {
+    val inputStream = FileInputStream(this)
+    return inputStream.use {
+        IOUtils.toByteArray(it)
+    }
 }
 
 fun String.loadJsonObject(): JsonObject {
