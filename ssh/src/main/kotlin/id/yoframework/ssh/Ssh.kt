@@ -46,14 +46,11 @@ fun knownHostLocation(homeDir: String = homeDir(), path: String = ".ssh${separat
 }
 
 fun Session.setConfig(propertyMap: Map<String, String>) {
-    val defaults = Properties().apply {
+    val config = Properties().apply {
         put("StrictHostKeyChecking", "no")
+        putAll(propertyMap)
     }
 
-    val config = propertyMap.keys.fold(Properties(defaults)) { p, key ->
-        p[key] = propertyMap[key]
-        p
-    }
     this.setConfig(config)
 }
 
