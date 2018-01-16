@@ -20,6 +20,7 @@ import id.yoframework.core.extension.logger.logger
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
 import org.apache.commons.io.IOUtils
+import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.lang.IllegalArgumentException
@@ -93,6 +94,10 @@ fun tmpDir(): String {
 
 fun homeDir(): String {
     return System.getProperty("user.home")
+}
+
+fun pathSeparator(): String {
+    return File.pathSeparator
 }
 
 fun randomPort(): Int {
