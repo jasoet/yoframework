@@ -1,7 +1,7 @@
 apply plugin: 'ebean'
 
 dependencies {
-    compile "id.yoframework:core:${version}"
+    compile "id.yoframework:db:${version}"
 
     compile "io.ebean:ebean:$ebeanVersion"
     compile "io.ebean:ebean-querybean:$ebeanQueryBeanVersion"

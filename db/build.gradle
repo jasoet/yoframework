@@ -1,0 +1,17 @@
+
+dependencies {
+    compile "id.yoframework:core:${version}"
+
+    compile "com.zaxxer:HikariCP:$hikariCPVersion"
+    compile "org.flywaydb:flyway-core:$flywayVersion"
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework DB. RDMS support library for yo framework"
+        version {
+            desc = "Yo Framework DB version ${project.version}."
+        }
+    }
+}

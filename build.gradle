@@ -4,7 +4,7 @@ buildscript {
         bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
         bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
-        kotlinVersion = "1.2.10"
+        kotlinVersion = "1.2.20"
         vertxVersion = '3.5.0'
         pebbleVersion = '2.4.0'
 
@@ -37,6 +37,8 @@ buildscript {
         ebeanVersion = "11.7.1"
         ebeanQueryBeanVersion = "11.1.1"
         ebeanGradlePluginVersion = "11.5.1"
+
+        jdbiVersion = "3.0.1"
 
         protobufGradlePluginVersion = "0.8.3"
 
@@ -222,13 +224,15 @@ subprojects {
     }
 }
 
-task build(dependsOn: ["core:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build", "ssh:build"])
+task build(dependsOn: ["core:build", "db:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build", "ssh:build", "jdbi:build"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload"])
+task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
 
-task clean(dependsOn: ["core:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean"])
+task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])
 
-task compile(dependsOn: ["core:testClasses", "extra:testClasses", "hystrix:clean", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses", "ssh:testClasses"])
+task compile(dependsOn: ["core:testClasses", "db:testClasses", "extra:testClasses", "hystrix:clean", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses", "ssh:testClasses", "jdbi:testClasses"])
+
+task dbUpload(dependsOn: ["db:clean", "db:testClasses", "db:bintrayUpload"])
 
 task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"])
 

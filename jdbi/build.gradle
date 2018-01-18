@@ -1,0 +1,14 @@
+dependencies {
+    compile "id.yoframework:db:${version}"
+    compile "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework JDBI. Yo support for JDBI Library."
+        version {
+            desc = "Yo Framework JDBI version ${project.version}."
+        }
+    }
+}

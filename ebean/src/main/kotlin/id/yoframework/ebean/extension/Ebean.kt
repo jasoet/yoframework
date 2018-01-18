@@ -24,11 +24,12 @@ import io.ebean.annotation.Platform
 import io.ebean.config.DbMigrationConfig
 import io.ebean.config.ServerConfig
 import io.ebean.dbmigration.DbMigration
-import org.flywaydb.core.Flyway
-import javax.sql.DataSource
 
 
-inline fun <R : Any> EbeanServer.transaction(existingTransaction: Transaction? = null, operation: (Transaction) -> R): R {
+inline fun <R : Any> EbeanServer.transaction(
+    existingTransaction: Transaction? = null,
+    operation: (Transaction) -> R
+): R {
     return if (existingTransaction != null) {
         operation(existingTransaction)
     } else {
@@ -46,23 +47,8 @@ inline fun <R : Any> EbeanServer.transaction(existingTransaction: Transaction? =
     }
 }
 
-fun DataSource.assertConnectionOpen() {
-    if (this.connection.isClosed) {
-        throw AssertionError("Connection is Closed!")
-    }
-}
-
 operator fun <T : Any> Query<T>.invoke(expression: Query<T>.() -> ExpressionList<T>): Query<T> {
     return expression(this).query()
-}
-
-fun DataSource.executeMigration(location: String) {
-    val dataSource = this
-    val flyway = Flyway().apply {
-        setDataSource(dataSource)
-        setLocations(location)
-    }
-    flyway.migrate()
 }
 
 fun EbeanServer.generateMigrationFile(platform: Platform, prefix: String): String? {
