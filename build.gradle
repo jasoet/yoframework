@@ -59,7 +59,7 @@ buildscript {
     }
 
     repositories {
-        mavenCentral()
+        mavenLocal()
         mavenCentral()
         jcenter()
     }

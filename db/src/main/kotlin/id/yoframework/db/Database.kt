@@ -16,6 +16,8 @@
 
 package id.yoframework.db
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
 import javax.sql.DataSource
 
@@ -32,4 +34,29 @@ fun DataSource.executeMigration(location: String) {
         setLocations(location)
     }
     flyway.migrate()
+}
+
+fun createHikariPoolDataSource(
+    name: String,
+    url: String,
+    username: String,
+    password: String,
+    driver: String,
+    config: HikariConfig.() -> Unit = {}
+): HikariDataSource {
+
+    val hikariConfig = HikariConfig()
+    hikariConfig.poolName = name
+    hikariConfig.jdbcUrl = url
+    hikariConfig.username = username
+    hikariConfig.password = password
+    hikariConfig.driverClassName = driver
+
+    hikariConfig.addDataSourceProperty("cachePrepStmts", "true")
+    hikariConfig.addDataSourceProperty("prepStmtCacheSize", "250")
+    hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
+
+    config(hikariConfig)
+
+    return HikariDataSource(hikariConfig)
 }
