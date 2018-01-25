@@ -22,8 +22,10 @@ import io.ebean.Query
 import io.ebean.Transaction
 import kotlin.reflect.KClass
 
-abstract class Repository<T : Model, in I : Any>(protected open val ebean: EbeanServer,
-                                                 private val clazz: KClass<T>) {
+abstract class Repository<T : Model, in I : Any>(
+    protected open val ebean: EbeanServer,
+    private val clazz: KClass<T>
+) {
     protected val query: Query<T>
         get() = ebean.createQuery(clazz.java)
 

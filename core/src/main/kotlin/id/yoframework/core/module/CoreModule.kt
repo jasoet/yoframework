@@ -31,8 +31,10 @@ import javax.validation.Validation
 import javax.validation.Validator
 
 @Module
-class CoreModule(private val config: JsonObject,
-                 private val vertx: Vertx) {
+class CoreModule(
+    private val config: JsonObject,
+    private val vertx: Vertx
+) {
 
     init {
         Json.mapper.apply {

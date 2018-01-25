@@ -78,13 +78,13 @@ fun String.matchFirst(pattern: String): Match? {
     return if (matcher.find()) {
         val groupCount = matcher.groupCount()
         val groups =
-                if (groupCount < 1) {
-                    emptyList<String>()
-                } else {
-                    (1..groupCount).map {
-                        matcher.group(it)
-                    }
+            if (groupCount < 1) {
+                emptyList<String>()
+            } else {
+                (1..groupCount).map {
+                    matcher.group(it)
                 }
+            }
         Match(matcher.start(), matcher.end(), matcher.group(), groups)
     } else {
         null
@@ -97,13 +97,13 @@ fun String.matchAll(pattern: String): List<Match> {
     while (matcher.find()) {
         val groupCount = matcher.groupCount()
         val groups =
-                if (groupCount < 1) {
-                    emptyList<String>()
-                } else {
-                    (1..groupCount).map {
-                        matcher.group(it)
-                    }
+            if (groupCount < 1) {
+                emptyList<String>()
+            } else {
+                (1..groupCount).map {
+                    matcher.group(it)
                 }
+            }
         result.add(Match(matcher.start(), matcher.end(), matcher.group(), groups))
     }
     return result

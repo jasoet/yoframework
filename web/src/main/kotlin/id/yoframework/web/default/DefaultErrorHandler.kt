@@ -66,13 +66,13 @@ object DefaultErrorHandler : ErrorHandler {
         if (acceptHeader.contains("/json") || contentTypeHeader.contains("/json")) {
             val result = if (e is ValidationException) {
                 mapOf(
-                        "message" to "Validation Failure",
-                        "errors" to e.errors
+                    "message" to "Validation Failure",
+                    "errors" to e.errors
                 )
             } else {
                 mapOf(
-                        "message" to (e.message ?: ""),
-                        "errors" to (e.message ?: "")
+                    "message" to (e.message ?: ""),
+                    "errors" to (e.message ?: "")
                 )
             }
             context.response().setStatusCode(code).end(Json.encode(result))

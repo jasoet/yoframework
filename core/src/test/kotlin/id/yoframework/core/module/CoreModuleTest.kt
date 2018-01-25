@@ -33,9 +33,9 @@ class CoreModuleTest {
         val propertyConfig = propertiesConfig("config-test.properties")
         val config = vertx.retrieveConfig(propertyConfig)
         val component = DaggerCoreAppComponent
-                .builder()
-                .coreModule(CoreModule(config, vertx))
-                .build()
+            .builder()
+            .coreModule(CoreModule(config, vertx))
+            .build()
 
         assertEquals(component.config(), config)
         assertEquals(component.vertx(), vertx)

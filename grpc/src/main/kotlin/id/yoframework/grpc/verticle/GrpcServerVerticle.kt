@@ -17,23 +17,25 @@
 package id.yoframework.grpc.verticle
 
 import id.yoframework.core.extension.logger.logger
+import id.yoframework.grpc.buildGrpcServer
+import id.yoframework.grpc.shutdownServer
+import id.yoframework.grpc.startServer
 import io.grpc.BindableService
 import io.vertx.grpc.VertxServer
 import io.vertx.grpc.VertxServerBuilder
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-import id.yoframework.grpc.buildGrpcServer
-import id.yoframework.grpc.shutdownServer
-import id.yoframework.grpc.startServer
 
 
-open class GrpcServerVerticle(private val host: String,
-                              private val port: Int,
-                              private vararg val services: BindableService,
-                              private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }) : CoroutineVerticle() {
+open class GrpcServerVerticle(
+    private val host: String,
+    private val port: Int,
+    private vararg val services: BindableService,
+    private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }
+) : CoroutineVerticle() {
     private val log = logger<GrpcServerVerticle>()
-    lateinit var server: VertxServer
+    private lateinit var server: VertxServer
 
-    suspend override fun start() {
+    override suspend fun start() {
         try {
             log.debug("Initialize Grpc Server on $host:$port with ${services.size} Service(s).")
             log.debug("===== Included Services =====")
@@ -50,7 +52,7 @@ open class GrpcServerVerticle(private val host: String,
         }
     }
 
-    suspend override fun stop() {
+    override suspend fun stop() {
         log.debug("Shutting down Grpc Server")
         server.shutdownServer()
     }

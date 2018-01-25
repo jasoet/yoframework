@@ -20,16 +20,33 @@ import id.yoframework.core.exception.DataInconsistentException
 import id.yoframework.core.exception.NullObjectException
 import io.vertx.ext.web.client.HttpResponse
 
-data class NotAllowedException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
-data class RegistrationException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
-data class BadRequestException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
-data class UnauthorizedException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
-data class NotFoundException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
-data class ValidationException(val errors: List<String>, val ex: Exception? = null) : RuntimeException(ex)
-data class SecurityException(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
-data class InvalidCredentials(override val message: String? = null, val ex: Throwable? = null) : RuntimeException(message, ex)
+data class NotAllowedException(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
 
-data class RequestException(override val message: String? = "", private val response: HttpResponse<*>, private val ex: Exception? = null) : RuntimeException(message, ex) {
+data class RegistrationException(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
+
+data class BadRequestException(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
+
+data class UnauthorizedException(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
+
+data class NotFoundException(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
+
+data class ValidationException(val errors: List<String>, val ex: Exception? = null) : RuntimeException(ex)
+data class SecurityException(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
+
+data class InvalidCredentials(override val message: String? = null, val ex: Throwable? = null) :
+    RuntimeException(message, ex)
+
+data class RequestException(
+    override val message: String? = "",
+    private val response: HttpResponse<*>,
+    private val ex: Exception? = null
+) : RuntimeException(message, ex) {
     val statusCode = response.statusCode()
     val stringBody = response.bodyAsString()
     val jsonBody = response.bodyAsJsonObject()

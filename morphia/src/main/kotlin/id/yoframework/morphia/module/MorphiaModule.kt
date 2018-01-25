@@ -46,21 +46,22 @@ class MorphiaModule {
     @Provides
     @Singleton
     fun provideMorphiaClient(config: JsonObject): MongoClient {
-        val host:String = config.getExcept("MORPHIA_HOST")
-        val port:Int = config.getExcept("MORPHIA_PORT")
+        val host: String = config.getExcept("MORPHIA_HOST")
+        val port: Int = config.getExcept("MORPHIA_PORT")
         val server = ServerAddress(host, port)
 
-        val mongoUsername:String = config.getString("MORPHIA_USERNAME", "")
-        val mongoPassword:String = config.getString("MORPHIA_PASSWORD", "")
+        val mongoUsername: String = config.getString("MORPHIA_USERNAME", "")
+        val mongoPassword: String = config.getString("MORPHIA_PASSWORD", "")
 
-        val databaseName:String = config.getExcept("MORPHIA_DATABASE")
+        val databaseName: String = config.getExcept("MORPHIA_DATABASE")
 
         val client = if (mongoUsername.isBlank() && mongoPassword.isBlank()) {
             log.info("Initialize MongoClient with $host:$port without auth")
             MongoClient(server)
         } else {
             val credentials = MongoCredential.createScramSha1Credential(
-                    mongoUsername, databaseName, mongoPassword.toCharArray())
+                mongoUsername, databaseName, mongoPassword.toCharArray()
+            )
             val credentialsList = listOf(credentials)
             log.info("Initialize MongoClient with $host:$port")
             MongoClient(server, credentialsList)

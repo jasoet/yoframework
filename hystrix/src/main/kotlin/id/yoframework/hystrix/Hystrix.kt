@@ -38,41 +38,44 @@ fun threadPoolKey(key: String): HystrixThreadPoolKey? {
     return HystrixThreadPoolKey.Factory.asKey(key)
 }
 
-fun buildObservableCommandConfig(groupKey: HystrixCommandGroupKey,
-                                 commandKey: HystrixCommandKey? = null,
-                                 commandPropertiesDefault: HystrixCommandProperties.Setter? = null
+fun buildObservableCommandConfig(
+    groupKey: HystrixCommandGroupKey,
+    commandKey: HystrixCommandKey? = null,
+    commandPropertiesDefault: HystrixCommandProperties.Setter? = null
 ): ObservableCommandSetter {
     return ObservableCommandSetter
-            .withGroupKey(groupKey)
-            .applyIf(commandKey) {
-                andCommandKey(it)
-            }
-            .applyIf(commandPropertiesDefault) {
-                andCommandPropertiesDefaults(it)
-            }
+        .withGroupKey(groupKey)
+        .applyIf(commandKey) {
+            andCommandKey(it)
+        }
+        .applyIf(commandPropertiesDefault) {
+            andCommandPropertiesDefaults(it)
+        }
 
 }
 
-fun buildCommandConfig(groupKey: HystrixCommandGroupKey,
-                       commandKey: HystrixCommandKey? = null,
-                       threadPoolKey: HystrixThreadPoolKey? = null,
-                       commandProperties: CommandPropertiesSetter? = null,
-                       threadPoolProperties: ThreadPoolPropertiesSetter? = null): HystrixCommand.Setter {
+fun buildCommandConfig(
+    groupKey: HystrixCommandGroupKey,
+    commandKey: HystrixCommandKey? = null,
+    threadPoolKey: HystrixThreadPoolKey? = null,
+    commandProperties: CommandPropertiesSetter? = null,
+    threadPoolProperties: ThreadPoolPropertiesSetter? = null
+): HystrixCommand.Setter {
 
     return HystrixCommand.Setter
-            .withGroupKey(groupKey)
-            .applyIf(commandKey) {
-                this.andCommandKey(it)
-            }
-            .applyIf(threadPoolKey) {
-                andThreadPoolKey(it)
-            }
-            .applyIf(commandProperties) {
-                andCommandPropertiesDefaults(it)
-            }
-            .applyIf(threadPoolProperties) {
-                andThreadPoolPropertiesDefaults(it)
-            }
+        .withGroupKey(groupKey)
+        .applyIf(commandKey) {
+            this.andCommandKey(it)
+        }
+        .applyIf(threadPoolKey) {
+            andThreadPoolKey(it)
+        }
+        .applyIf(commandProperties) {
+            andCommandPropertiesDefaults(it)
+        }
+        .applyIf(threadPoolProperties) {
+            andThreadPoolPropertiesDefaults(it)
+        }
 
 }
 

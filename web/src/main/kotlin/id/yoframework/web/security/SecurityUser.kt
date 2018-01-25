@@ -24,7 +24,8 @@ import io.vertx.ext.auth.AbstractUser
 import io.vertx.ext.auth.AuthProvider
 import java.io.Serializable
 
-class SecurityUser(private val model: SecurityModel, private val accesses: List<String>) : AbstractUser(), Serializable {
+class SecurityUser(private val model: SecurityModel, private val accesses: List<String>) : AbstractUser(),
+    Serializable {
     override fun doIsPermitted(permission: String, resultHandler: Handler<AsyncResult<Boolean>>) {
         resultHandler.handle(Future.succeededFuture(doIsPermitted(permission)))
     }

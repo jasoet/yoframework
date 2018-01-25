@@ -67,10 +67,12 @@ class EBeanModule {
 
     @Provides
     @Singleton
-    fun dataSource(@Named("databaseUser") user: String,
-                   @Named("databasePassword") password: String,
-                   @Named("databaseUrl") url: String,
-                   @Named("databaseDriver") driver: String): DataSource {
+    fun dataSource(
+        @Named("databaseUser") user: String,
+        @Named("databasePassword") password: String,
+        @Named("databaseUrl") url: String,
+        @Named("databaseDriver") driver: String
+    ): DataSource {
 
         val config = HikariConfig()
         config.poolName = "HikariPool"

@@ -16,8 +16,8 @@
 
 package id.yoframework.core.exception
 
-data class NullObjectException(override val message: String? = null, private val ex: Throwable? = null)
-    : RuntimeException(message, ex)
+data class NullObjectException(override val message: String? = null, private val ex: Throwable? = null) :
+    RuntimeException(message, ex)
 
-data class DataInconsistentException(override val message: String? = null, private val ex: Throwable? = null)
-    : RuntimeException(message, ex)
+data class DataInconsistentException(override val message: String? = null, private val ex: Throwable? = null) :
+    RuntimeException(message, ex)

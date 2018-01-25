@@ -55,14 +55,14 @@ private class SnowFlake(private val machineId: Int) {
 }
 
 data class SnowFlakeId(
-        val timestamp: LocalDateTime,
-        val machineId: Int,
-        val increment: Int
+    val timestamp: LocalDateTime,
+    val machineId: Int,
+    val increment: Int
 )
 
 private val cache = CacheBuilder.newBuilder()
-        .expireAfterAccess(2, TimeUnit.MINUTES)
-        .build<Int, SnowFlake>()
+    .expireAfterAccess(2, TimeUnit.MINUTES)
+    .build<Int, SnowFlake>()
 
 fun nextId(machineId: Int = 42): Long {
     val cached = cache.getIfPresent(machineId)

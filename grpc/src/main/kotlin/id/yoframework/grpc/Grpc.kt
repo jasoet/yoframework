@@ -24,23 +24,25 @@ import io.vertx.grpc.VertxServer
 import io.vertx.grpc.VertxServerBuilder
 import io.vertx.kotlin.coroutines.awaitResult
 
-fun Vertx.buildGrpcServer(host: String,
-                          port: Int,
-                          vararg services: BindableService,
-                          configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }): VertxServer {
+fun Vertx.buildGrpcServer(
+    host: String,
+    port: Int,
+    vararg services: BindableService,
+    configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }
+): VertxServer {
 
     return VertxServerBuilder
-            .forAddress(this, host, port)
-            .let {
-                services.toList()
-                        .fold(it) { builder, service ->
-                            builder.addService(service)
-                        }
-            }
-            .let {
-                configuration(it)
-            }
-            .build()
+        .forAddress(this, host, port)
+        .let {
+            services.toList()
+                .fold(it) { builder, service ->
+                    builder.addService(service)
+                }
+        }
+        .let {
+            configuration(it)
+        }
+        .build()
 }
 
 suspend fun VertxServer.startServer() {
@@ -51,13 +53,15 @@ suspend fun VertxServer.shutdownServer() {
     awaitResult<Void> { this.shutdown(it) }
 }
 
-fun Vertx.buildGrpcChannel(host: String,
-                           port: Int,
-                           configuration: (VertxChannelBuilder) -> VertxChannelBuilder = { it }): ManagedChannel {
+fun Vertx.buildGrpcChannel(
+    host: String,
+    port: Int,
+    configuration: (VertxChannelBuilder) -> VertxChannelBuilder = { it }
+): ManagedChannel {
     return VertxChannelBuilder.forAddress(this, host, port)
-            .let {
-                configuration(it)
-            }
-            .build()
+        .let {
+            configuration(it)
+        }
+        .build()
 }
 

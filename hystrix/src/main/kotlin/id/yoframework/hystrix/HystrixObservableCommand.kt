@@ -19,10 +19,12 @@ package id.yoframework.hystrix
 import com.netflix.hystrix.HystrixObservableCommand
 import rx.Observable
 
-open class HystrixObservableCommand<T : Any>(setter: Setter,
-                                             private val operation: () -> Observable<T>,
-                                             private val fallback: () -> Observable<T>) :
-        HystrixObservableCommand<T>(setter) {
+open class HystrixObservableCommand<T : Any>(
+    setter: Setter,
+    private val operation: () -> Observable<T>,
+    private val fallback: () -> Observable<T>
+) :
+    HystrixObservableCommand<T>(setter) {
 
     override fun construct(): Observable<T> {
         return operation()

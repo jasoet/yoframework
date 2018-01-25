@@ -20,10 +20,12 @@ import com.netflix.hystrix.HystrixCommand
 import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
-open class HystrixCommand<T : Any>(configSetter: Setter,
-                                   private val operation: () -> T,
-                                   private val fallback: () -> T) :
-        HystrixCommand<T>(configSetter) {
+open class HystrixCommand<T : Any>(
+    configSetter: Setter,
+    private val operation: () -> T,
+    private val fallback: () -> T
+) :
+    HystrixCommand<T>(configSetter) {
 
     override fun run(): T {
         return operation()

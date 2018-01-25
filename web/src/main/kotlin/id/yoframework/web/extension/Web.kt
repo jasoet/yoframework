@@ -74,14 +74,14 @@ fun RoutingContext.param(key: String): String? {
 fun RoutingContext.json(obj: Any) {
     val response = this.response()
     response.putHeader("Content-Type", "application/json; charset=utf-8")
-            .putHeader("Access-Control-Allow-Origin", "*")
-            .end(Json.encode(obj))
+        .putHeader("Access-Control-Allow-Origin", "*")
+        .end(Json.encode(obj))
 }
 
 fun RoutingContext.text(obj: Any, contentType: String = "text/plain") {
     val response = this.response()
     response.putHeader("Content-Type", contentType)
-            .end(obj.toString())
+        .end(obj.toString())
 }
 
 fun RoutingContext.json(headers: Map<String, String> = emptyMap(), message: Any) {
@@ -123,7 +123,7 @@ fun RoutingContext.OK(message: String = "", headers: Map<String, String> = empty
 fun RoutingContext.prettyJson(obj: Any) {
     val response = this.response()
     response.putHeader("Content-Type", "application/json; charset=utf-8")
-            .end(Json.encodePrettily(obj))
+        .end(Json.encodePrettily(obj))
 }
 
 
@@ -171,7 +171,11 @@ fun Route.jsonHandler(coroutineContext: CoroutineContext? = null, handler: suspe
     return this.asyncHandler(coroutineContext) { this.json(handler(this)) }
 }
 
-fun Route.templateHandler(coroutineContext: CoroutineContext? = null, engine: TemplateEngine, templateName: String): Route {
+fun Route.templateHandler(
+    coroutineContext: CoroutineContext? = null,
+    engine: TemplateEngine,
+    templateName: String
+): Route {
     return this.asyncHandler(coroutineContext) {
         this.text(render(engine, templateName))
     }

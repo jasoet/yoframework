@@ -22,14 +22,18 @@ import id.yoframework.web.extension.startHttpServer
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 
-open class WebVerticle(private val controller: Controller, private val serverName: String = "HttpServer", private val portConfigName: String = "HTTP_PORT") : CoroutineVerticle() {
+open class WebVerticle(
+    private val controller: Controller,
+    private val serverName: String = "HttpServer",
+    private val portConfigName: String = "HTTP_PORT"
+) : CoroutineVerticle() {
     private val log = logger(WebVerticle::class)
 
     open fun resolvePort(): Int {
         return config.getInteger(portConfigName)
     }
 
-    suspend override fun start() {
+    override suspend fun start() {
         val router = controller.create()
         try {
             val port = resolvePort()

@@ -32,13 +32,21 @@ suspend fun WebClient.get(absoluteURI: String, header: Map<String, String>): Htt
     }
 }
 
-suspend fun WebClient.post(absoluteURI: String, body: JsonObject, header: Map<String, String> = emptyMap()): HttpResponse<Buffer> {
+suspend fun WebClient.post(
+    absoluteURI: String,
+    body: JsonObject,
+    header: Map<String, String> = emptyMap()
+): HttpResponse<Buffer> {
     return awaitResult {
         this.postAbs(absoluteURI).apply { headers().addAll(header) }.sendJsonObject(body, it)
     }
 }
 
-suspend fun WebClient.postForm(absoluteURI: String, header: Map<String, String> = emptyMap(), formData: Map<String, String>): HttpResponse<Buffer> {
+suspend fun WebClient.postForm(
+    absoluteURI: String,
+    header: Map<String, String> = emptyMap(),
+    formData: Map<String, String>
+): HttpResponse<Buffer> {
     val payload = formData.toList().fold(MultiMap.caseInsensitiveMultiMap()) { form, (key, value) ->
         form.set(key, value)
     }
@@ -56,7 +64,10 @@ suspend fun <T : Any> HttpRequest<T>.sendJson(body: Any, header: Map<String, Str
     }
 }
 
-suspend fun <T : Any> HttpRequest<T>.sendJsonObject(body: JsonObject, header: Map<String, String> = emptyMap()): HttpResponse<T> {
+suspend fun <T : Any> HttpRequest<T>.sendJsonObject(
+    body: JsonObject,
+    header: Map<String, String> = emptyMap()
+): HttpResponse<T> {
     return awaitResult {
         headers().addAll(header)
         method(HttpMethod.POST)

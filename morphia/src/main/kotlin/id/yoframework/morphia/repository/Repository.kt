@@ -30,9 +30,11 @@ import org.mongodb.morphia.query.UpdateResults
 import kotlin.reflect.KClass
 
 
-abstract class Repository<T : Model, in ID : Any>(private val datastore: Datastore,
-                                                  private val idField: String,
-                                                  private val entityClass: KClass<T>) {
+abstract class Repository<T : Model, in ID : Any>(
+    private val datastore: Datastore,
+    private val idField: String,
+    private val entityClass: KClass<T>
+) {
 
     val query: Query<T>
         get() {
@@ -129,7 +131,10 @@ abstract class Repository<T : Model, in ID : Any>(private val datastore: Datasto
         return updateByFields(*updateQuery, updateOperation = updateOperation.toList())
     }
 
-    open fun updateByFields(vararg updateQuery: Pair<String, Any?>, updateOperation: List<Pair<String, Any?>>): UpdateResults {
+    open fun updateByFields(
+        vararg updateQuery: Pair<String, Any?>,
+        updateOperation: List<Pair<String, Any?>>
+    ): UpdateResults {
         val queries = updateQuery.fold(query) { q, (field, value) ->
             q.filter(field, value)
         }

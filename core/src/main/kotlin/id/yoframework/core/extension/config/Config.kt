@@ -28,21 +28,21 @@ import io.vertx.kotlin.coroutines.awaitResult
 
 fun propertiesConfig(path: String): ConfigStoreOptions {
     return ConfigStoreOptions(
-            type = "file",
-            format = "properties",
-            config = json {
-                obj("path" to path)
-            }
+        type = "file",
+        format = "properties",
+        config = json {
+            obj("path" to path)
+        }
     )
 }
 
 fun jsonConfig(path: String): ConfigStoreOptions {
     return ConfigStoreOptions(
-            type = "file",
-            format = "json",
-            config = json {
-                obj("path" to path)
-            }
+        type = "file",
+        format = "json",
+        config = json {
+            obj("path" to path)
+        }
     )
 }
 
@@ -51,7 +51,7 @@ suspend fun Vertx.retrieveConfig(vararg stores: ConfigStoreOptions): JsonObject 
     val envConfig = ConfigStoreOptions(type = "env")
 
     val options = ConfigRetrieverOptions(
-            stores = stores.toList().plus(sysConfig).plus(envConfig)
+        stores = stores.toList().plus(sysConfig).plus(envConfig)
     )
 
     val retriever = ConfigRetriever.create(this, options)

@@ -33,10 +33,10 @@ fun MongoClient.buildMorphiaDatastore(databaseName: String, packages: Set<String
     }
 
     return morphia
-            .createDatastore(this, databaseName)
-            .apply {
-                ensureIndexes()
-            }
+        .createDatastore(this, databaseName)
+        .apply {
+            ensureIndexes()
+        }
 }
 
 fun <T : Model> Query<T>.filter(vararg filters: Pair<String, Any?>): Query<T> {
