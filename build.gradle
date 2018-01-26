@@ -226,7 +226,7 @@ subprojects {
 
 task build(dependsOn: ["core:build", "db:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build", "ssh:build", "jdbi:build"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
+task artifactUpload(dependsOn: ["extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
 
 task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])
 
