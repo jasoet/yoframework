@@ -1,0 +1,5 @@
+TEST_KEY: 'Test Value From YAML'
+TEST_INT: 1234
+SUPER:
+    DUPER: Yeah
+    HORE: 46

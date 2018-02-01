@@ -46,6 +46,16 @@ fun jsonConfig(path: String): ConfigStoreOptions {
     )
 }
 
+fun yamlConfig(path: String): ConfigStoreOptions {
+    return ConfigStoreOptions(
+        type = "file",
+        format = "yaml",
+        config = json {
+            obj("path" to path)
+        }
+    )
+}
+
 suspend fun Vertx.retrieveConfig(vararg stores: ConfigStoreOptions): JsonObject {
     val sysConfig = ConfigStoreOptions(type = "sys")
     val envConfig = ConfigStoreOptions(type = "env")

@@ -1,4 +1,8 @@
 {
   "TEST_KEY": "Test Value From JSON",
-  "TEST_INT": 1234
+  "TEST_INT": 1234,
+  "SUPER": {
+    "DUPER": "Yes",
+    "HORE": 46
+  }
 }

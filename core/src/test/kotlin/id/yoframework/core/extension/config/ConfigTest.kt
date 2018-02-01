@@ -19,6 +19,7 @@ package id.yoframework.core.extension.config
 import id.yoframework.core.extension.json.getExcept
 import id.yoframework.core.extension.vertx.buildVertx
 import io.vertx.core.Vertx
+import io.vertx.core.json.JsonObject
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -58,6 +59,20 @@ class ConfigTest {
 
         assertEquals(config.getExcept("TEST_KEY"), "Test Value From JSON")
         assertEquals(config.getExcept("TEST_INT"), 1234)
+        assertEquals(config.getExcept<JsonObject>("SUPER").getExcept("DUPER"), "Yes")
+        assertEquals(config.getExcept<JsonObject>("SUPER").getExcept("HORE"), 46)
+        assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
+    }
+
+    @Test
+    fun `yamlConfig should able to Load config from yaml file`() = runBlocking<Unit> {
+        val yamlConfig = yamlConfig("config-test.yaml")
+        val config = vertx.retrieveConfig(yamlConfig)
+
+        assertEquals(config.getExcept("TEST_KEY"), "Test Value From YAML")
+        assertEquals(config.getExcept("TEST_INT"), 1234)
+        assertEquals(config.getExcept<JsonObject>("SUPER").getExcept("DUPER"), "Yeah")
+        assertEquals(config.getExcept<JsonObject>("SUPER").getExcept("HORE"), 46)
         assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
     }
 }

@@ -95,6 +95,11 @@ subprojects {
     }
 
     dependencies {
+        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
+        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+
         compile "com.google.dagger:dagger:$daggerVersion"
         kapt "com.google.dagger:dagger-compiler:$daggerVersion"
         kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -226,7 +231,7 @@ subprojects {
 
 task build(dependsOn: ["core:build", "db:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build", "ssh:build", "jdbi:build"])
 
-task artifactUpload(dependsOn: ["extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
+task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
 
 task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])
 
@@ -236,6 +241,8 @@ task dbUpload(dependsOn: ["db:clean", "db:testClasses", "db:bintrayUpload"])
 
 task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"])
 
+task localPublish(dependsOn: ["core:publishToMavenLocal", "db:publishToMavenLocal", "extra:publishToMavenLocal", "hystrix:publishToMavenLocal", "quartz:publishToMavenLocal", "web:publishToMavenLocal", "morphia:publishToMavenLocal", "ebean:publishToMavenLocal", "grpc:publishToMavenLocal", "ssh:publishToMavenLocal", "jdbi:publishToMavenLocal"])
+
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.4.1'
+    gradleVersion = '4.5'
 }

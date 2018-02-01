@@ -1,14 +1,11 @@
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-2"
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
-
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-config:$vertxVersion"
+    compile "io.vertx:vertx-config-yaml:$vertxVersion"
     compile "io.vertx:vertx-lang-kotlin:$vertxVersion"
     compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
 
@@ -28,7 +25,7 @@ dependencies {
 }
 
 detekt {
-    version = "1.0.0.RC6"
+    version = "1.0.0.RC6-2"
     profile("main") {
         input = "$projectDir/src/main/kotlin"
         config = "$rootDir/detekt.yml"
