@@ -41,6 +41,14 @@ fun KJson.enable() {
     }
 }
 
+fun KJson.encodePrettily(obj: Any): String {
+    return Json.encodePrettily(obj)
+}
+
+fun KJson.encode(obj: Any): String {
+    return Json.encode(obj)
+}
+
 /**
  * Convert [Any] to [JsonObject] using Vertx's default [Json.mapper].
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
