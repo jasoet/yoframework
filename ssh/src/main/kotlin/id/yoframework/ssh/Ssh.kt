@@ -91,12 +91,12 @@ fun Ssh.createSession(
     return session
 }
 
-suspend fun Session.use(timeout: Int = 0, operation: suspend Session.() -> Unit) {
+suspend fun <T> Session.use(timeout: Int = 0, operation: suspend Session.() -> T): T {
     try {
         if (!this.isConnected) {
             this.connect(timeout)
         }
-        operation(this)
+        return operation(this)
     } finally {
         this.disconnect()
     }
@@ -117,12 +117,12 @@ inline fun <reified T : Channel> Session.openChannel(): T {
     }
 }
 
-suspend fun Channel.use(timeout: Int = 0, operation: suspend Channel.() -> Unit) {
+suspend fun <T> Channel.use(timeout: Int = 0, operation: suspend Channel.() -> T): T {
     try {
         if (!this.isConnected) {
             this.connect(timeout)
         }
-        operation(this)
+        return operation(this)
     } finally {
         this.disconnect()
     }
