@@ -232,17 +232,15 @@ subprojects {
 
 task build(dependsOn: ["core:build", "db:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build", "ssh:build", "jdbi:build"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
-
 task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])
 
 task compile(dependsOn: ["core:testClasses", "db:testClasses", "extra:testClasses", "hystrix:clean", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses", "ssh:testClasses", "jdbi:testClasses"])
 
-task dbUpload(dependsOn: ["db:clean", "db:testClasses", "db:bintrayUpload"])
-
-task coreUpload(dependsOn: ["core:clean", "core:testClasses", "core:bintrayUpload"])
-
 task localPublish(dependsOn: ["core:publishToMavenLocal", "db:publishToMavenLocal", "extra:publishToMavenLocal", "hystrix:publishToMavenLocal", "quartz:publishToMavenLocal", "web:publishToMavenLocal", "morphia:publishToMavenLocal", "ebean:publishToMavenLocal", "grpc:publishToMavenLocal", "ssh:publishToMavenLocal", "jdbi:publishToMavenLocal"])
+
+task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
+
+task upload(dependsOn: ["localPublish", "artifactUpload"])
 
 task wrapper(type: Wrapper) {
     gradleVersion = '4.5'
