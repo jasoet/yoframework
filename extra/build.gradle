@@ -3,6 +3,7 @@ dependencies {
     compile "commons-codec:commons-codec:${commonsCodecVersion}"
     compile "de.svenkubiak:jBCrypt:${jBCryptVersion}"
     compile "com.google.guava:guava:${guavaVersion}"
+    compile "de.vandermeer:asciitable:${asciiTableVersion}"
 }
 
 bintray {

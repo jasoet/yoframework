@@ -33,6 +33,7 @@ buildscript {
         elImplVersion = "2.2"
         jBCryptVersion = '0.4.1'
         guavaVersion = '23.5-jre'
+        asciiTableVersion = '0.3.2'
 
         ebeanVersion = "11.7.1"
         ebeanQueryBeanVersion = "11.1.1"
