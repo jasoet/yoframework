@@ -17,6 +17,11 @@
 package id.yoframework.ssh
 
 import com.jcraft.jsch.Channel
+import com.jcraft.jsch.ChannelDirectTCPIP
+import com.jcraft.jsch.ChannelExec
+import com.jcraft.jsch.ChannelForwardedTCPIP
+import com.jcraft.jsch.ChannelSftp
+import com.jcraft.jsch.ChannelShell
 import com.jcraft.jsch.JSch
 import com.jcraft.jsch.Session
 import id.yoframework.core.extension.resource.homeDir
@@ -29,6 +34,7 @@ typealias Ssh = JSch
 enum class ChannelType(val type: String) {
     SESSION("session"),
     SHELL("shell"),
+    EXEC("exec"),
     X11("x11"),
     AGENT_FORWARDING("auth-agent@openssh.com"),
     DIRECT_TCP_IP("direct-tcpip"),
@@ -98,6 +104,17 @@ fun Session.use(timeout: Int = 0, operation: Session.() -> Unit) {
 
 fun Session.openChannel(type: ChannelType): Channel {
     return this.openChannel(type.type)
+}
+
+inline fun <reified T : Channel> Session.openChannel(): T {
+    return when (T::class) {
+        ChannelShell::class -> this.openChannel(ChannelType.SHELL) as T
+        ChannelExec::class -> this.openChannel(ChannelType.EXEC) as T
+        ChannelDirectTCPIP::class -> this.openChannel(ChannelType.DIRECT_TCP_IP) as T
+        ChannelForwardedTCPIP::class -> this.openChannel(ChannelType.FORWARDED_TCP_IP) as T
+        ChannelSftp::class -> this.openChannel(ChannelType.SFTP) as T
+        else -> throw IllegalArgumentException("Unsupported Class ${T::class.simpleName}")
+    }
 }
 
 fun Channel.use(timeout: Int = 0, operation: Channel.() -> Unit) {
