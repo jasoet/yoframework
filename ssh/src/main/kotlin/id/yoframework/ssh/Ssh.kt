@@ -91,7 +91,7 @@ fun Ssh.createSession(
     return session
 }
 
-fun Session.use(timeout: Int = 0, operation: Session.() -> Unit) {
+suspend fun Session.use(timeout: Int = 0, operation: suspend Session.() -> Unit) {
     try {
         if (!this.isConnected) {
             this.connect(timeout)
@@ -117,7 +117,7 @@ inline fun <reified T : Channel> Session.openChannel(): T {
     }
 }
 
-fun Channel.use(timeout: Int = 0, operation: Channel.() -> Unit) {
+suspend fun Channel.use(timeout: Int = 0, operation: suspend Channel.() -> Unit) {
     try {
         if (!this.isConnected) {
             this.connect(timeout)
