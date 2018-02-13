@@ -26,6 +26,8 @@ import java.io.InputStreamReader
 import java.lang.IllegalArgumentException
 import java.net.ServerSocket
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
+import java.nio.file.Paths
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
@@ -73,6 +75,10 @@ fun String.pathToByteArray(): ByteArray {
     return inputStream.use {
         IOUtils.toByteArray(it)
     }
+}
+
+fun String.readFileLine(): List<String> {
+    return Files.readAllLines(Paths.get(this))
 }
 
 fun String.loadJsonObject(): JsonObject {

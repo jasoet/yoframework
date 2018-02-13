@@ -36,7 +36,7 @@ import java.util.UUID
  * @author Deny Prasetyo
  */
 
-suspend fun List<String>.execute(input: Any? = null, output: Any? = null): Int {
+fun List<String>.execute(input: Any? = null, output: Any? = null): Int {
     val log = logger("CommandExtension")
 
     log.debug("Command to Execute ${this.joinToString(" ")}")
