@@ -23,6 +23,7 @@ import id.yoframework.core.extension.logger.logger
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
+import java.time.Instant
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import io.vertx.kotlin.core.json.Json as KJson
@@ -113,9 +114,13 @@ fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
     val ops: (Any) -> T = when {
         clazz.isSubclassOf(String::class) -> { t -> t as T }
         clazz.isSubclassOf(Int::class) -> { t -> t as T }
+        clazz.isSubclassOf(Long::class) -> { t -> t as T }
         clazz.isSubclassOf(Double::class) -> { t -> t as T }
+        clazz.isSubclassOf(Float::class) -> { t -> t as T }
         clazz.isSubclassOf(Boolean::class) -> { t -> t as T }
+        clazz.isSubclassOf(Instant::class) -> { t -> t as T }
         clazz.isSubclassOf(JsonObject::class) -> { t -> t as T }
+        clazz.isSubclassOf(ByteArray::class) -> { t -> t as T }
         clazz.isSubclassOf(JsonArray::class) -> { t -> t as T }
         else -> { t -> (t as JsonObject).mapTo(clazz.java) }
     }
@@ -145,8 +150,11 @@ fun <T : Any> JsonObject?.get(clazz: KClass<T>, key: String): T? {
     return when {
         clazz.isSubclassOf(String::class) -> this?.getString(key) as T?
         clazz.isSubclassOf(Int::class) -> this?.getInteger(key) as T?
+        clazz.isSubclassOf(Long::class) -> this?.getLong(key) as T?
         clazz.isSubclassOf(Double::class) -> this?.getDouble(key) as T?
+        clazz.isSubclassOf(Float::class) -> this?.getFloat(key) as T?
         clazz.isSubclassOf(Boolean::class) -> this?.getBoolean(key) as T?
+        clazz.isSubclassOf(Instant::class) -> this?.getInstant(key) as T?
         clazz.isSubclassOf(JsonObject::class) -> this?.getJsonObject(key) as T?
         clazz.isSubclassOf(JsonArray::class) -> this?.getJsonArray(key) as T?
         clazz.isSubclassOf(ByteArray::class) -> this?.getBinary(key) as T?
@@ -170,8 +178,11 @@ fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessa
     return when {
         clazz.isSubclassOf(String::class) -> getString(key) as T?
         clazz.isSubclassOf(Int::class) -> getInteger(key) as T?
+        clazz.isSubclassOf(Long::class) -> getLong(key) as T?
         clazz.isSubclassOf(Double::class) -> getDouble(key) as T?
+        clazz.isSubclassOf(Float::class) -> getFloat(key) as T?
         clazz.isSubclassOf(Boolean::class) -> getBoolean(key) as T?
+        clazz.isSubclassOf(Instant::class) -> getInstant(key) as T?
         clazz.isSubclassOf(JsonObject::class) -> getJsonObject(key) as T?
         clazz.isSubclassOf(JsonArray::class) -> getJsonArray(key) as T?
         clazz.isSubclassOf(ByteArray::class) -> getBinary(key) as T?

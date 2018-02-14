@@ -150,6 +150,9 @@ subprojects {
 
     idea {
         module {
+            downloadJavadoc = true
+            downloadSources = true
+
             testSourceDirs += file('build/generated/source/kapt/test')
             sourceDirs += file('build/generated/source/kapt/main')
 
@@ -243,5 +246,5 @@ task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra
 task upload(dependsOn: ["localPublish", "artifactUpload"])
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.5'
+    gradleVersion = '4.5.1'
 }
