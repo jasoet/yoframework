@@ -16,51 +16,12 @@
 
 package id.yoframework.core.extension.json
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import id.yoframework.core.extension.logger.logger
-import io.vertx.core.json.Json
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import java.time.Instant
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
-import io.vertx.kotlin.core.json.Json as KJson
-
-fun KJson.enable() {
-    Json.mapper.apply {
-        registerKotlinModule()
-        registerModule(ParameterNamesModule())
-        registerModule(JavaTimeModule())
-    }
-
-    Json.prettyMapper.apply {
-        registerKotlinModule()
-        registerModule(ParameterNamesModule())
-        registerModule(JavaTimeModule())
-    }
-}
-
-fun KJson.encodePrettily(obj: Any): String {
-    return Json.encodePrettily(obj)
-}
-
-fun KJson.encode(obj: Any): String {
-    return Json.encode(obj)
-}
-
-/**
- * Convert [Any] to [JsonObject] using Vertx's default [Json.mapper].
- * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
- *
- * @return empty JsonObject if receiver is null
- * @see id.yoframework.core.module.CoreModule
- */
-fun Any?.toJson(): JsonObject {
-    if (this == null) return JsonObject()
-    return JsonObject(Json.mapper.writeValueAsString(this))
-}
 
 /**
  * Convert [JsonObject] to [T] object, and throws [IllegalArgumentException] if failed.
@@ -99,6 +60,19 @@ inline fun <reified T : Any> JsonObject?.toValue(): T? {
     return this.toValue(T::class)
 }
 
+private val supportedTypes = listOf(
+    String::class,
+    Int::class,
+    Long::class,
+    Double::class,
+    Float::class,
+    Boolean::class,
+    Instant::class,
+    JsonObject::class,
+    ByteArray::class,
+    JsonArray::class
+)
+
 /**
  * Convert [JsonArray] to [List] object, and return empty [List] if receiver is null.
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
@@ -112,16 +86,7 @@ fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
 
     @Suppress("UNCHECKED_CAST")
     val ops: (Any) -> T = when {
-        clazz.isSubclassOf(String::class) -> { t -> t as T }
-        clazz.isSubclassOf(Int::class) -> { t -> t as T }
-        clazz.isSubclassOf(Long::class) -> { t -> t as T }
-        clazz.isSubclassOf(Double::class) -> { t -> t as T }
-        clazz.isSubclassOf(Float::class) -> { t -> t as T }
-        clazz.isSubclassOf(Boolean::class) -> { t -> t as T }
-        clazz.isSubclassOf(Instant::class) -> { t -> t as T }
-        clazz.isSubclassOf(JsonObject::class) -> { t -> t as T }
-        clazz.isSubclassOf(ByteArray::class) -> { t -> t as T }
-        clazz.isSubclassOf(JsonArray::class) -> { t -> t as T }
+        supportedTypes.any { clazz.isSubclassOf(it) } -> { t -> t as T }
         else -> { t -> (t as JsonObject).mapTo(clazz.java) }
     }
     return this.map { ops(it) }
@@ -176,16 +141,7 @@ inline operator fun <reified T : Any> JsonObject?.get(key: String): T? {
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessage: (String) -> String): T {
     return when {
-        clazz.isSubclassOf(String::class) -> getString(key) as T?
-        clazz.isSubclassOf(Int::class) -> getInteger(key) as T?
-        clazz.isSubclassOf(Long::class) -> getLong(key) as T?
-        clazz.isSubclassOf(Double::class) -> getDouble(key) as T?
-        clazz.isSubclassOf(Float::class) -> getFloat(key) as T?
-        clazz.isSubclassOf(Boolean::class) -> getBoolean(key) as T?
-        clazz.isSubclassOf(Instant::class) -> getInstant(key) as T?
-        clazz.isSubclassOf(JsonObject::class) -> getJsonObject(key) as T?
-        clazz.isSubclassOf(JsonArray::class) -> getJsonArray(key) as T?
-        clazz.isSubclassOf(ByteArray::class) -> getBinary(key) as T?
+        supportedTypes.any { clazz.isSubclassOf(it) } -> this.get(clazz, key)
         else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
     } ?: throw IllegalArgumentException(exceptionMessage(key))
 }

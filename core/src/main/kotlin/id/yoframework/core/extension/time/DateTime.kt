@@ -54,8 +54,9 @@ fun String.toLocalDate(pattern: String): LocalDate {
     return LocalDate.parse(this, DateTimeFormatter.ofPattern(pattern))
 }
 
+private const val MILLIS = 1000
 fun Long.fromUnixTimestamp(): LocalDateTime {
-    return LocalDateTime.ofInstant(Instant.ofEpochMilli(this * 1000), ZoneId.systemDefault())
+    return LocalDateTime.ofInstant(Instant.ofEpochMilli(this * MILLIS), ZoneId.systemDefault())
 }
 
 fun String.fromUnixTimestamp(): LocalDateTime {

@@ -23,42 +23,11 @@ import org.apache.commons.io.IOUtils
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStreamReader
-import java.lang.IllegalArgumentException
 import java.net.ServerSocket
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
-import kotlin.reflect.KClass
-import kotlin.reflect.full.isSubclassOf
 
-
-@Suppress("UNCHECKED_CAST")
-fun <T : Any> env(clazz: KClass<T>, key: String, defaultValue: T? = null): T {
-    val value: String? = System.getenv(key)
-    return if (value != null) {
-        when {
-            clazz.isSubclassOf(String::class) -> value as T
-            clazz.isSubclassOf(Int::class) -> value.toInt() as T
-            clazz.isSubclassOf(Double::class) -> value.toDouble() as T
-            clazz.isSubclassOf(Boolean::class) -> value.toBoolean() as T
-            else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
-        }
-    } else defaultValue ?: throw IllegalArgumentException("Illegal: $key not found and default value is null!")
-}
-
-inline fun <reified T : Any> env(key: String, defaultValue: T? = null): T {
-    return env(T::class, key, defaultValue)
-}
-
-inline fun <reified T : Any> applyEnv(key: String, defaultValue: T? = null, operation: (T) -> Unit) {
-    val logger = logger("Resource Extension")
-    try {
-        val value = env(key, defaultValue)
-        operation(value)
-    } catch (e: IllegalArgumentException) {
-        logger.info("Exception occurred ${e.message}, Operation ignored!")
-    }
-}
 
 fun String.resourceToBuffer(): Buffer {
     val inputStream = javaClass.getResourceAsStream(this)
