@@ -60,18 +60,43 @@ inline fun <reified T : Any> JsonObject?.toValue(): T? {
     return this.toValue(T::class)
 }
 
-private val supportedTypes = listOf(
+private val supportedPrimitiveTypes = listOf(
     String::class,
     Int::class,
     Long::class,
     Double::class,
     Float::class,
-    Boolean::class,
+    Boolean::class
+)
+
+private val primitiveMapping: (KClass<*>, JsonObject, String) -> Any? = { clazz, json, key ->
+    when {
+        clazz.isSubclassOf(String::class) -> json.getString(key)
+        clazz.isSubclassOf(Int::class) -> json.getInteger(key)
+        clazz.isSubclassOf(Long::class) -> json.getLong(key)
+        clazz.isSubclassOf(Double::class) -> json.getDouble(key)
+        clazz.isSubclassOf(Float::class) -> json.getFloat(key)
+        clazz.isSubclassOf(Boolean::class) -> json.getBoolean(key)
+        else -> null
+    }
+}
+
+private val supportedTypes = listOf(
     Instant::class,
     JsonObject::class,
     ByteArray::class,
     JsonArray::class
 )
+
+private val mapping: (KClass<*>, JsonObject, String) -> Any? = { clazz, json, key ->
+    when {
+        clazz.isSubclassOf(Instant::class) -> json.getInstant(key)
+        clazz.isSubclassOf(JsonObject::class) -> json.getJsonObject(key)
+        clazz.isSubclassOf(JsonArray::class) -> json.getJsonArray(key)
+        clazz.isSubclassOf(ByteArray::class) -> json.getBinary(key)
+        else -> null
+    }
+}
 
 /**
  * Convert [JsonArray] to [List] object, and return empty [List] if receiver is null.
@@ -86,7 +111,7 @@ fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
 
     @Suppress("UNCHECKED_CAST")
     val ops: (Any) -> T = when {
-        supportedTypes.any { clazz.isSubclassOf(it) } -> { t -> t as T }
+        (supportedPrimitiveTypes + supportedTypes).any { clazz.isSubclassOf(it) } -> { t -> t as T }
         else -> { t -> (t as JsonObject).mapTo(clazz.java) }
     }
     return this.map { ops(it) }
@@ -113,16 +138,9 @@ inline fun <reified T : Any> JsonArray?.asList(): List<T> {
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> JsonObject?.get(clazz: KClass<T>, key: String): T? {
     return when {
-        clazz.isSubclassOf(String::class) -> this?.getString(key) as T?
-        clazz.isSubclassOf(Int::class) -> this?.getInteger(key) as T?
-        clazz.isSubclassOf(Long::class) -> this?.getLong(key) as T?
-        clazz.isSubclassOf(Double::class) -> this?.getDouble(key) as T?
-        clazz.isSubclassOf(Float::class) -> this?.getFloat(key) as T?
-        clazz.isSubclassOf(Boolean::class) -> this?.getBoolean(key) as T?
-        clazz.isSubclassOf(Instant::class) -> this?.getInstant(key) as T?
-        clazz.isSubclassOf(JsonObject::class) -> this?.getJsonObject(key) as T?
-        clazz.isSubclassOf(JsonArray::class) -> this?.getJsonArray(key) as T?
-        clazz.isSubclassOf(ByteArray::class) -> this?.getBinary(key) as T?
+        this == null -> null
+        supportedPrimitiveTypes.any { clazz.isSubclassOf(it) } -> primitiveMapping(clazz, this, key) as T?
+        supportedTypes.any { clazz.isSubclassOf(it) } -> mapping(clazz, this, key) as T?
         else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
     }
 }
@@ -141,7 +159,7 @@ inline operator fun <reified T : Any> JsonObject?.get(key: String): T? {
 @Suppress("UNCHECKED_CAST")
 fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessage: (String) -> String): T {
     return when {
-        supportedTypes.any { clazz.isSubclassOf(it) } -> this.get(clazz, key)
+        (supportedPrimitiveTypes + supportedTypes).any { clazz.isSubclassOf(it) } -> this.get(clazz, key)
         else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
     } ?: throw IllegalArgumentException(exceptionMessage(key))
 }
