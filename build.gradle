@@ -8,7 +8,8 @@ buildscript {
         vertxVersion = '3.5.1'
         pebbleVersion = '2.4.0'
 
-        coroutineVersion = "0.20"
+        coroutineVersion = "0.22.3"
+        arrowVersion = "0.6.1"
 
         logbackVersion = '1.2.3'
         logstashLogbackEncoderVersion = '4.11'
@@ -76,6 +77,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.21" apply false
     id "org.jetbrains.kotlin.kapt" version "1.2.21" apply false
     id "com.jfrog.bintray" version "1.7.3" apply false
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-3"
 }
 
 subprojects {
@@ -101,6 +103,13 @@ subprojects {
         compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion"
         compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
+        compile "io.arrow-kt:arrow-core:$arrowVersion"
+        compile "io.arrow-kt:arrow-typeclasses:$arrowVersion"
+        compile "io.arrow-kt:arrow-instances:$arrowVersion"
+        compile "io.arrow-kt:arrow-data:$arrowVersion"
+        compile "io.arrow-kt:arrow-syntax:$arrowVersion"
+        kapt "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
+
         compile "com.google.dagger:dagger:$daggerVersion"
         kapt "com.google.dagger:dagger-compiler:$daggerVersion"
         kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -117,6 +126,16 @@ subprojects {
             coroutines "enable"
         }
     }
+
+    detekt {
+        version = "1.0.0.RC6-3"
+        profile("main") {
+            input = "$projectDir/src/main/kotlin"
+            config = "$rootDir/detekt.yml"
+            filters = ".*test.*,.*/resources/.*,.*/tmp/.*"
+        }
+    }
+
 
     compileKotlin {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -143,12 +162,12 @@ subprojects {
     }
 
     jacoco {
-        toolVersion = "0.7.9"
+        toolVersion = "0.8.0"
     }
 
-    test.finalizedBy jacocoTestReport
-
     test {
+        finalizedBy detektCheck
+        finalizedBy jacocoTestReport
         testLogging {
             events "passed", "skipped", "failed"
         }
