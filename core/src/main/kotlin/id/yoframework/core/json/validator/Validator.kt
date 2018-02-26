@@ -37,4 +37,32 @@ fun JsonObject.regex(key: String, pattern: Regex): Validated<ValidationError, St
     }
 }
 
+private fun <E> Map.Entry<String, Validated<E, *>>.isValid(): Boolean {
+    return this.value.isValid
+}
+
+private fun <E> Map.Entry<String, Validated<E, *>>.toValidPair(): Pair<String, *> {
+    return this.key to (this.value as Validated.Valid<*>).a
+}
+
+fun <E : ValidationError, R> validate(
+    vararg validator: Pair<String, Validated<E, *>>,
+    f: (Map<String, *>) -> R
+): Validated<List<E>, R> {
+    val validated = mapOf(*validator)
+    return when {
+        validated.all { it.isValid() } -> {
+            Validated.Valid(f(validated.map { it.toValidPair() }.toMap()))
+        }
+        else -> {
+            val errorList = validated
+                .filter { !it.isValid() }
+                .values
+                .map { (it as Validated.Invalid<E>).e }
+
+            Validated.Invalid(errorList)
+        }
+    }
+}
+
 

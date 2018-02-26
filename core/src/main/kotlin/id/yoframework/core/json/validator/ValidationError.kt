@@ -20,8 +20,6 @@ open class ValidationError(open val message: String)
 
 open class NotExistError(override val message: String) : ValidationError(message)
 
-data class ParentNotFoundError(override val message: String) : ValidationError(message)
-
 data class RegexError(
     override val message: String, val pattern: String, val value: String
 ) : ValidationError(message)
