@@ -1,18 +1,32 @@
 package id.yoframework.core.json
 
+import arrow.data.Validated
+import id.yoframework.core.json.validator.ValidationError
+import id.yoframework.core.json.validator.notNull
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 
 class ValidatorTest {
 
-    @Test
-    fun `NonNullValidator must able to check non null value and return correct value`() {
-        val jsonObject = json {
-            obj(
+    private fun <T> validatorValid(validated: Validated<ValidationError, T>, ops: (Validated.Valid<T>) -> Unit) {
+        if (validated is Validated.Valid<T>) {
+            ops(validated)
+        } else {
+            assertTrue(false)
+        }
+    }
+
+    private val jsonObject = json {
+        obj(
+            "some_string" to "this is String",
+            "some_integer" to 12,
+            "some_boolean" to true,
+            "some_double" to 0.0,
+            "parent" to obj(
                 "some_string" to "this is String",
                 "some_integer" to 12,
                 "some_boolean" to true,
@@ -21,49 +35,32 @@ class ValidatorTest {
                     "some_string" to "this is String",
                     "some_integer" to 12,
                     "some_boolean" to true,
-                    "some_double" to 0.0,
-                    "parent" to obj(
-                        "some_string" to "this is String",
-                        "some_integer" to 12,
-                        "some_boolean" to true,
-                        "some_double" to 0.0
-                    )
+                    "some_double" to 0.0
                 )
             )
-        }
-
-        assertEquals(NonNullValidator(String::class, jsonObject, "some_string").validate(), "this is String")
-        assertEquals(NonNullValidator(Int::class, jsonObject, "some_integer").validate(), 12)
-        assertEquals(NonNullValidator(Boolean::class, jsonObject, "some_boolean").validate(), true)
-        assertEquals(NonNullValidator(Double::class, jsonObject, "some_double").validate(), 0.0)
-
-        assertEquals(NonNullValidator(String::class, jsonObject, "parent.some_string").validate(), "this is String")
-        assertEquals(NonNullValidator(Int::class, jsonObject, "parent.some_integer").validate(), 12)
-        assertEquals(NonNullValidator(Boolean::class, jsonObject, "parent.some_boolean").validate(), true)
-        assertEquals(NonNullValidator(Double::class, jsonObject, "parent.some_double").validate(), 0.0)
-
-        assertEquals(
-            NonNullValidator(String::class, jsonObject, "parent.parent.some_string").validate(),
-            "this is String"
         )
-        assertEquals(NonNullValidator(Int::class, jsonObject, "parent.parent.some_integer").validate(), 12)
-        assertEquals(NonNullValidator(Boolean::class, jsonObject, "parent.parent.some_boolean").validate(), true)
-        assertEquals(NonNullValidator(Double::class, jsonObject, "parent.parent.some_double").validate(), 0.0)
+    }
 
-        assertFailsWith(ParentNotFoundException::class) {
-            NonNullValidator(String::class, jsonObject, "random.some_string").validate()
+    @Test
+    fun `validator must able to check not null and return value based on required type`() {
+        validatorValid(validated = jsonObject.notNull<String>("some_string")) {
+            assertTrue(it.isValid)
+            assertEquals(it.a, "this is String")
         }
-        assertFailsWith(NullValueException::class) {
-            NonNullValidator(Int::class, jsonObject, "some_integer_random").validate()
+
+        validatorValid(validated = jsonObject.notNull<Int>("some_integer")) {
+            assertTrue(it.isValid)
+            assertEquals(it.a, 12)
         }
-        assertFailsWith(ParentNotFoundException::class) {
-            NonNullValidator(Boolean::class, jsonObject, "random.random.some_boolean").validate()
+
+        validatorValid(validated = jsonObject.notNull<Boolean>("some_boolean")) {
+            assertTrue(it.isValid)
+            assertEquals(it.a, true)
         }
-        assertFailsWith(ParentNotFoundException::class) {
-            NonNullValidator(Double::class, jsonObject, "some_double.random").validate()
-        }
-        assertFailsWith(ClassIncompatibleException::class) {
-            println(NonNullValidator(String::class, jsonObject, "some_double").validate())
+
+        validatorValid(validated = jsonObject.notNull<Double>("some_double")) {
+            assertTrue(it.isValid)
+            assertEquals(it.a, 0.0)
         }
     }
 

@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.json
+package id.yoframework.core.json
 
+import arrow.data.Try
+import arrow.data.getOrElse
 import id.yoframework.core.extension.logger.logger
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
+import io.vertx.kotlin.core.json.get
 import java.time.Instant
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
+private val log = logger("Json Extension")
 /**
  * Convert [JsonObject] to [T] object, and throws [IllegalArgumentException] if failed.
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
@@ -44,7 +48,6 @@ fun <T : Any> JsonObject?.toValue(clazz: KClass<T>): T? {
     return try {
         this?.mapTo(clazz.java)
     } catch (ie: IllegalArgumentException) {
-        val log = logger("Json Extension")
         log.warn(ie.message, ie)
         null
     }
@@ -99,74 +102,101 @@ private val mapping: (KClass<*>, JsonObject, String) -> Any? = { clazz, json, ke
 }
 
 /**
- * Convert [JsonArray] to [List] object, and return empty [List] if receiver is null.
+ * Get direct parent from path [path]
+ * return pair of [JsonObject] and [String] remaining path or null if path is invalid.
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
  *
- * @throws [IllegalArgumentException] if failed to convert.
  * @see id.yoframework.core.module.CoreModule
  */
-@Throws(IllegalArgumentException::class)
-fun <T : Any> JsonArray?.asList(clazz: KClass<T>): List<T> {
-    if (this == null) return emptyList()
+private fun JsonObject.getDirectParent(path: String): Pair<JsonObject, String>? {
+    val paths = path.split(".")
+    return when {
+        paths.size == 1 -> this to path
+        paths.size > 1 -> {
+            val parents = paths.subList(0, paths.size - 1)
+            val jsonParent = try {
+                parents.fold(this as JsonObject?) { item, parent ->
+                    item?.getJsonObject(parent)
+                }
+            } catch (e: ClassCastException) {
+                log.warn("${e.message} occurred when get direct parent", e)
+                null
+            }
 
-    @Suppress("UNCHECKED_CAST")
-    val ops: (Any) -> T = when {
-        (supportedPrimitiveTypes + supportedTypes).any { clazz.isSubclassOf(it) } -> { t -> t as T }
-        else -> { t -> (t as JsonObject).mapTo(clazz.java) }
+            jsonParent?.let { it to paths.last() }
+        }
+        else -> null
     }
-    return this.map { ops(it) }
 }
 
 /**
- * Reified version of [asList]
+ * Get property [key] from [JsonObject] with [T] type, support nested path. return null if property not found.
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
  *
- * @throws [IllegalArgumentException] if failed to convert.
- * @see id.yoframework.core.module.CoreModule
- */
-inline fun <reified T : Any> JsonArray?.asList(): List<T> {
-    return this.asList(T::class)
-}
-
-/**
- * Get property from [JsonObject] with [T] type. [List] object, and return empty [List] if receiver is null.
- * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
- *
- * @throws [IllegalArgumentException] if failed to convert.
+ * @throws [ClassCastException] if failed to convert.
  * @see id.yoframework.core.module.CoreModule
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> JsonObject?.get(clazz: KClass<T>, key: String): T? {
+fun <T : Any> JsonObject?.getNested(clazz: KClass<T>, key: String): T? {
+    val (parent, lastPath) = this?.getDirectParent(key) ?: return null
     return when {
-        this == null -> null
-        supportedPrimitiveTypes.any { clazz.isSubclassOf(it) } -> primitiveMapping(clazz, this, key) as T?
-        supportedTypes.any { clazz.isSubclassOf(it) } -> mapping(clazz, this, key) as T?
-        else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
+        supportedPrimitiveTypes.any { clazz.isSubclassOf(it) } -> primitiveMapping(clazz, parent, lastPath) as T?
+        supportedTypes.any { clazz.isSubclassOf(it) } -> mapping(clazz, parent, lastPath) as T?
+        else -> parent.get<T>(lastPath)
     }
 }
 
 /**
- * Reified version of [get]
+ * Get property [key] from [JsonObject] with [T] type, support nested path. return null if property not found.
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
  *
- * @throws [IllegalArgumentException] if failed to convert.
+ * @throws [ClassCastException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
+inline fun <reified T : Any> JsonObject?.getNested(key: String): T? {
+    return this.getNested(T::class, key)
+}
+
+/**
+ * Get property [key] from [JsonObject] with [T] type, support nested path. return null if property not found.
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [ClassCastException] if failed to convert.
  * @see id.yoframework.core.module.CoreModule
  */
 inline operator fun <reified T : Any> JsonObject?.get(key: String): T? {
-    return this.get(T::class, key)
+    return this.getNested(T::class, key)
 }
 
-@Suppress("UNCHECKED_CAST")
-fun <T : Any> JsonObject.getExcept(clazz: KClass<T>, key: String, exceptionMessage: (String) -> String): T {
-    return when {
-        (supportedPrimitiveTypes + supportedTypes).any { clazz.isSubclassOf(it) } -> this.get(clazz, key)
-        else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
-    } ?: throw IllegalArgumentException(exceptionMessage(key))
+/**
+ * Get property [key] from [JsonObject] with [T] type, support nested path. return monad [Try]
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [ClassCastException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
+inline fun <reified T : Any> JsonObject.getTry(
+    key: String, exceptionMessage: (String) -> String = { "$it is required!" }
+): Try<T> {
+    return Try {
+        this.getNested<T>(key) ?: throw IllegalArgumentException(exceptionMessage(key))
+    }
 }
 
+/**
+ * Get property [key] from [JsonObject] with [T] type, support nested path. return exception if property not found.
+ * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
+ *
+ * @throws [ClassCastException] if failed to convert.
+ * @see id.yoframework.core.module.CoreModule
+ */
+@Deprecated(
+    message = "This function throw exception, should be change to functional style using Try Monad.",
+    replaceWith = ReplaceWith("getTry(String,String)")
+)
 inline fun <reified T : Any> JsonObject.getExcept(
-    key: String,
-    noinline exceptionMessage: (String) -> String = { "$it is required!" }
+    key: String, exceptionMessage: (String) -> String = { "$it is required!" }
 ): T {
-    return this.getExcept(T::class, key, exceptionMessage)
+    return this.getTry<T>(key, exceptionMessage).getOrElse { throw  it }
 }
+

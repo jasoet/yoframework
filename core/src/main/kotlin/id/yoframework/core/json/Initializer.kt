@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.json
+package id.yoframework.core.json
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule

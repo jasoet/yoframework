@@ -151,14 +151,14 @@ empty-blocks:
 exceptions:
   active: true
   ExceptionRaisedInUnexpectedLocation:
-    active: false
+    active: true
     methodNames: 'toString,hashCode,equals,finalize'
   InstanceOfCheckForException:
-    active: false
+    active: true
   NotImplementedDeclaration:
-    active: false
+    active: true
   PrintStackTrace:
-    active: false
+    active: true
   RethrowCaughtException:
     active: false
   ReturnFromFinally:
@@ -184,7 +184,6 @@ exceptions:
      - NullPointerException
      - IndexOutOfBoundsException
      - RuntimeException
-     - Throwable
   TooGenericExceptionThrown:
     active: true
     exceptions:

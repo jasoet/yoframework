@@ -22,6 +22,7 @@ import io.vertx.core.json.JsonObject
 import org.apache.commons.io.IOUtils
 import java.io.File
 import java.io.FileInputStream
+import java.io.IOException
 import java.io.InputStreamReader
 import java.net.ServerSocket
 import java.nio.charset.StandardCharsets
@@ -57,7 +58,7 @@ fun String.loadJsonObject(): JsonObject {
         val jsonString = inputStream.useLines { it.joinToString("") }
         logger.debug("Load config from $this")
         JsonObject(jsonString)
-    } catch (e: Exception) {
+    } catch (e: IOException) {
         logger.debug("Config Cannot Loaded, Return Empty JsonObject.  Cause: ${e.message}")
         throw e
     }

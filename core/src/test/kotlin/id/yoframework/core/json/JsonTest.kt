@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.extension.json
+package id.yoframework.core.json
 
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.Json
-import io.vertx.kotlin.core.json.array
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFalse
@@ -31,11 +30,6 @@ class JsonTest {
 
     private val nullValue: Data? = null
     private val value = Data(10, "Some Text", 4.5, true)
-
-    private val jsonArrayOfString = Json.array("This", "is", "JSON", "Array", "Okay")
-    private val jsonArrayOfInt = Json.array(1, 4, 3, 4, 4, 3, 3)
-    private val jsonArrayOfDouble = Json.array(1.4, 3.2, 4.2, 5, 3.2, 32)
-    private val jsonArrayOfBoolean = Json.array(true, false, true, true, true)
 
     @Before
     fun before() {

@@ -16,8 +16,8 @@
 
 package id.yoframework.core.extension.config
 
-import id.yoframework.core.extension.json.getExcept
 import id.yoframework.core.extension.vertx.buildVertx
+import id.yoframework.core.json.getExcept
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
 import kotlinx.coroutines.experimental.runBlocking
@@ -42,17 +42,19 @@ class ConfigTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun `propertiesConfig should able to Load config from properties file`() = runBlocking<Unit> {
         val propertyConfig = propertiesConfig("config-test.properties")
         val config = vertx.retrieveConfig(propertyConfig)
 
         assertEquals(config.getExcept("TEST_KEY"), "Test Value From Properties File")
-        assertEquals(config.getExcept("TEST_INT"), 1234)
+        assertEquals(config.getExcept<Int>("TEST_INT"), 1234)
         assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
 
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun `jsonConfig should able to Load config from json file`() = runBlocking<Unit> {
         val jsonConfig = jsonConfig("config-test.json")
         val config = vertx.retrieveConfig(jsonConfig)
@@ -65,6 +67,7 @@ class ConfigTest {
     }
 
     @Test
+    @Suppress("DEPRECATION")
     fun `yamlConfig should able to Load config from yaml file`() = runBlocking<Unit> {
         val yamlConfig = yamlConfig("config-test.yaml")
         val config = vertx.retrieveConfig(yamlConfig)
