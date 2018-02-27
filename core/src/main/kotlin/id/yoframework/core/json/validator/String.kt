@@ -38,7 +38,7 @@ fun JsonObject.length(key: String, config: Length): Validated<ValidationError, S
         is Length.Exactly -> length == config.value
         is Length.Maximum -> length <= config.value
         is Length.Minimum -> length >= config.value
-        is Length.Rage -> length >= config.from && length <= config.to
+        is Length.Range -> length >= config.from && length <= config.to
     }
     return if (valid) value.valid() else LengthError("$key length is invalid", config).invalid()
 }

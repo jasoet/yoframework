@@ -20,12 +20,12 @@ sealed class Length {
     class Exactly(val value: Int) : Length()
     class Maximum(val value: Int) : Length()
     class Minimum(val value: Int) : Length()
-    class Rage(val from: Int, val to: Int) : Length()
+    class Range(val from: Int, val to: Int) : Length()
 }
 
 sealed class Numeric {
-    class GreaterThan<out T : Number>(val value: T, val equalTo: Boolean = false) : Numeric()
-    class LessThan<out T : Number>(val value: T, val equalTo: Boolean = false) : Numeric()
+    class GreaterThan<out T : Number>(val value: T, val equals: Boolean = false) : Numeric()
+    class LessThan<out T : Number>(val value: T, val equals: Boolean = false) : Numeric()
     class EqualTo<out T : Number>(val value: T) : Numeric()
     class DivisibleBy(val value: Int) : Numeric()
     object Odd : Numeric()

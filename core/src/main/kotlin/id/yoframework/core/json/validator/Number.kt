@@ -1,11 +1,13 @@
 package id.yoframework.core.json.validator
 
+import arrow.data.Invalid
 import arrow.data.Validated
 import arrow.syntax.validated.invalid
 import arrow.syntax.validated.valid
 import id.yoframework.core.json.validator.config.Numeric
 import id.yoframework.core.json.validator.error.NotExistError
 import id.yoframework.core.json.validator.error.NumericError
+import id.yoframework.core.json.validator.error.NumericErrors
 import id.yoframework.core.json.validator.error.ValidationError
 import io.vertx.core.json.JsonObject
 import kotlin.reflect.KClass
@@ -23,66 +25,113 @@ fun <T : Number> T.compareTo(clazz: KClass<T>, value: T): Int {
     }
 }
 
-fun JsonObject.odd(key: String): Validated<ValidationError, Int> {
-    val value = this.saveGet(Int::class, key) ?: return NotExistError("$key is not exists ").invalid()
+fun JsonObject.odd(key: String): Validated<NumericError<Int>, Int> {
+    val value = this.saveGet(Int::class, key) ?: return NumericError<Int>(
+        "$key is not exists ",
+        Numeric.Odd
+    ).invalid()
 
     return if (value.rem(2) != 0) {
         value.valid()
     } else {
-        NumericError("$key is not odd", value, Numeric.Odd).invalid()
+        NumericError("$key is not odd", Numeric.Odd, value).invalid()
     }
 }
 
-fun JsonObject.even(key: String): Validated<ValidationError, Int> {
-    val value = this.saveGet(Int::class, key) ?: return NotExistError("$key is not exists ").invalid()
+fun JsonObject.even(key: String): Validated<NumericError<Int>, Int> {
+    val value = this.saveGet(Int::class, key) ?: return NumericError<Int>(
+        "$key is not exists ",
+        Numeric.Even
+    ).invalid()
 
     return if (value.rem(2) == 0) {
         value.valid()
     } else {
-        NumericError("$key is not even", value, Numeric.Even).invalid()
+        NumericError("$key is not even", Numeric.Even, value).invalid()
     }
 }
 
 fun JsonObject.divisibleBy(key: String, divisor: Int): Validated<ValidationError, Int> {
-    val value = this.saveGet(Int::class, key) ?: return NotExistError("$key is not exists ").invalid()
+    val value = this.saveGet(Int::class, key) ?: return NumericError<Int>(
+        "$key is not exists ",
+        Numeric.DivisibleBy(divisor)
+    ).invalid()
 
     return if (value.rem(divisor) == 0) {
         value.valid()
     } else {
-        NumericError("$key is not divisible by $divisor", value, Numeric.DivisibleBy(divisor)).invalid()
+        NumericError("$key is not divisible by $divisor", Numeric.DivisibleBy(divisor), value).invalid()
     }
 }
 
 inline fun <reified T : Number> JsonObject.equalTo(key: String, target: T): Validated<ValidationError, T> {
-    val value = this.saveGet(T::class, key) ?: return NotExistError("$key is not exists ").invalid()
+    val value = this.saveGet(T::class, key) ?: return NumericError<T>(
+        "$key is not exists ",
+        Numeric.EqualTo(target)
+    ).invalid()
+
     return if (value.compareTo(T::class, target) == 0) {
         value.valid()
     } else {
-        NumericError("$key is not equalTo $target", value, Numeric.EqualTo(target)).invalid()
+        NumericError("$key is not equalTo $target", Numeric.EqualTo(target), value).invalid()
     }
 }
 
 inline fun <reified T : Number> JsonObject.greaterThan(key: String, target: T, equals: Boolean = false)
         : Validated<ValidationError, T> {
-    val value = this.saveGet(T::class, key) ?: return NotExistError("$key is not exists ").invalid()
+    val value = this.saveGet(T::class, key) ?: return NumericError<T>(
+        "$key is not exists ",
+        Numeric.GreaterThan(target, equals)
+    ).invalid()
+
     val comparison = value.compareTo(T::class, target)
     return if (comparison > 0 || (equals && comparison == 0)) {
         value.valid()
     } else {
         val message = "greaterThan${if (equals) "OrEqualTo" else ""}"
-        NumericError("$key is not $message $target", value, Numeric.GreaterThan(target, equals)).invalid()
+        NumericError("$key is not $message $target", Numeric.GreaterThan(target, equals), value).invalid()
     }
 }
 
 inline fun <reified T : Number> JsonObject.lessThan(key: String, target: T, equals: Boolean = false)
         : Validated<ValidationError, T> {
-    val value = this.saveGet(T::class, key) ?: return NotExistError("$key is not exists ").invalid()
+    val value = this.saveGet(T::class, key) ?: return NumericError<T>(
+        "$key is not exists ",
+        Numeric.LessThan(target, equals)
+    ).invalid()
+
     val comparison = value.compareTo(T::class, target)
     return if (comparison > 0 || (equals && comparison == 0)) {
         value.valid()
     } else {
         val message = "lessThan${if (equals) "OrEqualTo" else ""}"
-        NumericError("$key is not $message $target", value, Numeric.LessThan(target, equals)).invalid()
+        NumericError("$key is not $message $target", Numeric.LessThan(target, equals), value).invalid()
     }
 }
 
+inline fun <reified T : Number> JsonObject.numeric(
+    key: String,
+    vararg configs: Numeric
+): Validated<ValidationError, T> {
+    val value = this.saveGet(T::class, key) ?: return NotExistError("$key is not exists ").invalid()
+
+    val errors = configs.toList()
+        .map {
+            when (it) {
+                is Numeric.GreaterThan<*> -> this.greaterThan(key, it.value, it.equals)
+                is Numeric.LessThan<*> -> this.lessThan(key, it.value, it.equals)
+                is Numeric.EqualTo<*> -> this.equalTo(key, it.value)
+                is Numeric.DivisibleBy -> this.divisibleBy(key, it.value)
+                Numeric.Even -> this.even(key)
+                Numeric.Odd -> this.odd(key)
+            }
+        }
+        .filter { it.isInvalid }
+        .map { @Suppress("UNCHECKED_CAST") (it as Invalid<NumericError<T>>).e }
+
+    return if (errors.isNotEmpty()) {
+        NumericErrors("$key is invalid", errors).invalid()
+    } else {
+        value.valid()
+    }
+}

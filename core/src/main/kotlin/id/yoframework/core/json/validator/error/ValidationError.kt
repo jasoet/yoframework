@@ -21,15 +21,24 @@ import id.yoframework.core.json.validator.config.Numeric
 
 open class ValidationError(open val message: String)
 
-open class NotExistError(override val message: String) : ValidationError(message)
+data class NotExistError(override val message: String) : ValidationError(message)
 
 data class FormatError(
     override val message: String, val pattern: String, val value: String
 ) : ValidationError(message)
 
-open class LengthError(override val message: String, val config: Length) : ValidationError(message)
+data class LengthError(override val message: String, val config: Length) : ValidationError(message)
 
-open class EmailError(override val message: String) : ValidationError(message)
+data class EmailError(override val message: String) : ValidationError(message)
 
-open class NumericError<out T : Number>(override val message: String, val value: T, val config: Numeric) :
+data class NumericError<out T : Number>(override val message: String, val config: Numeric, val value: T? = null) :
     ValidationError(message)
+
+data class NumericErrors<out T : Number>(
+    override val message: String,
+    val errors: List<NumericError<T>>,
+    val value: T? = null
+) :
+    ValidationError(message) {
+    val messages: List<String> = errors.map { it.message }
+}
