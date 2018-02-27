@@ -1,7 +1,7 @@
 package id.yoframework.core.json
 
 import arrow.data.Validated
-import id.yoframework.core.json.validator.ValidationError
+import id.yoframework.core.json.validator.error.ValidationError
 import id.yoframework.core.json.validator.notNull
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj

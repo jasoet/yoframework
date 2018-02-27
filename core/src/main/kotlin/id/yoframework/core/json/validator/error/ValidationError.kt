@@ -14,12 +14,22 @@
  * limitations under the License.
  */
 
-package id.yoframework.core.json.validator
+package id.yoframework.core.json.validator.error
+
+import id.yoframework.core.json.validator.config.Length
+import id.yoframework.core.json.validator.config.Numeric
 
 open class ValidationError(open val message: String)
 
 open class NotExistError(override val message: String) : ValidationError(message)
 
-data class RegexError(
+data class FormatError(
     override val message: String, val pattern: String, val value: String
 ) : ValidationError(message)
+
+open class LengthError(override val message: String, val config: Length) : ValidationError(message)
+
+open class EmailError(override val message: String) : ValidationError(message)
+
+open class NumericError<out T : Number>(override val message: String, val value: T, val config: Numeric) :
+    ValidationError(message)

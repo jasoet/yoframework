@@ -16,25 +16,34 @@
 
 package id.yoframework.core.json.validator
 
+import arrow.data.Failure
+import arrow.data.Try
 import arrow.data.Validated
+import arrow.data.getOrElse
 import arrow.syntax.validated.invalid
 import arrow.syntax.validated.valid
-import id.yoframework.core.json.get
+import id.yoframework.core.extension.logger.logger
 import id.yoframework.core.json.getNested
+import id.yoframework.core.json.validator.error.NotExistError
+import id.yoframework.core.json.validator.error.ValidationError
 import io.vertx.core.json.JsonObject
+import kotlin.reflect.KClass
 
-inline fun <reified T : Any> JsonObject.notNull(key: String): Validated<ValidationError, T> {
-    val value = this.getNested(T::class, key)
-    return value?.valid() ?: NotExistError("$key cannot be null").invalid()
+val log = logger("JsonValidator Extension")
+
+fun <T : Any> JsonObject.saveGet(clazz: KClass<T>, key: String): T? {
+    return Try { this.getNested(clazz, key) }
+        .apply {
+            if (this is Failure<T?>) {
+                log.warn("${this.exception.message} is occurred when check nullable")
+            }
+        }
+        .getOrElse { null }
 }
 
-fun JsonObject.regex(key: String, pattern: Regex): Validated<ValidationError, String> {
-    val value = this[key] ?: ""
-    return if (pattern.matchEntire(value) != null) {
-        value.valid()
-    } else {
-        RegexError("$key doesn't match pattern [$pattern]", pattern.toString(), value).invalid()
-    }
+inline fun <reified T : Any> JsonObject.notNull(key: String): Validated<ValidationError, T> {
+    val value = this.saveGet(T::class, key)
+    return value?.valid() ?: NotExistError("$key cannot be null").invalid()
 }
 
 private fun <E> Map.Entry<String, Validated<E, *>>.isValid(): Boolean {
@@ -45,11 +54,19 @@ private fun <E> Map.Entry<String, Validated<E, *>>.toValidPair(): Pair<String, *
     return this.key to (this.value as Validated.Valid<*>).a
 }
 
-fun <E : ValidationError, R> validate(
+inline fun <reified T : Any> JsonObject.nullable(
+    key: String,
+    validator: JsonObject.(key: String) -> Validated<ValidationError, T>
+): Validated<ValidationError, T?> {
+    this.saveGet(T::class, key) ?: return Validated.Valid(null)
+    return validator(this, key)
+}
+
+fun <E : ValidationError, R> validateParallel(
     vararg validator: Pair<String, Validated<E, *>>,
     f: (Map<String, *>) -> R
 ): Validated<List<E>, R> {
-    val validated = mapOf(*validator)
+    val validated = validator.toMap()
     return when {
         validated.all { it.isValid() } -> {
             Validated.Valid(f(validated.map { it.toValidPair() }.toMap()))
@@ -64,5 +81,3 @@ fun <E : ValidationError, R> validate(
         }
     }
 }
-
-
