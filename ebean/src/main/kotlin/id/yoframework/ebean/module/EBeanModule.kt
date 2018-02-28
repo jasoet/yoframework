@@ -16,12 +16,12 @@
 
 package id.yoframework.ebean.module
 
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
+import arrow.data.getOrElse
 import dagger.Module
 import dagger.Provides
-import id.yoframework.core.extension.json.getExcept
+import id.yoframework.core.json.getTry
 import id.yoframework.core.module.CoreModule
+import id.yoframework.db.createHikariPoolDataSource
 import io.ebean.EbeanServer
 import io.ebean.EbeanServerFactory
 import io.ebean.config.ServerConfig
@@ -38,7 +38,7 @@ class EBeanModule {
     @Named("databaseUser")
     fun username(config: JsonObject): String {
         val key = "DATABASE_USER"
-        return config.getExcept(key)
+        return config.getTry<String>(key).getOrElse { throw it }
     }
 
     @Provides
@@ -46,7 +46,7 @@ class EBeanModule {
     @Named("databasePassword")
     fun password(config: JsonObject): String {
         val key = "DATABASE_PASSWORD"
-        return config.getExcept(key)
+        return config.getTry<String>(key).getOrElse { throw it }
     }
 
     @Provides
@@ -54,7 +54,7 @@ class EBeanModule {
     @Named("databaseUrl")
     fun url(config: JsonObject): String {
         val key = "DATABASE_URL"
-        return config.getExcept(key)
+        return config.getTry<String>(key).getOrElse { throw it }
     }
 
     @Provides
@@ -62,7 +62,7 @@ class EBeanModule {
     @Named("databaseDriver")
     fun driver(config: JsonObject): String {
         val key = "DATABASE_DRIVER_CLASSNAME"
-        return config.getExcept(key)
+        return config.getTry<String>(key).getOrElse { throw it }
     }
 
     @Provides
@@ -73,28 +73,13 @@ class EBeanModule {
         @Named("databaseUrl") url: String,
         @Named("databaseDriver") driver: String
     ): DataSource {
-
-        val config = HikariConfig()
-        config.poolName = "HikariPool"
-        config.jdbcUrl = url
-        config.username = user
-        config.password = password
-        config.driverClassName = driver
-
-        /**
-         * We will research for best configuration
-        config.connectionTimeout = connectionTimeout
-        config.minimumIdle = minimumIdle
-        config.idleTimeout = idleTimeout
-        config.maximumPoolSize = maximumPoolSize
-        config.maxLifetime = idleTimeout
-         **/
-
-        config.addDataSourceProperty("cachePrepStmts", "true")
-        config.addDataSourceProperty("prepStmtCacheSize", "250")
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048")
-
-        return HikariDataSource(config)
+        return createHikariPoolDataSource(
+            name = "HikariPool",
+            url = url,
+            username = user,
+            password = password,
+            driver = driver
+        )
     }
 
     @Singleton

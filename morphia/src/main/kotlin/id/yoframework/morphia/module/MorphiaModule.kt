@@ -16,14 +16,15 @@
 
 package id.yoframework.morphia.module
 
+import arrow.data.getOrElse
 import com.mongodb.MongoClient
 import com.mongodb.MongoCredential
 import com.mongodb.ServerAddress
 import com.mongodb.client.MongoDatabase
 import dagger.Module
 import dagger.Provides
-import id.yoframework.core.extension.json.getExcept
 import id.yoframework.core.extension.logger.logger
+import id.yoframework.core.json.getTry
 import id.yoframework.core.module.CoreModule
 import io.vertx.core.json.JsonObject
 import kotlinx.coroutines.experimental.newFixedThreadPoolContext
@@ -40,20 +41,20 @@ class MorphiaModule {
     @Named("morphiaDatabaseName")
     fun databaseName(config: JsonObject): String {
         val key = "MORPHIA_DATABASE"
-        return config.getExcept(key)
+        return config.getTry<String>(key).getOrElse { throw it }
     }
 
     @Provides
     @Singleton
     fun provideMorphiaClient(config: JsonObject): MongoClient {
-        val host: String = config.getExcept("MORPHIA_HOST")
-        val port: Int = config.getExcept("MORPHIA_PORT")
+        val host: String = config.getTry<String>("MORPHIA_HOST").getOrElse { throw it }
+        val port: Int = config.getTry<Int>("MORPHIA_PORT").getOrElse { throw it }
         val server = ServerAddress(host, port)
 
         val mongoUsername: String = config.getString("MORPHIA_USERNAME", "")
         val mongoPassword: String = config.getString("MORPHIA_PASSWORD", "")
 
-        val databaseName: String = config.getExcept("MORPHIA_DATABASE")
+        val databaseName: String = config.getTry<String>("MORPHIA_DATABASE").getOrElse { throw it }
 
         val client = if (mongoUsername.isBlank() && mongoPassword.isBlank()) {
             log.info("Initialize MongoClient with $host:$port without auth")
