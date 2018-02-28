@@ -10,4 +10,7 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - ./gradlew clean build
+  - ./gradlew clean
+  - ./gradlew core:publishToMavenLocal
+  - ./gradlew db:publishToMavenLocal
+  - ./gradlew build
