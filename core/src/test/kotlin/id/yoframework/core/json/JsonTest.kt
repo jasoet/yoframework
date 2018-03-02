@@ -17,6 +17,8 @@
 package id.yoframework.core.json
 
 import io.vertx.core.json.JsonObject
+import io.vertx.kotlin.core.json.Json
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
@@ -28,6 +30,11 @@ class JsonTest {
 
     private val nullValue: Data? = null
     private val value = Data(10, "Some Text", 4.5, true)
+
+    @Before
+    fun before() {
+        Json.enable()
+    }
 
     @Test
     fun `toJson should produce correct JsonObject based on receiver`() {
