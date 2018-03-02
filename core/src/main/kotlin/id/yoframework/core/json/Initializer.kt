@@ -23,17 +23,19 @@ import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.Json as KJson
 
-fun KJson.enable() {
-    Json.mapper.apply {
-        registerKotlinModule()
-        registerModule(ParameterNamesModule())
-        registerModule(JavaTimeModule())
-    }
+object Initializer {
+    init {
+        Json.mapper.apply {
+            registerKotlinModule()
+            registerModule(ParameterNamesModule())
+            registerModule(JavaTimeModule())
+        }
 
-    Json.prettyMapper.apply {
-        registerKotlinModule()
-        registerModule(ParameterNamesModule())
-        registerModule(JavaTimeModule())
+        Json.prettyMapper.apply {
+            registerKotlinModule()
+            registerModule(ParameterNamesModule())
+            registerModule(JavaTimeModule())
+        }
     }
 }
 

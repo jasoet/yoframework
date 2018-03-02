@@ -18,12 +18,10 @@ package id.yoframework.core.module
 
 import dagger.Module
 import dagger.Provides
-import id.yoframework.core.json.enable
 import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
-import io.vertx.kotlin.core.json.Json
 import javax.inject.Singleton
 import javax.validation.Validation
 import javax.validation.Validator
@@ -33,10 +31,6 @@ class CoreModule(
     private val config: JsonObject,
     private val vertx: Vertx
 ) {
-
-    init {
-        Json.enable()
-    }
 
     @Provides
     @Singleton
