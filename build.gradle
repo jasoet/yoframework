@@ -58,6 +58,10 @@ buildscript {
         vertxProtocGenVersion = "1.9.0"
 
         mockitoVersion = "2.13.0"
+
+        jUnitVersion = "5.1.0"
+        spekVersion = "1.1.5"
+        kluentVersion = "1.35"
     }
 
     repositories {
@@ -74,8 +78,8 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.21" apply false
-    id "org.jetbrains.kotlin.kapt" version "1.2.21" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.2.30" apply false
+    id "org.jetbrains.kotlin.kapt" version "1.2.30" apply false
     id "com.jfrog.bintray" version "1.7.3" apply false
     id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-3"
 }
@@ -114,11 +118,20 @@ subprojects {
         kapt "com.google.dagger:dagger-compiler:$daggerVersion"
         kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 
-        testCompile "org.mockito:mockito-core:$mockitoVersion"
-        testCompile "io.vertx:vertx-unit:$vertxVersion"
+        testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
         testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
-        testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
-        testCompile "junit:junit:$jUnitVersion"
+        testCompile "org.amshove.kluent:kluent:$kluentVersion"
+
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jUnitVersion"
+
+
+        testCompile("org.jetbrains.spek:spek-api:$spekVersion") {
+            exclude group: 'org.jetbrains.kotlin'
+        }
+        testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
+            exclude group: 'org.jetbrains.kotlin'
+        }
     }
 
     kotlin {
@@ -168,9 +181,14 @@ subprojects {
     test {
         finalizedBy detektCheck
         finalizedBy jacocoTestReport
-        testLogging {
-            events "passed", "skipped", "failed"
+
+        useJUnitPlatform {
+            includeEngines 'spek', 'junit-jupiter'
         }
+
+//        testLogging {
+//            events "passed", "skipped", "failed"
+//        }
     }
 
     idea {
@@ -258,8 +276,6 @@ subprojects {
     }
 }
 
-task build(dependsOn: ["core:build", "db:build", "extra:build", "hystrix:build", "quartz:build", "web:build", "morphia:build", "ebean:build", "grpc:build", "ssh:build", "jdbi:build"])
-
 task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])
 
 task compile(dependsOn: ["core:testClasses", "db:testClasses", "extra:testClasses", "hystrix:clean", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses", "ssh:testClasses", "jdbi:testClasses"])
@@ -271,5 +287,5 @@ task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra
 task upload(dependsOn: ["localPublish", "artifactUpload"])
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.5.1'
+    gradleVersion = '4.6'
 }

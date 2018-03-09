@@ -16,10 +16,11 @@
 
 package id.yoframework.core.extension.system
 
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class SystemTest {
+
     @Test
     fun `class helper must equals class literal`() {
         val clazzFromHelper = clazz<SystemTest>()

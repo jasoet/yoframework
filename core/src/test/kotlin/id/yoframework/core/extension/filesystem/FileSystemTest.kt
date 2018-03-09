@@ -25,10 +25,10 @@ import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.file.FileSystem
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.After
-import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mockito.spy
@@ -47,12 +47,12 @@ class FileSystemTest {
     @Captor
     private lateinit var handlerCaptor: ArgumentCaptor<Handler<AsyncResult<Buffer>>>
 
-    @Before
+    @BeforeEach
     fun setUp() {
         vertx = buildVertx()
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         vertx.close()
     }

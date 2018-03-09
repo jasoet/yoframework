@@ -20,7 +20,7 @@ import id.yoframework.core.extension.config.propertiesConfig
 import id.yoframework.core.extension.config.retrieveConfig
 import id.yoframework.core.extension.vertx.buildVertx
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 

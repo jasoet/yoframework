@@ -18,8 +18,8 @@ package id.yoframework.core.json
 
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.Json
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -31,7 +31,7 @@ class JsonTest {
     private val nullValue: Data? = null
     private val value = Data(10, "Some Text", 4.5, true)
 
-    @Before
+    @BeforeEach
     fun before() {
         Json.enable()
     }
