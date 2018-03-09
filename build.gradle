@@ -19,7 +19,7 @@ buildscript {
         commonCsvVersion = '1.4'
         commonsCodecVersion = '1.10'
 
-        daggerVersion = '2.12'
+        daggerVersion = '2.15'
 
         jacksonVersion = '2.9.1'
 
