@@ -190,10 +190,6 @@ inline fun <reified T : Any> JsonObject.getTry(
  * @throws [ClassCastException] if failed to convert.
  * @see id.yoframework.core.module.CoreModule
  */
-@Deprecated(
-    message = "This function throw exception, should be change to functional style using Try Monad.",
-    replaceWith = ReplaceWith("getTry(String,String)")
-)
 inline fun <reified T : Any> JsonObject.getExcept(
     key: String, exceptionMessage: (String) -> String = { "$it is required!" }
 ): T {
