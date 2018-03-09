@@ -186,9 +186,9 @@ subprojects {
             includeEngines 'spek', 'junit-jupiter'
         }
 
-//        testLogging {
-//            events "passed", "skipped", "failed"
-//        }
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
     }
 
     idea {

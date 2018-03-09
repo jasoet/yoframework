@@ -62,7 +62,7 @@ inline fun <reified T : Any> JsonObject.nullable(
     return validator(this, key)
 }
 
-fun <E : ValidationError, R> validateParallel(
+fun <E : ValidationError, R> validate(
     vararg validator: Pair<String, Validated<E, *>>,
     f: (Map<String, *>) -> R
 ): Validated<List<E>, R> {
