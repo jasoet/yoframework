@@ -54,7 +54,7 @@ buildscript {
         hystrixVersion = "1.5.4"
         jschVersion = "0.1.54"
 
-        protocVersion = "3.2.0"
+        protocVersion = "3.5.1"
         vertxProtocGenVersion = "1.9.0"
 
         mockitoVersion = "2.13.0"
