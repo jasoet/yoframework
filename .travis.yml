@@ -11,7 +11,7 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-
-script:
+install:
   - ./gradlew clean localPublish
+script:
   - ./gradlew artifactUpload
