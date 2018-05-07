@@ -16,7 +16,7 @@
 
 package id.yoframework.morphia.module
 
-import arrow.data.getOrElse
+import arrow.core.getOrElse
 import com.mongodb.MongoClient
 import com.mongodb.MongoCredential
 import com.mongodb.ServerAddress

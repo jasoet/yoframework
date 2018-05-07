@@ -2,8 +2,8 @@ package id.yoframework.core.json.validator
 
 import arrow.data.Invalid
 import arrow.data.Validated
-import arrow.syntax.validated.invalid
-import arrow.syntax.validated.valid
+import arrow.data.invalid
+import arrow.data.valid
 import id.yoframework.core.json.validator.config.Numeric
 import id.yoframework.core.json.validator.error.NotExistError
 import id.yoframework.core.json.validator.error.NumericError

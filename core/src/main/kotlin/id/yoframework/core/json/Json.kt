@@ -16,8 +16,8 @@
 
 package id.yoframework.core.json
 
-import arrow.data.Try
-import arrow.data.getOrElse
+import arrow.core.Try
+import arrow.core.getOrElse
 import id.yoframework.core.extension.logger.logger
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject

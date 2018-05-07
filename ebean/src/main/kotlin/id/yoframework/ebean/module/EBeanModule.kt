@@ -16,7 +16,7 @@
 
 package id.yoframework.ebean.module
 
-import arrow.data.getOrElse
+import arrow.core.getOrElse
 import dagger.Module
 import dagger.Provides
 import id.yoframework.core.json.getTry

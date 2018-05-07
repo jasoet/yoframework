@@ -2,8 +2,13 @@ dependencies {
     compile "io.vertx:vertx-core:$vertxVersion"
     compile "io.vertx:vertx-config:$vertxVersion"
     compile "io.vertx:vertx-config-yaml:$vertxVersion"
-    compile "io.vertx:vertx-lang-kotlin:$vertxVersion"
-    compile "io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion"
+    compile("io.vertx:vertx-lang-kotlin:$vertxVersion") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+
+    compile("io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
 
     compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
     compile "org.glassfish.web:el-impl:$elImplVersion"

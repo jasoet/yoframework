@@ -16,12 +16,12 @@
 
 package id.yoframework.core.json.validator
 
-import arrow.data.Failure
-import arrow.data.Try
+import arrow.core.Failure
+import arrow.core.Try
+import arrow.core.getOrElse
 import arrow.data.Validated
-import arrow.data.getOrElse
-import arrow.syntax.validated.invalid
-import arrow.syntax.validated.valid
+import arrow.data.invalid
+import arrow.data.valid
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.core.json.getNested
 import id.yoframework.core.json.validator.error.NotExistError

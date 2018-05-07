@@ -1,8 +1,8 @@
 package id.yoframework.core.json.validator
 
 import arrow.data.Validated
-import arrow.syntax.validated.invalid
-import arrow.syntax.validated.valid
+import arrow.data.invalid
+import arrow.data.valid
 import id.yoframework.core.json.get
 import id.yoframework.core.json.validator.config.Length
 import id.yoframework.core.json.validator.error.EmailError
