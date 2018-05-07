@@ -13,4 +13,5 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - ./gradlew clean upload
+  - ./gradlew clean localPublish
+  - ./gradlew artifactUpload
