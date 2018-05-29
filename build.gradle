@@ -8,7 +8,7 @@ buildscript {
         vertxVersion = '3.5.1'
         pebbleVersion = '2.4.0'
 
-        coroutineVersion = "0.22.4"
+        coroutineVersion = "0.22.5"
         arrowVersion = "0.7.1"
 
         logbackVersion = '1.2.3'
@@ -81,7 +81,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.41" apply false
     id "org.jetbrains.kotlin.kapt" version "1.2.41" apply false
     id "com.jfrog.bintray" version "1.7.3" apply false
-    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC7"
 }
 
 subprojects {
@@ -141,7 +141,7 @@ subprojects {
     }
 
     detekt {
-        version = "1.0.0.RC6-3"
+        version = "1.0.0.RC7"
         profile("main") {
             input = "$projectDir/src/main/kotlin"
             config = "$rootDir/detekt.yml"
