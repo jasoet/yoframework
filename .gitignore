@@ -19,6 +19,7 @@ file-uploads/
 *.ipr
 *.iws
 node_modules/
+--input/
 
 src/main/resources/webroot/assets/
 src/main/resources/application-config.json
