@@ -16,6 +16,8 @@
 
 package id.yoframework.web.extension
 
+import arrow.core.Try
+import arrow.core.getOrElse
 import id.yoframework.core.extension.vertx.createHttpServer
 import id.yoframework.web.controller.Controller
 import id.yoframework.web.default.DefaultErrorHandler
@@ -38,7 +40,7 @@ import kotlinx.coroutines.experimental.async
 import kotlin.coroutines.experimental.CoroutineContext
 
 fun Route.first(): Route {
-    return this.order(-100)
+    return this.order(Int.MIN_VALUE)
 }
 
 fun Route.finalErrorHandler(errorHandler: ErrorHandler = DefaultErrorHandler) {
@@ -95,22 +97,14 @@ fun RoutingContext.json(headers: Map<String, String> = emptyMap(), message: Any)
 }
 
 fun RoutingContext.jsonBody(): JsonObject? {
-    return try {
-        bodyAsJson
-    } catch (e: Exception) {
-        null
-    }
+    return Try.invoke { bodyAsJson }.getOrElse { null }
 }
 
 fun RoutingContext.jsonArrayBody(): JsonArray? {
-    return try {
-        bodyAsJsonArray
-    } catch (e: Exception) {
-        null
-    }
+    return Try.invoke { bodyAsJsonArray }.getOrElse { null }
 }
 
-fun RoutingContext.OK(message: String = "", headers: Map<String, String> = emptyMap()) {
+fun RoutingContext.ok(message: String = "", headers: Map<String, String> = emptyMap()) {
     this.response().let {
         it.statusCode = HttpResponseStatus.OK.code()
         headers.entries.fold(it) { response, entries ->

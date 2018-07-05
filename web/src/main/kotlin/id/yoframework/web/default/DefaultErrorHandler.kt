@@ -35,6 +35,8 @@ import java.io.FileNotFoundException
 
 
 object DefaultErrorHandler : ErrorHandler {
+    private const val DEFAULT_ERROR_CODE = 500
+
     private val log = logger(DefaultErrorHandler::class)
     override fun invoke(context: RoutingContext, e: Throwable) {
         val code = when (e) {
@@ -53,7 +55,7 @@ object DefaultErrorHandler : ErrorHandler {
                 if (context.statusCode() > 0) {
                     context.statusCode()
                 } else {
-                    500
+                    DEFAULT_ERROR_CODE
                 }
         }
 
