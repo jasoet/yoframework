@@ -38,18 +38,20 @@ object DefaultErrorHandler : ErrorHandler {
     private const val DEFAULT_ERROR_CODE = 500
 
     private val log = logger(DefaultErrorHandler::class)
-    override fun invoke(context: RoutingContext, e: Throwable) {
-        val code = when (e) {
-            is FileNotFoundException -> HttpResponseStatus.NOT_FOUND.code()
-            is NullObjectException -> HttpResponseStatus.NOT_FOUND.code()
-            is DataInconsistentException -> HttpResponseStatus.INTERNAL_SERVER_ERROR.code()
-            is NotAllowedException -> HttpResponseStatus.METHOD_NOT_ALLOWED.code()
-            is SecurityException -> HttpResponseStatus.UNAUTHORIZED.code()
-            is RegistrationException -> HttpResponseStatus.BAD_REQUEST.code()
-            is ValidationException -> HttpResponseStatus.BAD_REQUEST.code()
-            is BadRequestException -> HttpResponseStatus.BAD_REQUEST.code()
-            is UnauthorizedException -> HttpResponseStatus.UNAUTHORIZED.code()
+    private fun mapException(context: RoutingContext, e: Throwable): Int {
+        return when (e) {
+            is FileNotFoundException,
+            is NullObjectException,
             is NotFoundException -> HttpResponseStatus.NOT_FOUND.code()
+
+            is SecurityException,
+            is UnauthorizedException -> HttpResponseStatus.UNAUTHORIZED.code()
+
+            is RegistrationException,
+            is ValidationException,
+            is BadRequestException -> HttpResponseStatus.BAD_REQUEST.code()
+
+            is NotAllowedException -> HttpResponseStatus.METHOD_NOT_ALLOWED.code()
             is InvalidCredentials -> HttpResponseStatus.FORBIDDEN.code()
             else ->
                 if (context.statusCode() > 0) {
@@ -58,6 +60,10 @@ object DefaultErrorHandler : ErrorHandler {
                     DEFAULT_ERROR_CODE
                 }
         }
+    }
+
+    override fun invoke(context: RoutingContext, e: Throwable) {
+        val code = mapException(context, e)
 
         if (code.toString().startsWith("5")) {
             log.error(e.message)
@@ -65,6 +71,7 @@ object DefaultErrorHandler : ErrorHandler {
 
         val acceptHeader = context.header("Accept") ?: ""
         val contentTypeHeader = context.header("Content-Type") ?: ""
+
         if (acceptHeader.contains("/json") || contentTypeHeader.contains("/json")) {
             val result = if (e is ValidationException) {
                 mapOf(

@@ -16,6 +16,8 @@
 
 package id.yoframework.web.security
 
+import arrow.core.Try
+import arrow.core.getOrElse
 import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
@@ -26,11 +28,11 @@ import kotlinx.coroutines.experimental.runBlocking
 
 interface SecurityProvider : AuthProvider {
     override fun authenticate(authInfo: JsonObject, resultHandler: Handler<AsyncResult<User>>) = runBlocking {
-        try {
+        Try {
             val user = authenticate(authInfo)
             resultHandler.handle(Future.succeededFuture(user))
-        } catch (e: Exception) {
-            val exception = SecurityException(e)
+        }.getOrElse {
+            val exception = SecurityException(it)
             resultHandler.handle(Future.failedFuture(exception))
         }
     }

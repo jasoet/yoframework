@@ -16,6 +16,8 @@
 
 package id.yoframework.web.verticle
 
+import arrow.core.Try
+import arrow.core.getOrElse
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.web.controller.Controller
 import id.yoframework.web.extension.startHttpServer
@@ -35,13 +37,13 @@ open class WebVerticle(
 
     override suspend fun start() {
         val router = controller.create()
-        try {
+        Try {
             val port = resolvePort()
             log.info("Starting $serverName on port $port")
             val httpServer = vertx.startHttpServer(router, port)
             log.info("$serverName started in port ${httpServer.actualPort()}")
-        } catch (e: Exception) {
-            log.error("Failed to start $serverName. [${e.message}]", e)
+        }.getOrElse {
+            log.error("Failed to start $serverName. [${it.message}]", it)
         }
     }
 }
