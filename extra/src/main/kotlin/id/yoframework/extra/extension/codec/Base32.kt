@@ -17,7 +17,6 @@
 package  id.yoframework.extra.extension.codec
 
 import id.yoframework.core.extension.string.abbreviate
-import id.yoframework.core.extension.string.getBytesUtf8
 import org.apache.commons.codec.binary.Base32
 import org.apache.commons.codec.binary.StringUtils
 import org.apache.commons.lang3.SerializationUtils
@@ -26,11 +25,11 @@ import java.io.Serializable
 private val base32Codec = Base32()
 
 fun String.base32Encode(): String {
-    return base32Codec.encodeToString(this.getBytesUtf8())
+    return base32Codec.encodeToString(this.toByteArray())
 }
 
 fun String.base32EncodeToByteArray(): ByteArray {
-    return base32Codec.encode(this.getBytesUtf8())
+    return base32Codec.encode(this.toByteArray())
 }
 
 

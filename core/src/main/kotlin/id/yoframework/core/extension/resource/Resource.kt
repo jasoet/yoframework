@@ -29,7 +29,6 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 
-
 fun String.resourceToBuffer(): Buffer {
     val inputStream = javaClass.getResourceAsStream(this)
     val byteArray = ByteArray(inputStream.available())
@@ -74,6 +73,10 @@ fun homeDir(): String {
 
 fun pathSeparator(): String {
     return File.pathSeparator
+}
+
+fun String.toBuffer(): Buffer {
+    return Buffer.buffer(this)
 }
 
 fun randomPort(): Int {

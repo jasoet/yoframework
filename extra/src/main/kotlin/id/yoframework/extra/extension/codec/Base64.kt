@@ -17,7 +17,6 @@
 package  id.yoframework.extra.extension.codec
 
 import id.yoframework.core.extension.string.abbreviate
-import id.yoframework.core.extension.string.getBytesUtf8
 import org.apache.commons.codec.binary.Base64
 import org.apache.commons.lang3.SerializationUtils
 import java.io.Serializable
@@ -32,11 +31,11 @@ fun <T : Serializable> T.serializeToByteArray(): ByteArray {
 }
 
 fun String.base64Encode(): String {
-    return base64Codec.encodeToString(this.getBytesUtf8())
+    return base64Codec.encodeToString(this.toByteArray())
 }
 
 fun String.base64EncodeToByteArray(): ByteArray {
-    return base64Codec.encode(this.getBytesUtf8())
+    return base64Codec.encode(this.toByteArray())
 }
 
 fun <T : Serializable> T.base64Encode(): String {

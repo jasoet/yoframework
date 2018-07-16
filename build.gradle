@@ -6,7 +6,7 @@ buildscript {
 
         kotlinVersion = "1.2.51"
         vertxVersion = '3.5.2'
-        pebbleVersion = '2.4.0'
+        pebbleVersion = '3.0.0'
 
         coroutineVersion = "0.23.4"
         arrowVersion = "0.7.2"

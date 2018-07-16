@@ -18,6 +18,7 @@ package id.yoframework.core.extension.string
 
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.commons.lang3.StringUtils
+import java.security.MessageDigest
 
 fun randomAlpha(count: Int): String {
     return RandomStringUtils.randomAlphanumeric(count)
@@ -30,6 +31,11 @@ fun String.slugify(): String {
         .replace(" ", "-")
 }
 
+fun String.shaHash(): String {
+    val messageDigest = MessageDigest.getInstance("SHA-256")
+    messageDigest.update(this.toByteArray())
+    return String(messageDigest.digest())
+}
 
 private const val DEFAULT_WIDTH: Int = 42
 
@@ -37,6 +43,3 @@ fun String.abbreviate(width: Int = DEFAULT_WIDTH): String {
     return StringUtils.abbreviate(this, width)
 }
 
-fun String.getBytesUtf8(): ByteArray {
-    return this.getBytesUtf8()
-}

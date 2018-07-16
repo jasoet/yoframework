@@ -1,6 +1,7 @@
 dependencies {
     compile "id.yoframework:core:${version}"
     compile "commons-codec:commons-codec:${commonsCodecVersion}"
+    compile "io.pebbletemplates:pebble:${pebbleVersion}"
     compile "de.svenkubiak:jBCrypt:${jBCryptVersion}"
     compile "com.google.guava:guava:${guavaVersion}"
     compile "de.vandermeer:asciitable:${asciiTableVersion}"
