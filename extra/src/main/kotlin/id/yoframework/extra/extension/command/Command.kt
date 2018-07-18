@@ -17,6 +17,7 @@
 package id.yoframework.extra.extension.command
 
 import id.yoframework.core.extension.logger.logger
+import id.yoframework.core.extension.resource.homeDir
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import java.io.File
@@ -25,6 +26,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.UUID
 
+object Command
 
 /**
  * Execute command in form of List<String>.
@@ -36,14 +38,28 @@ import java.util.UUID
  * @author Deny Prasetyo
  */
 
-fun List<String>.execute(input: Any? = null, output: Any? = null): Int {
+fun Command.execute(
+    commands: List<String>,
+    input: Any? = null,
+    output: Any? = null,
+    environment: Map<String, String> = emptyMap(),
+    directory: String = homeDir(),
+    config: (ProcessBuilder) -> Unit = {}
+): Int {
     val log = logger("CommandExtension")
 
-    log.debug("Command to Execute ${this.joinToString(" ")}")
+    log.debug("Command to Execute ${commands.joinToString(" ")}")
 
     val tmpDir: String = System.getProperty("java.io.tmpdir")
 
-    val processBuilder = ProcessBuilder(this)
+    val processBuilder = ProcessBuilder(commands)
+
+    val env = processBuilder.environment()
+    env.putAll(environment)
+
+    processBuilder.directory(File(directory))
+
+    config(processBuilder)
 
     when (input) {
         is File -> {

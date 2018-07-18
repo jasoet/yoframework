@@ -180,7 +180,6 @@ subprojects {
     }
 
     test {
-        finalizedBy detektCheck
         finalizedBy jacocoTestReport
 
         useJUnitPlatform {
@@ -188,7 +187,12 @@ subprojects {
         }
 
         testLogging {
-            events "passed", "skipped", "failed"
+            exceptionFormat "full"
+            showCauses true
+            showExceptions true
+            showStackTraces true
+            showStandardStreams true
+            events = ["passed", "skipped", "failed", "standardError"]
         }
     }
 
@@ -204,6 +208,7 @@ subprojects {
             sourceDirs += file('build/generated/source/kaptKotlin/main')
         }
     }
+
 
     task compile(dependsOn: "testClasses")
 
