@@ -36,9 +36,9 @@ buildscript {
         guavaVersion = '23.5-jre'
         asciiTableVersion = '0.3.2'
 
-        ebeanVersion = "11.7.1"
-        ebeanQueryBeanVersion = "11.1.1"
-        ebeanGradlePluginVersion = "11.5.1"
+        ebeanVersion = "11.33.2"
+        ebeanQueryBeanVersion = "11.33.2"
+        ebeanGradlePluginVersion = "11.27.1"
 
         jdbiVersion = "3.0.1"
 
