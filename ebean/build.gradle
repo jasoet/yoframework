@@ -1,4 +1,4 @@
-apply plugin: 'ebean'
+apply plugin: 'io.ebean'
 
 dependencies {
     compile "id.yoframework:db:${version}"

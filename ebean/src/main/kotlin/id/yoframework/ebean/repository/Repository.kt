@@ -45,10 +45,6 @@ abstract class Repository<T : Model, in I : Any>(
         return query.findCount()
     }
 
-    open fun deleteQuery(deleteQuery: Query<T>, transaction: Transaction? = null): Int {
-        return ebean.delete(deleteQuery, transaction)
-    }
-
     open fun delete(o: T, transaction: Transaction? = null): Boolean {
         return ebean.delete(o, transaction)
     }
