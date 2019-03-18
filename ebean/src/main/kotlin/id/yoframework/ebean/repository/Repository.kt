@@ -29,6 +29,10 @@ abstract class Repository<T : Model, in I : Any>(
     protected val query: Query<T>
         get() = ebean.createQuery(clazz.java)
 
+    open fun count(): Int {
+        return query.findCount()
+    }
+
     open fun exists(id: I): Boolean {
         return findOne(id) != null
     }
@@ -41,12 +45,37 @@ abstract class Repository<T : Model, in I : Any>(
         return ebean.find(clazz.java).findList()
     }
 
-    open fun count(): Int {
-        return query.findCount()
+    open fun save(o: T, transaction: Transaction? = null) {
+        return ebean.save(o, transaction)
     }
 
-    open fun deleteQuery(deleteQuery: Query<T>, transaction: Transaction? = null): Int {
-        return ebean.delete(deleteQuery, transaction)
+    open fun saveAll(list: List<T>, transaction: Transaction? = null): Int {
+        return ebean.saveAll(list, transaction)
+    }
+
+    open fun insert(o: T, transaction: Transaction? = null) {
+        return ebean.insert(o, transaction)
+    }
+
+    open fun insertAll(list: List<T>, transaction: Transaction? = null) {
+        return ebean.insertAll(list, transaction)
+    }
+
+    open fun update(code: I, o: T, transaction: Transaction? = null): Boolean {
+        return if (exists(code)) {
+            ebean.update(o, transaction)
+            true
+        } else {
+            false
+        }
+    }
+
+    open fun updateAll(transaction: Transaction? = null) {
+        return ebean.updateAll(findAll(), transaction)
+    }
+
+    open fun updateAll(list: List<T>, transaction: Transaction? = null) {
+        return ebean.updateAll(list, transaction)
     }
 
     open fun delete(o: T, transaction: Transaction? = null): Boolean {
@@ -57,25 +86,12 @@ abstract class Repository<T : Model, in I : Any>(
         return ebean.deleteAll(findAll(), transaction)
     }
 
+    open fun deleteAll(list: List<T>, transaction: Transaction? = null): Int {
+        return ebean.deleteAll(list, transaction)
+    }
+
     open fun deleteById(id: I, transaction: Transaction? = null): Int {
         return ebean.delete(clazz.java, id, transaction)
-    }
-
-    open fun saveAll(list: List<T>, transaction: Transaction? = null): Int {
-        return ebean.saveAll(list, transaction)
-    }
-
-    open fun save(o: T, transaction: Transaction? = null) {
-        return ebean.save(o, transaction)
-    }
-
-    open fun update(code: I, o: T, transaction: Transaction? = null): Boolean {
-        return if (exists(code)) {
-            ebean.update(o, transaction)
-            true
-        } else {
-            false
-        }
     }
 
 }

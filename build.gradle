@@ -5,8 +5,8 @@ buildscript {
         bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
         kotlinVersion = "1.2.51"
-        vertxVersion = '3.5.2'
-        pebbleVersion = '3.0.0'
+        vertxVersion = '3.5.4'
+        pebbleVersion = '3.0.8'
 
         coroutineVersion = "0.23.4"
         arrowVersion = "0.7.2"
@@ -36,15 +36,15 @@ buildscript {
         guavaVersion = '23.5-jre'
         asciiTableVersion = '0.3.2'
 
-        ebeanVersion = "11.33.2"
-        ebeanQueryBeanVersion = "11.33.2"
-        ebeanGradlePluginVersion = "11.27.1"
+        ebeanVersion = "11.36.2"
+        ebeanQueryBeanVersion = "11.36.1"
+        ebeanGradlePluginVersion = "11.34.1"
 
         jdbiVersion = "3.0.1"
 
         protobufGradlePluginVersion = "0.8.3"
 
-        hikariCPVersion = "2.6.3"
+        hikariCPVersion = "3.3.1"
         flywayVersion = "4.2.0"
 
         jUnitVersion = '4.12'
