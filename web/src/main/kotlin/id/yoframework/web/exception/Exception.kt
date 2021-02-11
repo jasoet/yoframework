@@ -18,12 +18,10 @@ package id.yoframework.web.exception
 
 import id.yoframework.core.exception.DataInconsistentException
 import id.yoframework.core.exception.NullObjectException
+import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.client.HttpResponse
 
 data class NotAllowedException(override val message: String? = null, val ex: Throwable? = null) :
-    RuntimeException(message, ex)
-
-data class RegistrationException(override val message: String? = null, val ex: Throwable? = null) :
     RuntimeException(message, ex)
 
 data class BadRequestException(override val message: String? = null, val ex: Throwable? = null) :
@@ -36,6 +34,7 @@ data class NotFoundException(override val message: String? = null, val ex: Throw
     RuntimeException(message, ex)
 
 data class ValidationException(val errors: List<String>, val ex: Exception? = null) : RuntimeException(ex)
+
 data class SecurityException(override val message: String? = null, val ex: Throwable? = null) :
     RuntimeException(message, ex)
 
@@ -48,8 +47,8 @@ data class RequestException(
     private val ex: Exception? = null
 ) : RuntimeException(message, ex) {
     val statusCode = response.statusCode()
-    val stringBody = response.bodyAsString()
-    val jsonBody = response.bodyAsJsonObject()
+    val stringBody: String? = response.bodyAsString()
+    val jsonBody: JsonObject? = response.bodyAsJsonObject()
 }
 
 infix fun <T> T?.orNotFound(message: String): T {

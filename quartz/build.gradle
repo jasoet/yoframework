@@ -1,7 +1,6 @@
 dependencies {
-    compile "id.yoframework:core:${version}"
-
-    compile "org.quartz-scheduler:quartz:$quartzVersion"
+    implementation "id.yoframework:core:${version}"
+    implementation "org.quartz-scheduler:quartz:$quartzVersion"
 }
 
 bintray {

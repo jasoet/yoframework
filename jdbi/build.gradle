@@ -1,6 +1,6 @@
 dependencies {
-    compile "id.yoframework:db:${version}"
-    compile "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
+    implementation "id.yoframework:db:${version}"
+    implementation "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
 }
 
 bintray {

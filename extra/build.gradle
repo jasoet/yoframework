@@ -1,10 +1,12 @@
 dependencies {
-    compile "id.yoframework:core:${version}"
-    compile "commons-codec:commons-codec:${commonsCodecVersion}"
-    compile "io.pebbletemplates:pebble:${pebbleVersion}"
-    compile "de.svenkubiak:jBCrypt:${jBCryptVersion}"
-    compile "com.google.guava:guava:${guavaVersion}"
-    compile "de.vandermeer:asciitable:${asciiTableVersion}"
+    implementation "id.yoframework:core:${version}"
+    implementation "commons-codec:commons-codec:${commonsCodecVersion}"
+
+    implementation "io.pebbletemplates:pebble:${pebbleVersion}"
+    implementation "de.svenkubiak:jBCrypt:${jBCryptVersion}"
+
+    implementation "com.google.guava:guava:${guavaVersion}"
+    implementation "de.vandermeer:asciitable:${asciiTableVersion}"
 }
 
 bintray {

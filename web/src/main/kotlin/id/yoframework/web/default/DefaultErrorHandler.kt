@@ -16,14 +16,13 @@
 
 package id.yoframework.web.default
 
-import id.yoframework.core.exception.DataInconsistentException
 import id.yoframework.core.exception.NullObjectException
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.web.exception.BadRequestException
 import id.yoframework.web.exception.InvalidCredentials
 import id.yoframework.web.exception.NotAllowedException
 import id.yoframework.web.exception.NotFoundException
-import id.yoframework.web.exception.RegistrationException
+import id.yoframework.web.exception.SecurityException
 import id.yoframework.web.exception.UnauthorizedException
 import id.yoframework.web.exception.ValidationException
 import id.yoframework.web.extension.ErrorHandler
@@ -33,11 +32,10 @@ import io.vertx.core.json.Json
 import io.vertx.ext.web.RoutingContext
 import java.io.FileNotFoundException
 
-
 object DefaultErrorHandler : ErrorHandler {
     private const val DEFAULT_ERROR_CODE = 500
-
     private val log = logger(DefaultErrorHandler::class)
+
     private fun mapException(context: RoutingContext, e: Throwable): Int {
         return when (e) {
             is FileNotFoundException,
@@ -47,12 +45,12 @@ object DefaultErrorHandler : ErrorHandler {
             is SecurityException,
             is UnauthorizedException -> HttpResponseStatus.UNAUTHORIZED.code()
 
-            is RegistrationException,
             is ValidationException,
             is BadRequestException -> HttpResponseStatus.BAD_REQUEST.code()
 
             is NotAllowedException -> HttpResponseStatus.METHOD_NOT_ALLOWED.code()
             is InvalidCredentials -> HttpResponseStatus.FORBIDDEN.code()
+
             else ->
                 if (context.statusCode() > 0) {
                     context.statusCode()

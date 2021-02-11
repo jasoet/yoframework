@@ -28,5 +28,4 @@ class SystemTest {
         assertEquals(clazzFromHelper, clazzLiteral)
     }
 
-
 }

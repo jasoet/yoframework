@@ -29,7 +29,6 @@ import org.mongodb.morphia.query.UpdateOperations
 import org.mongodb.morphia.query.UpdateResults
 import kotlin.reflect.KClass
 
-
 abstract class Repository<T : Model, in ID : Any>(
     private val datastore: Datastore,
     private val idField: String,
@@ -108,7 +107,7 @@ abstract class Repository<T : Model, in ID : Any>(
     }
 
     open fun countByFields(vararg fieldList: Pair<String, Any?>): Long {
-        return createQueryByFields(fieldList = *fieldList).count()
+        return createQueryByFields(fieldList = fieldList).count()
     }
 
     open fun update(id: ID, updateOperation: UpdateOperations<T>): UpdateResults {

@@ -19,11 +19,10 @@ package id.yoframework.core.module
 import id.yoframework.core.extension.config.propertiesConfig
 import id.yoframework.core.extension.config.retrieveConfig
 import id.yoframework.core.extension.vertx.buildVertx
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-
 
 class CoreModuleTest {
 
@@ -31,6 +30,7 @@ class CoreModuleTest {
     fun `core module should produce correct object`() = runBlocking<Unit> {
         val vertx = buildVertx()
         val propertyConfig = propertiesConfig("config-test.properties")
+
         val config = vertx.retrieveConfig(propertyConfig)
         val component = DaggerCoreAppComponent
             .builder()
@@ -40,6 +40,7 @@ class CoreModuleTest {
         assertEquals(component.config(), config)
         assertEquals(component.vertx(), vertx)
         assertEquals(component.eventBus(), vertx.eventBus())
+
         assertEquals(component.fileSystem(), vertx.fileSystem())
         assertNotNull(component.validator())
 

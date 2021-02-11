@@ -1,10 +1,10 @@
 dependencies {
-    compile "id.yoframework:core:${version}"
-    compile "io.pebbletemplates:pebble:${pebbleVersion}"
-    compile "io.vertx:vertx-web:$vertxVersion"
-    compile "io.vertx:vertx-web-client:$vertxVersion"
-    compile "io.vertx:vertx-web-templ-pebble:$vertxVersion"
-
+    implementation "id.yoframework:core:${version}"
+    implementation "io.pebbletemplates:pebble:${pebbleVersion}"
+    
+    implementation "io.vertx:vertx-web:$vertxVersion"
+    implementation "io.vertx:vertx-web-client:$vertxVersion"
+    implementation "io.vertx:vertx-web-templ-pebble:$vertxVersion"
 }
 
 bintray {

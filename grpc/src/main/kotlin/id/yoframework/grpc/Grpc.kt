@@ -58,10 +58,7 @@ fun Vertx.buildGrpcChannel(
     port: Int,
     configuration: (VertxChannelBuilder) -> VertxChannelBuilder = { it }
 ): ManagedChannel {
-    return VertxChannelBuilder.forAddress(this, host, port)
-        .let {
-            configuration(it)
-        }
+    return configuration(VertxChannelBuilder.forAddress(this, host, port))
         .build()
 }
 

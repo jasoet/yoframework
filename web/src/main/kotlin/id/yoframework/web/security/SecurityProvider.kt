@@ -24,7 +24,7 @@ import io.vertx.core.Handler
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.AuthProvider
 import io.vertx.ext.auth.User
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 
 interface SecurityProvider : AuthProvider {
     override fun authenticate(authInfo: JsonObject, resultHandler: Handler<AsyncResult<User>>) = runBlocking {

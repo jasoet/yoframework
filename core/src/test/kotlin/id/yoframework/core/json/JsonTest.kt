@@ -20,12 +20,14 @@ import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.Json
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 data class Data(val number: Int, val text: String, val fraction: Double, val optional: Boolean)
 data class RandomClass(val name: String)
+
 class JsonTest {
 
     private val nullValue: Data? = null
@@ -51,11 +53,11 @@ class JsonTest {
         assertFalse(jsonObjectFromValue.isEmpty)
 
         val dataValue = jsonObjectFromValue.mapTo<Data>()
-        assertTrue(value == dataValue)
+        assertEquals(value, dataValue)
     }
 
     @Test
-    fun `toValue should able to convert JsonObject to Type T? and handle null receiver`() {
+    fun `toValue should able to convert JsonObject to Type T and handle null receiver`() {
         val nullJsonObject: JsonObject? = null
         val valueFromNull = nullJsonObject.toValue<Data>()
         assertNull(valueFromNull)
@@ -64,12 +66,10 @@ class JsonTest {
         assertFalse(jsonObjectFromValue.isEmpty)
 
         val dataValue = jsonObjectFromValue.toValue<Data>()
-        assertTrue(value == dataValue)
+        assertEquals(value, dataValue)
 
         val mustBeNull = jsonObjectFromValue.toValue<RandomClass>()
         assertNull(mustBeNull)
-
     }
-
 
 }

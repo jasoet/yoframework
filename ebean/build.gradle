@@ -1,13 +1,13 @@
 apply plugin: 'io.ebean'
 
 dependencies {
-    compile "id.yoframework:db:${version}"
+    implementation "id.yoframework:db:${version}"
 
-    compile "io.ebean:ebean:$ebeanVersion"
-    compile "io.ebean:ebean-querybean:$ebeanQueryBeanVersion"
+    implementation "io.ebean:ebean:$ebeanVersion"
+    implementation "io.ebean:ebean-querybean:$ebeanQueryBeanVersion"
 
-    compile "com.zaxxer:HikariCP:$hikariCPVersion"
-    compile "org.flywaydb:flyway-core:$flywayVersion"
+    implementation "com.zaxxer:HikariCP:$hikariCPVersion"
+    implementation "org.flywaydb:flyway-core:$flywayVersion"
 }
 
 ebean {

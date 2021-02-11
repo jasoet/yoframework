@@ -17,8 +17,10 @@
 package id.yoframework.hystrix
 
 import com.netflix.hystrix.HystrixCommand
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 open class HystrixCommand<T : Any>(
     configSetter: Setter,

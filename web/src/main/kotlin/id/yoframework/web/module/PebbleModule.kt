@@ -20,11 +20,10 @@ import dagger.Module
 import dagger.Provides
 import id.yoframework.core.module.CoreModule
 import io.vertx.core.Vertx
-import io.vertx.ext.web.templ.PebbleTemplateEngine
-import io.vertx.ext.web.templ.TemplateEngine
+import io.vertx.ext.web.common.template.TemplateEngine
+import io.vertx.ext.web.templ.pebble.PebbleTemplateEngine
 import javax.inject.Named
 import javax.inject.Singleton
-
 
 @Module(includes = [CoreModule::class])
 class PebbleModule {

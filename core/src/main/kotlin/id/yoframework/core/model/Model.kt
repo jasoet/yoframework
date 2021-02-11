@@ -16,5 +16,4 @@
 
 package id.yoframework.core.model
 
-
 interface Model

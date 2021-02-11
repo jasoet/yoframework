@@ -1,9 +1,8 @@
 dependencies {
-    compile "id.yoframework:core:${version}"
+    implementation "id.yoframework:core:${version}"
 
-    compile "org.mongodb.morphia:morphia:${morphiaVersion}"
-    compile "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
-
+    implementation "org.mongodb.morphia:morphia:${morphiaVersion}"
+    implementation "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
 }
 
 bintray {

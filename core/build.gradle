@@ -1,28 +1,29 @@
 dependencies {
-    compile "io.vertx:vertx-core:$vertxVersion"
-    compile "io.vertx:vertx-config:$vertxVersion"
-    compile "io.vertx:vertx-config-yaml:$vertxVersion"
-    compile("io.vertx:vertx-lang-kotlin:$vertxVersion") {
+    implementation "io.vertx:vertx-core:$vertxVersion"
+    implementation "io.vertx:vertx-config:$vertxVersion"
+    implementation "io.vertx:vertx-config-yaml:$vertxVersion"
+
+    implementation("io.vertx:vertx-lang-kotlin:$vertxVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
 
-    compile("io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion") {
+    implementation("io.vertx:vertx-lang-kotlin-coroutines:$vertxVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
 
-    compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
-    compile "org.glassfish.web:el-impl:$elImplVersion"
+    implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+    implementation "org.glassfish.web:el-impl:$elImplVersion"
 
-    compile "org.apache.commons:commons-lang3:${commonsLangVersion}"
-    compile "commons-io:commons-io:${commonsIOVersion}"
+    implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"
+    implementation "commons-io:commons-io:${commonsIOVersion}"
 
-    compile "ch.qos.logback:logback-core:$logbackVersion"
-    compile "ch.qos.logback:logback-classic:$logbackVersion"
-    compile "net.logstash.logback:logstash-logback-encoder:${logstashLogbackEncoderVersion}"
+    implementation "ch.qos.logback:logback-core:$logbackVersion"
+    implementation "ch.qos.logback:logback-classic:$logbackVersion"
+    implementation "net.logstash.logback:logstash-logback-encoder:${logstashLogbackEncoderVersion}"
 
-    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
-    compile "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
+    implementation "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion"
 }
 
 
