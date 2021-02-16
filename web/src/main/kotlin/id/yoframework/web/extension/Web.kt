@@ -16,14 +16,21 @@
 
 package id.yoframework.web.extension
 
-import id.yoframework.core.extension.vertx.createHttpServer
 import io.vertx.core.Vertx
 import io.vertx.core.http.HttpServer
+import io.vertx.core.http.HttpServerOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import io.vertx.kotlin.coroutines.awaitResult
 
-suspend fun Vertx.startHttpServer(router: Router, port: Int): HttpServer {
-    return this.createHttpServer(port) { router.accept(it) }
+suspend fun Vertx.startHttpServer(
+    router: Router,
+    port: Int,
+    httpServerOptions: HttpServerOptions = HttpServerOptions()
+): HttpServer {
+    val httpServer = this.createHttpServer(httpServerOptions)
+        .requestHandler(router)
+    return awaitResult { httpServer.listen(port, it) }
 }
 
 typealias ErrorHandler = (RoutingContext, Throwable) -> Unit

@@ -1,9 +1,8 @@
 apply plugin: 'com.google.protobuf'
 
 dependencies {
-    compile "id.yoframework:core:${version}"
-
-    compile "io.vertx:vertx-grpc:$vertxVersion"
+    implementation "id.yoframework:core:${version}"
+    implementation "io.vertx:vertx-grpc:$vertxVersion"
 }
 
 bintray {

@@ -1,6 +1,6 @@
 dependencies {
-    compile "id.yoframework:core:${version}"
-    compile "com.jcraft:jsch:${jschVersion}"
+    implementation "id.yoframework:core:${version}"
+    implementation "com.jcraft:jsch:${jschVersion}"
 }
 
 bintray {

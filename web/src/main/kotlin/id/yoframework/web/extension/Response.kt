@@ -21,7 +21,7 @@ import id.yoframework.core.json.encodePrettily
 import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.RoutingContext
-import io.vertx.ext.web.templ.TemplateEngine
+import io.vertx.ext.web.common.template.TemplateEngine
 import io.vertx.kotlin.core.json.Json
 import io.vertx.kotlin.coroutines.awaitResult
 
@@ -78,5 +78,5 @@ suspend fun RoutingContext.sendFile(fileName: String, offset: Long, length: Long
 }
 
 suspend fun RoutingContext.render(engine: TemplateEngine, templateName: String): Buffer {
-    return awaitResult { engine.render(this, "", templateName, it) }
+    return awaitResult { engine.render(this.data(), templateName, it) }
 }

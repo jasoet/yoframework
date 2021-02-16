@@ -1,8 +1,8 @@
 dependencies {
-    compile "id.yoframework:core:${version}"
+    implementation "id.yoframework:core:${version}"
 
-    compile "com.zaxxer:HikariCP:$hikariCPVersion"
-    compile "org.flywaydb:flyway-core:$flywayVersion"
+    implementation "com.zaxxer:HikariCP:$hikariCPVersion"
+    implementation "org.flywaydb:flyway-core:$flywayVersion"
 }
 
 bintray {

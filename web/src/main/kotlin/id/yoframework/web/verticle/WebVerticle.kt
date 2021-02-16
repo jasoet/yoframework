@@ -21,18 +21,26 @@ import arrow.core.getOrElse
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.web.controller.Controller
 import id.yoframework.web.extension.startHttpServer
+import io.vertx.kotlin.core.http.HttpServerOptions
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-
 
 open class WebVerticle(
     private val controller: Controller,
     private val serverName: String = "HttpServer",
-    private val portConfigName: String = "HTTP_PORT"
+    private val portConfigName: String = "HTTP_PORT",
+    private val compressionSupportConfig: String = "HTTP_COMPRESSION_SUPPORTED",
+    private val compressionLevelConfig: String = "HTTP_COMPRESSION_LEVEL",
 ) : CoroutineVerticle() {
     private val log = logger(WebVerticle::class)
 
     open fun resolvePort(): Int {
         return config.getInteger(portConfigName)
+    }
+    open fun resolveCompressionSupport(): Boolean {
+        return config.getBoolean(compressionSupportConfig)
+    }
+    open fun resolveCompressionLevel(): Int {
+        return config.getInteger(compressionLevelConfig)
     }
 
     override suspend fun start() {
@@ -40,7 +48,19 @@ open class WebVerticle(
         Try {
             val port = resolvePort()
             log.info("Starting $serverName on port $port")
-            val httpServer = vertx.startHttpServer(router, port)
+
+            val compressionSupported = resolveCompressionSupport()
+            log.info("HTTP Compression Supported set to $compressionSupported")
+
+            val compressionLevel = resolveCompressionLevel()
+            log.info("HTTP Compression Level set to $compressionLevel")
+
+            val serverOptions = HttpServerOptions().apply {
+                isCompressionSupported = compressionSupported
+                setCompressionLevel(compressionLevel)
+            }
+
+            val httpServer = vertx.startHttpServer(router, port, serverOptions)
             log.info("$serverName started in port ${httpServer.actualPort()}")
         }.getOrElse {
             log.error("Failed to start $serverName. [${it.message}]", it)

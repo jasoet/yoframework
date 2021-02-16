@@ -35,7 +35,7 @@ fun List<Regex>.containMatchIn(input: String): Boolean {
 }
 
 fun List<Regex>.find(input: String, startIndex: Int = 0): List<MatchResult> {
-    return this.map { it.find(input, startIndex) }.filter { it != null }.map { it!! }
+    return this.mapNotNull { it.find(input, startIndex) }.map { it }
 }
 
 fun List<Regex>.findAll(input: String, startIndex: Int = 0): List<MatchResult> {

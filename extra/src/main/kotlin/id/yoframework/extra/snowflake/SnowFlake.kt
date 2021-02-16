@@ -25,11 +25,11 @@ import java.util.concurrent.atomic.AtomicInteger
 private class SnowFlake(private val machineId: Int) {
     companion object {
         private val ATOMIC_INCREMENT = AtomicInteger(0)
-        val EPOCH = 1420045200000L
-        val MAX_MACHINE_ID = 64
-        val ALPHA_NUMERIC_BASE = 36
-        val TIME_STAMP_SHIFT = 22
-        val MACHINE_ID_SHIFT = 16
+        const val EPOCH = 1420045200000L
+        const val MAX_MACHINE_ID = 64
+        const val ALPHA_NUMERIC_BASE = 36
+        const val TIME_STAMP_SHIFT = 22
+        const val MACHINE_ID_SHIFT = 16
     }
 
     init {
@@ -78,7 +78,7 @@ fun nextId(machineId: Int = 42): Long {
 
 fun nextAlpha(machineId: Int = 42): String {
     val id = nextId(machineId)
-    return java.lang.Long.toString(id, SnowFlake.ALPHA_NUMERIC_BASE)
+    return id.toString(SnowFlake.ALPHA_NUMERIC_BASE)
 }
 
 fun parse(id: Long): SnowFlakeId {

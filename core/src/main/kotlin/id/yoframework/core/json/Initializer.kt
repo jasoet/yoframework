@@ -21,16 +21,17 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
+import io.vertx.core.json.jackson.DatabindCodec
 import io.vertx.kotlin.core.json.Json as KJson
 
 fun KJson.enable() {
-    Json.mapper.apply {
+    DatabindCodec.mapper().apply {
         registerKotlinModule()
         registerModule(ParameterNamesModule())
         registerModule(JavaTimeModule())
     }
 
-    Json.prettyMapper.apply {
+    DatabindCodec.prettyMapper().apply {
         registerKotlinModule()
         registerModule(ParameterNamesModule())
         registerModule(JavaTimeModule())
@@ -54,5 +55,5 @@ fun KJson.encode(obj: Any): String {
  */
 fun Any?.toJson(): JsonObject {
     if (this == null) return JsonObject()
-    return JsonObject(Json.mapper.writeValueAsString(this))
+    return JsonObject(DatabindCodec.mapper().writeValueAsString(this))
 }

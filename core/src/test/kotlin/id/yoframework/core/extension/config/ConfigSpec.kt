@@ -20,7 +20,7 @@ import id.yoframework.core.extension.vertx.buildVertx
 import id.yoframework.core.json.getExcept
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.given
 import org.jetbrains.spek.api.dsl.it
@@ -46,7 +46,7 @@ object ConfigSpec : Spek({
                     assertEquals(config.getExcept("TEST_INT"), 1234)
                 }
                 it("throw exception when given incorrect key") {
-                    assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
+                    assertFailsWith(IllegalArgumentException::class) { config.getExcept("NOT_EXISTS_KEY") }
                 }
             }
         }
@@ -64,7 +64,7 @@ object ConfigSpec : Spek({
                 }
 
                 it("should throw exception when given incorrect key") {
-                    assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
+                    assertFailsWith(IllegalArgumentException::class) { config.getExcept("NOT_EXISTS_KEY") }
                 }
             }
         }
@@ -82,7 +82,7 @@ object ConfigSpec : Spek({
                 }
 
                 it("should throw exception when given incorrect key") {
-                    assertFailsWith(IllegalArgumentException::class, { config.getExcept("NOT_EXISTS_KEY") })
+                    assertFailsWith(IllegalArgumentException::class) { config.getExcept("NOT_EXISTS_KEY") }
                 }
             }
         }

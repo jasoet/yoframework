@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-
 class ValidatorTest {
 
     private fun <T> validatorValid(validated: Validated<ValidationError, T>, ops: (Validated.Valid<T>) -> Unit) {

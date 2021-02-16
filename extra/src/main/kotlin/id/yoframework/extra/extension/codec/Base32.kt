@@ -62,7 +62,7 @@ fun String.base32Decode(): String {
 @Throws(DecodeBase32Exception::class)
 fun <T : Serializable> String.base32DecodeToObject(): T {
     return try {
-        SerializationUtils.deserialize<T>(base32Codec.decode(this))
+        SerializationUtils.deserialize(base32Codec.decode(this))
     } catch (e: Exception) {
         throw  DecodeBase32Exception("Exception when Decode ${this.abbreviate()} ", e)
     }
@@ -71,7 +71,7 @@ fun <T : Serializable> String.base32DecodeToObject(): T {
 @Throws(DecodeBase32Exception::class)
 fun <T : Serializable> ByteArray.base32DecodeToObject(): T {
     return try {
-        SerializationUtils.deserialize<T>(base32Codec.decode(this))
+        SerializationUtils.deserialize(base32Codec.decode(this))
     } catch (e: Exception) {
         throw  DecodeBase32Exception("Exception when Decode ${this.size} bytes ", e)
     }

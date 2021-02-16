@@ -16,24 +16,15 @@
 
 package id.yoframework.quartz
 
-import kotlinx.coroutines.experimental.launch
-import org.quartz.CalendarIntervalScheduleBuilder
-import org.quartz.CalendarIntervalTrigger
-import org.quartz.CronScheduleBuilder
-import org.quartz.CronTrigger
-import org.quartz.Job
-import org.quartz.JobBuilder
-import org.quartz.JobDataMap
-import org.quartz.JobExecutionContext
-import org.quartz.SimpleScheduleBuilder
-import org.quartz.SimpleTrigger
-import org.quartz.TriggerBuilder
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.quartz.*
+import kotlin.coroutines.CoroutineContext
 
 
 fun job(coroutineContext: CoroutineContext, executable: suspend (JobExecutionContext) -> Unit): Job {
     return Job { jobContext ->
-        launch(coroutineContext) {
+        GlobalScope.launch(coroutineContext) {
             executable(jobContext)
         }
     }
@@ -41,7 +32,7 @@ fun job(coroutineContext: CoroutineContext, executable: suspend (JobExecutionCon
 
 inline fun <reified T : Job> job(vararg data: Pair<String, Any>): JobBuilder {
     val jobDataMap = data.fold(JobDataMap()) { map, (key, value) ->
-        map.put(key, value)
+        map[key] = value
         map
     }
     return JobBuilder.newJob(T::class.java).setJobData(jobDataMap)

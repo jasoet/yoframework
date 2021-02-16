@@ -66,7 +66,7 @@ fun String.base64Decode(): String {
 @Throws(DecodeBase64Exception::class)
 fun <T : Serializable> String.base64DecodeToObject(): T {
     return try {
-        SerializationUtils.deserialize<T>(base64Codec.decode(this))
+        SerializationUtils.deserialize(base64Codec.decode(this))
     } catch (e: Exception) {
         throw  DecodeBase64Exception("Exception when Decode ${this.abbreviate()}", e)
     }
@@ -75,7 +75,7 @@ fun <T : Serializable> String.base64DecodeToObject(): T {
 @Throws(DecodeBase64Exception::class)
 fun <T : Serializable> ByteArray.base64DecodeToObject(): T {
     return try {
-        SerializationUtils.deserialize<T>(base64Codec.decode(this))
+        SerializationUtils.deserialize(base64Codec.decode(this))
     } catch (e: Exception) {
         throw  DecodeBase64Exception("Exception when Decode ${this.size} bytes ", e)
     }

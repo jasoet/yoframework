@@ -17,7 +17,7 @@
 package id.yoframework.core.extension.vertx
 
 import io.vertx.core.DeploymentOptions
-import io.vertx.core.Future
+import io.vertx.core.Promise
 import io.vertx.core.Verticle
 import io.vertx.core.Vertx
 import io.vertx.core.VertxException
@@ -26,10 +26,13 @@ import io.vertx.core.http.HttpServer
 import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 
+@Deprecated("This function is deprecated and use ext function startHttpServer() on Web module instead.")
 suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -> Unit): HttpServer {
     val httpServer = this.createHttpServer()
         .requestHandler(handler)
@@ -45,7 +48,7 @@ suspend fun Vertx.deployVerticle(verticle: Verticle, config: JsonObject, worker:
     return awaitResult { this.deployVerticle(verticle, option, it) }
 }
 
-suspend fun buildClustereVertx(option: VertxOptions): Vertx {
+suspend fun buildClusteredVertx(option: VertxOptions): Vertx {
     return awaitResult { Vertx.clusteredVertx(option, it) }
 }
 
@@ -58,23 +61,27 @@ fun buildVertx(): Vertx {
 }
 
 /**
- * Converts this deferred value to the instance of Future.
- * The deferred value is cancelled when the resulting future is cancelled or otherwise completed.
+ * Converts this deferred value to the instance of Promise.
+ * The deferred value is cancelled when the resulting promise is cancelled or otherwise completed.
  */
-fun <T> Deferred<T>.toFuture(future: Future<T>) {
+@ExperimentalCoroutinesApi
+fun <T> Deferred<T>.toPromise(promise: Promise<T>) {
     invokeOnCompletion {
         try {
-            future.complete(getCompleted())
+            promise.complete(getCompleted())
         } catch (t: Throwable) {
-            future.fail(VertxException(t))
+            promise.fail(VertxException(t))
         }
     }
 }
 
-fun <T> Future<T>.executeAsync(op: suspend () -> T) {
-    val deferred = async(start = CoroutineStart.LAZY) {
-        op()
+@ExperimentalCoroutinesApi
+suspend fun <T> Promise<T>.executeAsync(op: suspend () -> T) {
+    val deferred = coroutineScope {
+        async(start = CoroutineStart.LAZY) {
+            op()
+        }
     }
-    deferred.toFuture(this)
+    deferred.toPromise(this)
     deferred.start()
 }

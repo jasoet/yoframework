@@ -4,11 +4,11 @@ buildscript {
         bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
         bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
-        kotlinVersion = "1.2.51"
-        vertxVersion = '3.5.4'
+        kotlinVersion = "1.4.21"
+        vertxVersion = '3.9.5'
         pebbleVersion = '3.0.8'
 
-        coroutineVersion = "0.23.4"
+        coroutineVersion = "1.4.2"
         arrowVersion = "0.7.2"
 
         logbackVersion = '1.2.3'
@@ -42,7 +42,7 @@ buildscript {
 
         jdbiVersion = "3.0.1"
 
-        protobufGradlePluginVersion = "0.8.3"
+        protobufGradlePluginVersion = "0.8.14"
 
         hikariCPVersion = "3.3.1"
         flywayVersion = "4.2.0"
@@ -78,8 +78,8 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.41" apply false
-    id "org.jetbrains.kotlin.kapt" version "1.2.41" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.4.21" apply false
+    id "org.jetbrains.kotlin.kapt" version "1.4.21" apply false
     id "com.jfrog.bintray" version "1.7.3" apply false
     id "io.gitlab.arturbosch.detekt" version "1.0.0.RC7-3" apply false
 }
@@ -87,8 +87,10 @@ plugins {
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'maven-publish'
+
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.kapt'
+
     apply plugin: "io.gitlab.arturbosch.detekt"
     apply plugin: 'com.jfrog.bintray'
     apply plugin: 'jacoco'
@@ -103,41 +105,36 @@ subprojects {
     }
 
     dependencies {
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-        compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+        implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
-        compile "io.arrow-kt:arrow-core:$arrowVersion"
-        compile "io.arrow-kt:arrow-typeclasses:$arrowVersion"
-        compile "io.arrow-kt:arrow-instances-data:$arrowVersion"
-        compile "io.arrow-kt:arrow-instances-core:$arrowVersion"
-        compile "io.arrow-kt:arrow-data:$arrowVersion"
-        compile "io.arrow-kt:arrow-syntax:$arrowVersion"
+        implementation "io.arrow-kt:arrow-core:$arrowVersion"
+        implementation "io.arrow-kt:arrow-typeclasses:$arrowVersion"
+
+        implementation "io.arrow-kt:arrow-instances-data:$arrowVersion"
+        implementation "io.arrow-kt:arrow-instances-core:$arrowVersion"
+
+        implementation "io.arrow-kt:arrow-data:$arrowVersion"
+        implementation "io.arrow-kt:arrow-syntax:$arrowVersion"
         kapt "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
 
-        compile "com.google.dagger:dagger:$daggerVersion"
+        implementation "com.google.dagger:dagger:$daggerVersion"
         kapt "com.google.dagger:dagger-compiler:$daggerVersion"
         kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 
-        testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-        testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
-        testCompile "org.amshove.kluent:kluent:$kluentVersion"
+        testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+        testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+        testImplementation "org.amshove.kluent:kluent:$kluentVersion"
 
         testImplementation "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jUnitVersion"
 
-
-        testCompile("org.jetbrains.spek:spek-api:$spekVersion") {
+        testImplementation("org.jetbrains.spek:spek-api:$spekVersion") {
             exclude group: 'org.jetbrains.kotlin'
         }
         testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
             exclude group: 'org.jetbrains.kotlin'
-        }
-    }
-
-    kotlin {
-        experimental {
-            coroutines "enable"
         }
     }
 
@@ -150,16 +147,15 @@ subprojects {
         }
     }
 
-
     compileKotlin {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
 
         kotlinOptions {
             jvmTarget = "1.8"
-            apiVersion = "1.2"
-            languageVersion = "1.2"
-            allWarningsAsErrors = true
+            apiVersion = "1.4"
+            languageVersion = "1.4"
+            allWarningsAsErrors = false
         }
     }
 
@@ -169,9 +165,9 @@ subprojects {
 
         kotlinOptions {
             jvmTarget = "1.8"
-            apiVersion = "1.2"
-            languageVersion = "1.2"
-            allWarningsAsErrors = true
+            apiVersion = "1.4"
+            languageVersion = "1.4"
+            allWarningsAsErrors = false
         }
     }
 
@@ -292,6 +288,3 @@ task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra
 
 task upload(dependsOn: ["localPublish", "artifactUpload"])
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.8.1'
-}
