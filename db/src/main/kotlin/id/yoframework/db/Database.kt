@@ -46,8 +46,10 @@ fun createHikariPoolDataSource(
 ): HikariDataSource {
 
     val hikariConfig = HikariConfig()
+
     hikariConfig.poolName = name
     hikariConfig.jdbcUrl = url
+
     hikariConfig.username = username
     hikariConfig.password = password
     hikariConfig.driverClassName = driver

@@ -17,13 +17,13 @@
 package id.yoframework.ebean.repository
 
 import id.yoframework.core.model.Model
-import io.ebean.EbeanServer
+import io.ebean.Database
 import io.ebean.Query
 import io.ebean.Transaction
 import kotlin.reflect.KClass
 
 abstract class Repository<T : Model, in I : Any>(
-    protected open val ebean: EbeanServer,
+    protected open val ebean: Database,
     private val clazz: KClass<T>
 ) {
     protected val query: Query<T>

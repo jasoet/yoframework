@@ -24,9 +24,9 @@ import io.vertx.core.eventbus.EventBus
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.Json
+import jakarta.validation.Validation
+import jakarta.validation.Validator
 import javax.inject.Singleton
-import javax.validation.Validation
-import javax.validation.Validator
 
 @Module
 class CoreModule(

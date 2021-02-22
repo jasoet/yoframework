@@ -22,9 +22,9 @@ import dagger.Provides
 import id.yoframework.core.json.getTry
 import id.yoframework.core.module.CoreModule
 import id.yoframework.db.createHikariPoolDataSource
-import io.ebean.EbeanServer
-import io.ebean.EbeanServerFactory
-import io.ebean.config.ServerConfig
+import io.ebean.Database
+import io.ebean.DatabaseFactory
+import io.ebean.config.DatabaseConfig
 import io.vertx.core.json.JsonObject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -84,13 +84,12 @@ class EBeanModule {
 
     @Singleton
     @Provides
-    fun ebeanServer(dataSource: DataSource): EbeanServer {
-        val config = ServerConfig().apply {
+    fun ebeanServer(dataSource: DataSource): Database {
+        val config = DatabaseConfig().apply {
             name = "ebeands"
             setDataSource(dataSource)
         }
 
-        return EbeanServerFactory.create(config)
+        return DatabaseFactory.create(config)
     }
 }
-

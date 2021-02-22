@@ -21,8 +21,8 @@ import io.vertx.core.Vertx
 import io.vertx.core.eventbus.EventBus
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.JsonObject
+import jakarta.validation.Validator
 import javax.inject.Singleton
-import javax.validation.Validator
 
 @Singleton
 @Component(modules = [CoreModule::class])

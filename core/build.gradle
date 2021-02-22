@@ -11,7 +11,10 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin'
     }
 
-    implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+    implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
+    implementation "org.hibernate.validator:hibernate-validator-cdi:${hibernateValidatorVersion}"
+
+    implementation "org.glassfish:jakarta.el:$jakartaElVersion"
     implementation "org.glassfish.web:el-impl:$elImplVersion"
 
     implementation "org.apache.commons:commons-lang3:${commonsLangVersion}"

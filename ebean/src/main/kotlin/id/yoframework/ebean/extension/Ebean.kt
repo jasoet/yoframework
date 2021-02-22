@@ -16,17 +16,14 @@
 
 package id.yoframework.ebean.extension
 
-import io.ebean.EbeanServer
+import io.ebean.Database
 import io.ebean.ExpressionList
 import io.ebean.Query
 import io.ebean.Transaction
 import io.ebean.annotation.Platform
-import io.ebean.config.DbMigrationConfig
-import io.ebean.config.ServerConfig
 import io.ebean.dbmigration.DbMigration
 
-
-inline fun <R : Any> EbeanServer.transaction(
+inline fun <R : Any> Database.transaction(
     existingTransaction: Transaction? = null,
     operation: (Transaction) -> R
 ): R {
@@ -51,15 +48,10 @@ operator fun <T : Any> Query<T>.invoke(expression: Query<T>.() -> ExpressionList
     return expression(this).query()
 }
 
-fun EbeanServer.generateMigrationFile(platform: Platform, prefix: String): String? {
+fun Database.generateMigrationFile(platform: Platform, prefix: String): String? {
     val ebean = this
-    val serverConfig = ServerConfig().apply {
-        this.migrationConfig = DbMigrationConfig().apply {
-            applyPrefix = "V"
-        }
-    }
     val dbMigration = DbMigration.create().apply {
-        setServerConfig(serverConfig)
+        setApplyPrefix("V")
         setServer(ebean)
         addPlatform(platform, prefix)
     }
