@@ -5,6 +5,7 @@ dependencies {
 
     implementation "io.ebean:ebean:$ebeanVersion"
     implementation "io.ebean:ebean-querybean:$ebeanQueryBeanVersion"
+    implementation "io.ebean:ebean-elastic:$ebeanElasticVersion"
 
     implementation "com.zaxxer:HikariCP:$hikariCPVersion"
     implementation "org.flywaydb:flyway-core:$flywayVersion"
