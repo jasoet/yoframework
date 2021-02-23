@@ -29,10 +29,9 @@ fun DataSource.assertConnectionOpen() {
 
 fun DataSource.executeMigration(location: String) {
     val dataSource = this
-    val flyway = Flyway().apply {
-        setDataSource(dataSource)
-        setLocations(location)
-    }
+    val flyway = Flyway.configure().dataSource(dataSource)
+        .locations(location)
+        .load()
     flyway.migrate()
 }
 

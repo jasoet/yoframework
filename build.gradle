@@ -40,8 +40,8 @@ buildscript {
         jdbiVersion = "3.0.1"
         protobufGradlePluginVersion = "0.8.14"
 
-        hikariCPVersion = "3.3.1"
-        flywayVersion = "4.2.0"
+        hikariCPVersion = "4.0.2"
+        flywayVersion = "7.5.3"
 
         restAssuredVersion = '3.0.3'
         embeddedMongoVersion = '2.0.0'
