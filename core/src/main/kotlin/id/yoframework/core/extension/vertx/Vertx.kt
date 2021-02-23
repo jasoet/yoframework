@@ -69,7 +69,7 @@ fun <T> Deferred<T>.toPromise(promise: Promise<T>) {
     invokeOnCompletion {
         try {
             promise.complete(getCompleted())
-        } catch (t: Throwable) {
+        } catch (t: IllegalStateException) {
             promise.fail(VertxException(t))
         }
     }

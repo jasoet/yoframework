@@ -21,10 +21,10 @@ import id.yoframework.grpc.buildGrpcServer
 import id.yoframework.grpc.shutdownServer
 import id.yoframework.grpc.startServer
 import io.grpc.BindableService
+import io.vertx.core.VertxException
 import io.vertx.grpc.VertxServer
 import io.vertx.grpc.VertxServerBuilder
 import io.vertx.kotlin.coroutines.CoroutineVerticle
-
 
 open class GrpcServerVerticle(
     private val host: String,
@@ -32,6 +32,7 @@ open class GrpcServerVerticle(
     private vararg val services: BindableService,
     private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }
 ) : CoroutineVerticle() {
+
     private val log = logger<GrpcServerVerticle>()
     private lateinit var server: VertxServer
 
@@ -39,14 +40,17 @@ open class GrpcServerVerticle(
         try {
             log.debug("Initialize Grpc Server on $host:$port with ${services.size} Service(s).")
             log.debug("===== Included Services =====")
+
             services.forEach {
                 log.debug("${it::class.qualifiedName}")
             }
+
             server = vertx.buildGrpcServer(host, port, *services, configuration = configuration)
             log.debug("Starting Grpc Server")
+
             server.startServer()
             log.debug("Grpc Server Started on $host:$port")
-        } catch (e: Exception) {
+        } catch (e: VertxException) {
             log.error("Grpc Server Failed to Start ${e.message}", e)
             throw e
         }

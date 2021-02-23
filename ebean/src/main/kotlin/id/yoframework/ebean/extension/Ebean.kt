@@ -35,9 +35,6 @@ inline fun <R : Any> Database.transaction(
             val result = operation(transaction)
             this.commitTransaction()
             result
-        } catch (e: Exception) {
-            this.rollbackTransaction()
-            throw e
         } finally {
             this.endTransaction()
         }

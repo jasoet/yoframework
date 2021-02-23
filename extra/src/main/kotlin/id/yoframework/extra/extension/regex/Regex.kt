@@ -19,9 +19,6 @@ package id.yoframework.extra.extension.regex
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-
-data class Match(val start: Int, val end: Int, val text: String, val group: List<String> = emptyList())
-
 fun List<Regex>.regexPatterns(): String {
     return this.map { it.pattern }.reduce { i, s -> "$i - $s" }
 }
@@ -37,6 +34,8 @@ fun List<Regex>.containMatchIn(input: String): Boolean {
 fun List<Regex>.find(input: String, startIndex: Int = 0): List<MatchResult> {
     return this.mapNotNull { it.find(input, startIndex) }.map { it }
 }
+
+data class Match(val start: Int, val end: Int, val text: String, val group: List<String> = emptyList())
 
 fun List<Regex>.findAll(input: String, startIndex: Int = 0): List<MatchResult> {
     return this.flatMap { it.findAll(input, startIndex).toList() }

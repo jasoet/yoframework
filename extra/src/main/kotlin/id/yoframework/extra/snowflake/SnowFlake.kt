@@ -23,15 +23,6 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 private class SnowFlake(private val machineId: Int) {
-    companion object {
-        private val ATOMIC_INCREMENT = AtomicInteger(0)
-        const val EPOCH = 1420045200000L
-        const val MAX_MACHINE_ID = 64
-        const val ALPHA_NUMERIC_BASE = 36
-        const val TIME_STAMP_SHIFT = 22
-        const val MACHINE_ID_SHIFT = 16
-    }
-
     init {
         if (machineId >= MAX_MACHINE_ID || machineId < 0) {
             throw IllegalArgumentException("Machine Number must between 0 - ${MAX_MACHINE_ID - 1}")
@@ -42,8 +33,7 @@ private class SnowFlake(private val machineId: Int) {
         synchronized(this) {
             val currentTs = System.currentTimeMillis()
             val ts = currentTs - EPOCH
-            val maxIncrement = 16384
-            val max = maxIncrement - 2
+            val max = MAX_INCREMENT - 2
 
             if (ATOMIC_INCREMENT.get() >= max) {
                 ATOMIC_INCREMENT.set(0)
@@ -51,6 +41,16 @@ private class SnowFlake(private val machineId: Int) {
             val i = ATOMIC_INCREMENT.incrementAndGet()
             return (ts shl TIME_STAMP_SHIFT) or (this.machineId shl MACHINE_ID_SHIFT).toLong() or i.toLong()
         }
+    }
+
+    companion object {
+        private val ATOMIC_INCREMENT = AtomicInteger(0)
+        const val EPOCH = 1420045200000L
+        const val MAX_MACHINE_ID = 64
+        const val ALPHA_NUMERIC_BASE = 36
+        const val TIME_STAMP_SHIFT = 22
+        const val MACHINE_ID_SHIFT = 16
+        const val MAX_INCREMENT = 16384
     }
 }
 

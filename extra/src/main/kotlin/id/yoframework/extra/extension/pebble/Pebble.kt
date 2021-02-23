@@ -56,5 +56,3 @@ fun PebbleTemplate.evaluate(parameters: Map<String, Any>, locale: Locale? = null
     this.evaluate(result, parameters, locale)
     return result.toString()
 }
-
-

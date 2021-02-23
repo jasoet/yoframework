@@ -19,6 +19,7 @@ package  id.yoframework.extra.extension.codec
 import id.yoframework.core.extension.string.abbreviate
 import org.apache.commons.codec.binary.Base32
 import org.apache.commons.codec.binary.StringUtils
+import org.apache.commons.lang3.SerializationException
 import org.apache.commons.lang3.SerializationUtils
 import java.io.Serializable
 
@@ -49,22 +50,16 @@ fun ByteArray.base32Encode(): ByteArray {
     return base32Codec.encode(this)
 }
 
-@Throws(DecodeBase32Exception::class)
 fun String.base32Decode(): String {
-    return try {
-        StringUtils.newStringUtf8(base32Codec.decode(this))
-    } catch (e: Exception) {
-        throw  DecodeBase32Exception("Exception when Decode ${this.abbreviate()} ", e)
-    }
-
+    return StringUtils.newStringUtf8(base32Codec.decode(this))
 }
 
 @Throws(DecodeBase32Exception::class)
 fun <T : Serializable> String.base32DecodeToObject(): T {
     return try {
         SerializationUtils.deserialize(base32Codec.decode(this))
-    } catch (e: Exception) {
-        throw  DecodeBase32Exception("Exception when Decode ${this.abbreviate()} ", e)
+    } catch (e: SerializationException) {
+        throw DecodeBase32Exception("Exception when Decode ${this.abbreviate()} ", e)
     }
 }
 
@@ -72,10 +67,9 @@ fun <T : Serializable> String.base32DecodeToObject(): T {
 fun <T : Serializable> ByteArray.base32DecodeToObject(): T {
     return try {
         SerializationUtils.deserialize(base32Codec.decode(this))
-    } catch (e: Exception) {
-        throw  DecodeBase32Exception("Exception when Decode ${this.size} bytes ", e)
+    } catch (e: SerializationException) {
+        throw DecodeBase32Exception("Exception when Decode ${this.size} bytes ", e)
     }
 }
-
 
 class DecodeBase32Exception(message: String, cause: Throwable) : Exception(message, cause)

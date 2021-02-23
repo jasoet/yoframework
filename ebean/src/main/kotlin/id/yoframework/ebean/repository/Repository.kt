@@ -22,7 +22,7 @@ import io.ebean.Query
 import io.ebean.Transaction
 import kotlin.reflect.KClass
 
-abstract class Repository<T : Model, in I : Any>(
+open class Repository<T : Model, in I : Any>(
     protected open val ebean: Database,
     private val clazz: KClass<T>
 ) {

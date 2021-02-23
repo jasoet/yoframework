@@ -18,13 +18,12 @@ package  id.yoframework.extra.extension.codec
 
 import id.yoframework.core.extension.string.abbreviate
 import org.apache.commons.codec.binary.Base64
+import org.apache.commons.lang3.SerializationException
 import org.apache.commons.lang3.SerializationUtils
 import java.io.Serializable
 import org.apache.commons.codec.binary.StringUtils as CodecStringUtils
 
-
 private val base64Codec = Base64()
-
 
 fun <T : Serializable> T.serializeToByteArray(): ByteArray {
     return SerializationUtils.serialize(this)
@@ -54,21 +53,16 @@ fun ByteArray.base64Encode(): ByteArray {
     return base64Codec.encode(this)
 }
 
-@Throws(DecodeBase64Exception::class)
 fun String.base64Decode(): String {
-    return try {
-        CodecStringUtils.newStringUtf8(base64Codec.decode(this))
-    } catch (e: Exception) {
-        throw  DecodeBase64Exception("Exception when Decode ${this.abbreviate()}", e)
-    }
+    return CodecStringUtils.newStringUtf8(base64Codec.decode(this))
 }
 
 @Throws(DecodeBase64Exception::class)
 fun <T : Serializable> String.base64DecodeToObject(): T {
     return try {
         SerializationUtils.deserialize(base64Codec.decode(this))
-    } catch (e: Exception) {
-        throw  DecodeBase64Exception("Exception when Decode ${this.abbreviate()}", e)
+    } catch (e: SerializationException) {
+        throw DecodeBase64Exception("Exception when Decode ${this.abbreviate()}", e)
     }
 }
 
@@ -76,10 +70,9 @@ fun <T : Serializable> String.base64DecodeToObject(): T {
 fun <T : Serializable> ByteArray.base64DecodeToObject(): T {
     return try {
         SerializationUtils.deserialize(base64Codec.decode(this))
-    } catch (e: Exception) {
-        throw  DecodeBase64Exception("Exception when Decode ${this.size} bytes ", e)
+    } catch (e: SerializationException) {
+        throw DecodeBase64Exception("Exception when Decode ${this.size} bytes ", e)
     }
 }
-
 
 class DecodeBase64Exception(message: String, cause: Throwable) : Exception(message, cause)
