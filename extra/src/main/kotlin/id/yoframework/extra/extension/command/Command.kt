@@ -24,7 +24,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.io.OutputStream
-import java.util.UUID
+import java.util.*
 
 object Command
 

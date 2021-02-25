@@ -24,6 +24,7 @@ import com.mongodb.client.MongoDatabase
 import dagger.Module
 import dagger.Provides
 import id.yoframework.core.extension.logger.logger
+import id.yoframework.core.json.getExcept
 import id.yoframework.core.json.getTry
 import id.yoframework.core.module.CoreModule
 import io.vertx.core.json.JsonObject
@@ -48,14 +49,13 @@ class MorphiaModule {
     @Provides
     @Singleton
     fun provideMorphiaClient(config: JsonObject): MongoClient {
-        val host: String = config.getTry<String>("MORPHIA_HOST").getOrElse { throw it }
-        val port: Int = config.getTry<Int>("MORPHIA_PORT").getOrElse { throw it }
+        val host: String = config.getExcept("MORPHIA_HOST")
+        val port: Int = config.getExcept("MORPHIA_PORT")
         val server = ServerAddress(host, port)
 
         val mongoUsername: String = config.getString("MORPHIA_USERNAME", "")
         val mongoPassword: String = config.getString("MORPHIA_PASSWORD", "")
-
-        val databaseName: String = config.getTry<String>("MORPHIA_DATABASE").getOrElse { throw it }
+        val databaseName: String = config.getExcept("MORPHIA_DATABASE")
 
         val client = if (mongoUsername.isBlank() && mongoPassword.isBlank()) {
             log.info("Initialize MongoClient with $host:$port without auth")
@@ -69,16 +69,14 @@ class MorphiaModule {
             MongoClient(server, credentialsList)
         }
 
-        val address = try {
-            log.info("Trying to Connect MongoDB Database [$host:$port]...")
-            client.address
-        } catch (e: Exception) {
-            log.error("Mongo is not Connected [${e.message}]", e)
-            client.close()
-            throw e
-        }
+        log.info("Trying to Connect MongoDB Database [$host:$port]...")
+        val address = client.address
 
-        log.info("MongoDB is Connected to $address")
+        if (address == null) {
+            log.error("MongoClient could not connected to [$host:$port]. Try again later")
+            client.close()
+        }
+        log.info("MongoDB was successfully connected to $address")
         return client
     }
 
@@ -95,9 +93,12 @@ class MorphiaModule {
     @Named("morphiaThreadPool")
     @ObsoleteCoroutinesApi
     fun morphiaThreadPool(config: JsonObject): CoroutineContext {
-        val mongoThreadPoolSize = config.getInteger("MORPHIA_THREAD_POOL_SIZE", 6)
+        val mongoThreadPoolSize = config.getInteger("MORPHIA_THREAD_POOL_SIZE", DEFAULT_THREAD_POOL)
         log.info("Initialize Mongo Database with thread pool size $mongoThreadPoolSize")
         return newFixedThreadPoolContext(mongoThreadPoolSize, name = "Mongo Thread Pool")
     }
 
+    companion object {
+        const val DEFAULT_THREAD_POOL = 6
+    }
 }

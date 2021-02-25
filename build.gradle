@@ -4,7 +4,7 @@ buildscript {
         bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
         bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
-        kotlinVersion = "1.4.21"
+        kotlinVersion = "1.4.30"
         vertxVersion = '3.9.5'
         pebbleVersion = '3.1.5'
 
@@ -140,7 +140,11 @@ subprojects {
 
     detekt {
         toolVersion = "1.15.0"
+        input = files("src/main/kotlin")
         buildUponDefaultConfig = true
+        parallel = true
+        debug = false
+        ignoreFailures = false
         config = files("$rootDir/detekt.yml")
 
         reports {
@@ -150,6 +154,7 @@ subprojects {
             sarif.enabled = false
         }
     }
+    tasks.detekt.jvmTarget = "1.8"
 
     compileKotlin {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -159,7 +164,7 @@ subprojects {
             jvmTarget = "1.8"
             apiVersion = "1.4"
             languageVersion = "1.4"
-            allWarningsAsErrors = false
+            allWarningsAsErrors = true
         }
     }
 
@@ -171,10 +176,10 @@ subprojects {
             jvmTarget = "1.8"
             apiVersion = "1.4"
             languageVersion = "1.4"
-            allWarningsAsErrors = false
+            allWarningsAsErrors = true
         }
     }
-
+    
     jacoco {
         toolVersion = "0.8.6"
     }
@@ -217,7 +222,6 @@ subprojects {
             sourceDirs += file('build/generated/source/kaptKotlin/main')
         }
     }
-
 
     task compile(dependsOn: "testClasses")
 
@@ -300,4 +304,3 @@ task localPublish(dependsOn: ["core:publishToMavenLocal", "db:publishToMavenLoca
 task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
 
 task upload(dependsOn: ["localPublish", "artifactUpload"])
-

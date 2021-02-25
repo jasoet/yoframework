@@ -17,7 +17,6 @@
 package id.yoframework.core.extension.resource
 
 import id.yoframework.core.extension.logger.logger
-import java.lang.IllegalArgumentException
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 

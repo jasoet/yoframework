@@ -193,6 +193,5 @@ inline fun <reified T : Any> JsonObject.getTry(
 inline fun <reified T : Any> JsonObject.getExcept(
     key: String, exceptionMessage: (String) -> String = { "$it is required!" }
 ): T {
-    return this.getTry<T>(key, exceptionMessage).getOrElse { throw  it }
+    return this.getTry<T>(key, exceptionMessage).getOrElse { throw it }
 }
-

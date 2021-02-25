@@ -20,7 +20,7 @@ import arrow.core.Eval
 import com.mitchellbosecke.pebble.PebbleEngine
 import com.mitchellbosecke.pebble.template.PebbleTemplate
 import java.io.StringWriter
-import java.util.Locale
+import java.util.*
 
 object Pebble {
     private val engine = Eval.later {

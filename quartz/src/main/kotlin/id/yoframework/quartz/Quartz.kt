@@ -18,9 +18,18 @@ package id.yoframework.quartz
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.quartz.*
+import org.quartz.CalendarIntervalScheduleBuilder
+import org.quartz.CalendarIntervalTrigger
+import org.quartz.CronScheduleBuilder
+import org.quartz.CronTrigger
+import org.quartz.Job
+import org.quartz.JobBuilder
+import org.quartz.JobDataMap
+import org.quartz.JobExecutionContext
+import org.quartz.SimpleScheduleBuilder
+import org.quartz.SimpleTrigger
+import org.quartz.TriggerBuilder
 import kotlin.coroutines.CoroutineContext
-
 
 fun job(coroutineContext: CoroutineContext, executable: suspend (JobExecutionContext) -> Unit): Job {
     return Job { jobContext ->
@@ -50,7 +59,9 @@ fun simpleTrigger(scheduleBuilder: SimpleScheduleBuilder): TriggerBuilder<Simple
     return TriggerBuilder.newTrigger().withSchedule(scheduleBuilder)
 }
 
-fun calendarIntervalTrigger(scheduleBuilder: CalendarIntervalScheduleBuilder): TriggerBuilder<CalendarIntervalTrigger> {
+fun calendarIntervalTrigger(
+    scheduleBuilder: CalendarIntervalScheduleBuilder
+): TriggerBuilder<CalendarIntervalTrigger> {
     return TriggerBuilder.newTrigger().withSchedule(scheduleBuilder)
 }
 
@@ -65,7 +76,7 @@ inline fun <reified T : Any> JobExecutionContext?.getData(
         default != null -> default
         else -> {
             missing(key)
-            throw IllegalStateException("$key object is missing from job data")
+            error("$key object is missing from job data")
         }
     }
 }

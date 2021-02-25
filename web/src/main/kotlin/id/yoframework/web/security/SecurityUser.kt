@@ -20,10 +20,11 @@ import io.vertx.core.AsyncResult
 import io.vertx.core.Future
 import io.vertx.core.Handler
 import io.vertx.core.json.JsonObject
-import io.vertx.ext.auth.AbstractUser
+import io.vertx.ext.auth.*
 import io.vertx.ext.auth.AuthProvider
 import java.io.Serializable
 
+@Suppress("deprecation", "WildcardImport")
 class SecurityUser(private val model: SecurityModel, private val accesses: List<String>) : AbstractUser(),
     Serializable {
 
@@ -35,7 +36,9 @@ class SecurityUser(private val model: SecurityModel, private val accesses: List<
         return accesses.contains(permission)
     }
 
-    override fun setAuthProvider(authProvider: AuthProvider?) {}
+    override fun setAuthProvider(authProvider: AuthProvider?) {
+        // no-op comment in auth provider function
+    }
 
     override fun principal(): JsonObject {
         return model.toJsonObject()

@@ -94,11 +94,17 @@ abstract class Repository<T : Model, in ID : Any>(
         }
     }
 
-    open fun findByFields(vararg fieldList: Pair<String, Any?>, findOptions: FindOptions = FindOptions()): T? {
+    open fun findByFields(
+        vararg fieldList: Pair<String, Any?>,
+        findOptions: FindOptions = FindOptions()
+    ): T? {
         return createQueryByFields(*fieldList).get(findOptions)
     }
 
-    open fun findAllByFields(vararg fieldList: Pair<String, Any?>, findOptions: FindOptions = FindOptions()): List<T> {
+    open fun findAllByFields(
+        vararg fieldList: Pair<String, Any?>,
+        findOptions: FindOptions = FindOptions()
+    ): List<T> {
         return createQueryByFields(*fieldList).asList(findOptions)
     }
 
@@ -126,7 +132,10 @@ abstract class Repository<T : Model, in ID : Any>(
         return update(idQuery, defaultUpdateOps(model))
     }
 
-    open fun updateByMap(vararg updateQuery: Pair<String, Any?>, updateOperation: Map<String, Any?>): UpdateResults {
+    open fun updateByMap(
+        vararg updateQuery: Pair<String, Any?>,
+        updateOperation: Map<String, Any?>
+    ): UpdateResults {
         return updateByFields(*updateQuery, updateOperation = updateOperation.toList())
     }
 
@@ -163,5 +172,4 @@ abstract class Repository<T : Model, in ID : Any>(
         }
         return datastore.delete(queries)
     }
-
 }

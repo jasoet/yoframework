@@ -79,11 +79,15 @@ fun <T : Model> Query<T>.orders(vararg fields: String): Query<T> {
     }
 }
 
-inline operator fun <T : Model> UpdateOperations<T>.invoke(ops: UpdateOperations<T>.() -> UpdateOperations<T>): UpdateOperations<T> {
+inline operator fun <T : Model> UpdateOperations<T>.invoke(
+    ops: UpdateOperations<T>.() -> UpdateOperations<T>
+): UpdateOperations<T> {
     return ops(this)
 }
 
-inline fun <T : Model> UpdateOperations<T>.and(ops: UpdateOperations<T>.() -> UpdateOperations<T>): UpdateOperations<T> {
+inline fun <T : Model> UpdateOperations<T>.and(
+    ops: UpdateOperations<T>.() -> UpdateOperations<T>
+): UpdateOperations<T> {
     return ops(this)
 }
 
@@ -158,4 +162,3 @@ fun <T : Any> UpdateOperations<T>.setIfNotNull(field: String, value: Any?): Upda
         this
     }
 }
-

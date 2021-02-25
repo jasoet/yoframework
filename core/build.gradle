@@ -29,7 +29,6 @@ dependencies {
     implementation "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion"
 }
 
-
 bintray {
     pkg {
         name = "${project.name}"

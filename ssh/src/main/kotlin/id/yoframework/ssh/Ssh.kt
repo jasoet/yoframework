@@ -27,7 +27,7 @@ import com.jcraft.jsch.Session
 import id.yoframework.core.extension.resource.homeDir
 import java.io.File
 import java.io.File.separator
-import java.util.Properties
+import java.util.*
 
 typealias Ssh = JSch
 

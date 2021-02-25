@@ -18,7 +18,6 @@ package id.yoframework.web.controller
 
 import io.vertx.ext.web.Router
 
-
 abstract class Controller(private val handlers: Router.() -> Unit) {
     abstract val router: Router
     fun create(): Router {

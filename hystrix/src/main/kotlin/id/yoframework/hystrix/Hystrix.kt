@@ -79,10 +79,14 @@ fun buildCommandConfig(
 
 }
 
-fun buildCommandProperties(operation: CommandPropertiesSetter.() -> CommandPropertiesSetter): CommandPropertiesSetter {
+fun buildCommandProperties(
+    operation: CommandPropertiesSetter.() -> CommandPropertiesSetter
+): CommandPropertiesSetter {
     return operation(CommandPropertiesSetter())
 }
 
-fun buildThreadPoolProperties(operation: ThreadPoolPropertiesSetter.() -> ThreadPoolPropertiesSetter): ThreadPoolPropertiesSetter {
+fun buildThreadPoolProperties(
+    operation: ThreadPoolPropertiesSetter.() -> ThreadPoolPropertiesSetter
+): ThreadPoolPropertiesSetter {
     return operation(ThreadPoolPropertiesSetter())
 }

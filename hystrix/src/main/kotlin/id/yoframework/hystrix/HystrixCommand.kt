@@ -17,6 +17,7 @@
 package id.yoframework.hystrix
 
 import com.netflix.hystrix.HystrixCommand
+import java.util.concurrent.ExecutionException
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -42,7 +43,7 @@ open class HystrixCommand<T : Any>(
         return suspendCoroutine { cont: Continuation<T> ->
             try {
                 cont.resume(future.get())
-            } catch (e: Exception) {
+            } catch (e: ExecutionException) {
                 cont.resumeWithException(e)
             }
         }
