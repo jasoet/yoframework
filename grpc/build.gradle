@@ -1,19 +1,29 @@
+buildscript {
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePluginVersion"
+    }
+}
+
+plugins {
+    // Apply the core convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-core-conventions'
+}
+
 apply plugin: 'com.google.protobuf'
 
 dependencies {
-    implementation "id.yoframework:core:${version}"
     implementation "io.vertx:vertx-grpc:$vertxVersion"
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework GRPC. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework GRPC version ${project.version}."
-        }
-    }
-}
+//bintray {
+//    pkg {
+//        name = "${project.name}"
+//        desc = "Yo Framework GRPC. Kotlin DSL on top of Dagger and Vertx"
+//        version {
+//            desc = "Yo Framework GRPC version ${project.version}."
+//        }
+//    }
+//}
 
 protobuf {
     protoc {

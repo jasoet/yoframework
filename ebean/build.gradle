@@ -1,8 +1,17 @@
+buildscript {
+    dependencies {
+        classpath "io.ebean:ebean-gradle-plugin:$ebeanGradlePluginVersion"
+    }
+}
+
+plugins {
+    // Apply the db convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-db-conventions'
+}
+
 apply plugin: 'io.ebean'
 
 dependencies {
-    implementation "id.yoframework:db:${version}"
-
     implementation "io.ebean:ebean:$ebeanVersion"
     implementation "io.ebean:ebean-querybean:$ebeanQueryBeanVersion"
     implementation "io.ebean:ebean-elastic:$ebeanElasticVersion"
@@ -16,12 +25,12 @@ ebean {
     debugLevel = 1
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework EBean. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Ebean version ${project.version}."
-        }
-    }
-}
+//bintray {
+//    pkg {
+//        name = "${project.name}"
+//        desc = "Yo Framework EBean. Kotlin DSL on top of Dagger and Vertx"
+//        version {
+//            desc = "Yo Framework Ebean version ${project.version}."
+//        }
+//    }
+//}

@@ -1,14 +1,18 @@
+plugins {
+    // Apply the db convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-db-conventions'
+}
+
 dependencies {
-    implementation "id.yoframework:db:${version}"
     implementation "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework JDBI. Yo support for JDBI Library."
-        version {
-            desc = "Yo Framework JDBI version ${project.version}."
-        }
-    }
-}
+//bintray {
+//    pkg {
+//        name = "${project.name}"
+//        desc = "Yo Framework JDBI. Yo support for JDBI Library."
+//        version {
+//            desc = "Yo Framework JDBI version ${project.version}."
+//        }
+//    }
+//}

@@ -1,0 +1,9 @@
+plugins {
+    // Apply the core convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-core-conventions'
+}
+
+dependencies {
+    implementation "com.zaxxer:HikariCP:$hikariCPVersion"
+    implementation "org.flywaydb:flyway-core:$flywayVersion"
+}

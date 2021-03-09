@@ -1,16 +1,14 @@
-dependencies {
-    implementation "id.yoframework:core:${version}"
-
-    implementation "com.zaxxer:HikariCP:$hikariCPVersion"
-    implementation "org.flywaydb:flyway-core:$flywayVersion"
+plugins {
+    // Apply the db convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-db-conventions'
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework DB. RDMS support library for yo framework"
-        version {
-            desc = "Yo Framework DB version ${project.version}."
-        }
-    }
-}
+//bintray {
+//    pkg {
+//        name = "${project.name}"
+//        desc = "Yo Framework DB. RDMS support library for yo framework"
+//        version {
+//            desc = "Yo Framework DB version ${project.version}."
+//        }
+//    }
+//}

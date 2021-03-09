@@ -1,0 +1,144 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+    id "org.jetbrains.kotlin.kapt"
+    id "idea"
+    id "maven-publish"
+    id "jacoco"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter {
+        content {
+            // just allow to include kotlinx projects
+            // detekt needs 'kotlinx-html' for the html report
+            includeGroup "org.jetbrains.kotlinx"
+        }
+    }
+    maven {
+        url "https://dl.bintray.com/jasoet/yoframework"
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+
+    implementation "io.arrow-kt:arrow-core:$arrowVersion"
+    implementation "io.arrow-kt:arrow-typeclasses:$arrowVersion"
+
+    implementation "io.arrow-kt:arrow-instances-data:$arrowVersion"
+    implementation "io.arrow-kt:arrow-instances-core:$arrowVersion"
+
+    implementation "io.arrow-kt:arrow-data:$arrowVersion"
+    implementation "io.arrow-kt:arrow-syntax:$arrowVersion"
+    kapt "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
+
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
+    testImplementation "org.amshove.kluent:kluent:$kluentVersion"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$jUnitVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jUnitVersion"
+
+    testImplementation("org.jetbrains.spek:spek-api:$spekVersion") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
+        exclude group: 'org.jetbrains.kotlin'
+    }
+}
+
+tasks {
+    compileKotlin {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        kotlinOptions {
+            jvmTarget = "1.8"
+            apiVersion = "1.4"
+            languageVersion = "1.4"
+            allWarningsAsErrors = true
+        }
+    }
+
+    compileTestKotlin {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        kotlinOptions {
+            jvmTarget = "1.8"
+            apiVersion = "1.4"
+            languageVersion = "1.4"
+            allWarningsAsErrors = true
+        }
+    }
+
+//    detekt {
+//        toolVersion = "1.15.0"
+//        input = files("src/main/kotlin")
+//        buildUponDefaultConfig = true
+//        parallel = true
+//        debug = false
+//        ignoreFailures = false
+//        config = files("$rootDir/detekt.yml")
+//
+//        reports {
+//            html.enabled = true
+//            xml.enabled = false
+//            txt.enabled = false
+//            sarif.enabled = false
+//        }
+//    }
+//    tasks.detekt.jvmTarget = "1.8"
+//
+    test {
+        finalizedBy jacocoTestReport
+
+        useJUnitPlatform {
+            includeEngines 'spek', 'junit-jupiter'
+        }
+
+        testLogging {
+            exceptionFormat "full"
+            showCauses true
+            showExceptions true
+            showStackTraces true
+            showStandardStreams true
+            events = ["passed", "skipped", "failed", "standardError"]
+        }
+    }
+
+    jacoco {
+        toolVersion = "0.8.6"
+    }
+
+    jacocoTestReport {
+        dependsOn test // tests are required to run before generating the report
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.destination file("${buildDir}/jacocoHtml")
+        }
+    }
+
+    idea {
+        module {
+            downloadJavadoc = true
+            downloadSources = true
+
+            testSourceDirs += file('build/generated/source/kapt/test')
+            sourceDirs += file('build/generated/source/kapt/main')
+
+            testSourceDirs += file('build/generated/source/kaptKotlin/test')
+            sourceDirs += file('build/generated/source/kaptKotlin/main')
+        }
+    }
+}
+

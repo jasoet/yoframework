@@ -1,16 +1,19 @@
-dependencies {
-    implementation "id.yoframework:core:${version}"
+plugins {
+    // Apply the core convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-core-conventions'
+}
 
+dependencies {
     implementation "org.mongodb.morphia:morphia:${morphiaVersion}"
     implementation "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Morphia. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Morphia version ${project.version}."
-        }
-    }
-}
+//bintray {
+//    pkg {
+//        name = "${project.name}"
+//        desc = "Yo Framework Morphia. Kotlin DSL on top of Dagger and Vertx"
+//        version {
+//            desc = "Yo Framework Morphia version ${project.version}."
+//        }
+//    }
+//}

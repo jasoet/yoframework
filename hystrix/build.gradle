@@ -1,14 +1,18 @@
+plugins {
+    // Apply the core convention plugin for shared build configuration between module / subprojects.
+    id 'yoframework.kotlin-core-conventions'
+}
+
 dependencies {
-    implementation "id.yoframework:core:${version}"
     implementation "com.netflix.hystrix:hystrix-core:$hystrixVersion"
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Hystrix. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Hystrix version ${project.version}."
-        }
-    }
-}
+//bintray {
+//    pkg {
+//        name = "${project.name}"
+//        desc = "Yo Framework Hystrix. Kotlin DSL on top of Dagger and Vertx"
+//        version {
+//            desc = "Yo Framework Hystrix version ${project.version}."
+//        }
+//    }
+//}
