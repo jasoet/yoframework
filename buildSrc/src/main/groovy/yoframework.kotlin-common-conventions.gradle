@@ -53,18 +53,18 @@ dependencies {
     testImplementation("org.jetbrains.spek:spek-api:$spekVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
-    testRuntime("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
+    testRuntimeOnly("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
 }
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
 
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "11"
             apiVersion = "1.4"
             languageVersion = "1.4"
             allWarningsAsErrors = true
@@ -72,11 +72,11 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
 
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "11"
             apiVersion = "1.4"
             languageVersion = "1.4"
             allWarningsAsErrors = true
@@ -154,7 +154,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "1.8"
+tasks.detekt.jvmTarget = "11"
 
 def pomConfig = {
     licenses {
