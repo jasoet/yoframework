@@ -33,11 +33,8 @@ ext {
     ebeanVersion = "12.6.7"
     ebeanQueryBeanVersion = "12.6.7"
     ebeanElasticVersion = "12.5.0"
-    ebeanGradlePluginVersion = "11.39.1"
 
     jdbiVersion = "3.0.1"
-    protobufGradlePluginVersion = "0.8.14"
-
     hikariCPVersion = "4.0.2"
     flywayVersion = "7.5.3"
 
@@ -55,76 +52,6 @@ ext {
 
     spekVersion = "1.1.5"
     kluentVersion = "1.65"
-}
-
-subprojects {
-
-    task compile(dependsOn: "testClasses")
-    task sourcesJar(type: Jar)
-
-    artifacts {
-        archives sourcesJar
-    }
-
-    def pomConfig = {
-        licenses {
-            license {
-                name "The Apache Software License, Version 2.0"
-                url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                distribution "repo"
-            }
-        }
-        developers {
-            developer {
-                id "jasoet"
-                name "Deny Prasetyo"
-                email "jasoet87@gmail.com"
-            }
-        }
-
-        scm {
-            url "https://github.com/jasoet/yoframework"
-        }
-    }
-
-    publishing {
-        publications {
-            YoPublication(MavenPublication) {
-                from components.java
-                artifact sourcesJar
-                groupId 'id.yoframework'
-                artifactId "${project.name}"
-                version "${version}"
-                pom.withXml {
-                    def root = asNode()
-                    root.appendNode('description', 'Thin Kotlin DSL on top of Dagger and Vert.x')
-                    root.appendNode('name', 'Yo Framework')
-                    root.appendNode('url', 'https://yoframework.id')
-                    root.children().last() + pomConfig
-                }
-            }
-        }
-    }
-
-    bintray {
-        user = "${bintrayUser}"
-        key = "${bintrayApiKey}"
-        publications = ['YoPublication']
-        publish = true
-        override = true
-        pkg {
-            repo = 'yoframework'
-            licenses = ['Apache-2.0']
-            vcsUrl = 'https://github.com/jasoet/yoframework'
-            issueTrackerUrl = 'https://github.com/jasoet/yoframework/issues'
-            labels = ['kotlin', 'vertx', 'dsl']
-            publicDownloadNumbers = true
-            version {
-                name = "${project.version}"
-                vcsTag = "${project.version}"
-            }
-        }
-    }
 }
 
 task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])

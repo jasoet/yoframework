@@ -2,7 +2,7 @@ package id.yoframework.extra.extension.pebble
 
 import id.yoframework.core.extension.vertx.buildVertx
 import io.vertx.core.Vertx
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeNull
 import org.amshove.kluent.shouldNotBeNullOrBlank
 import org.jetbrains.spek.api.Spek
@@ -28,8 +28,8 @@ object PebbleSpec : Spek({
                 strictEngine.shouldNotBeNull()
                 engine.shouldNotBeNull()
 
-                strictEngine.shouldEqual(Pebble.engine(true))
-                engine.shouldEqual(Pebble.engine())
+                strictEngine.shouldBeEqualTo(Pebble.engine(true))
+                engine.shouldBeEqualTo(Pebble.engine())
             }
         }
 
@@ -120,7 +120,6 @@ object PebbleSpec : Spek({
                 val parameters = mapOf("title" to "String Title", "content" to "Content", "footer" to "this is footer")
                 val html = template.evaluate(parameters)
                 html.shouldNotBeNullOrBlank()
-
             }
         }
     }

@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    api project(':core')
     implementation "io.pebbletemplates:pebble:${pebbleVersion}"
     
     implementation "io.vertx:vertx-web:$vertxVersion"
@@ -11,12 +12,12 @@ dependencies {
     implementation "io.vertx:vertx-web-templ-pebble:$vertxVersion"
 }
 
-//bintray {
-//    pkg {
-//        name = "${project.name}"
-//        desc = "Yo Framework Web. Kotlin DSL on top of Dagger and Vertx"
-//        version {
-//            desc = "Yo Framework Web version ${project.version}."
-//        }
-//    }
-//}
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework Web. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Web version ${project.version}."
+        }
+    }
+}

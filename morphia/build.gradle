@@ -4,16 +4,17 @@ plugins {
 }
 
 dependencies {
+    api project(':core')
     implementation "org.mongodb.morphia:morphia:${morphiaVersion}"
     implementation "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
 }
 
-//bintray {
-//    pkg {
-//        name = "${project.name}"
-//        desc = "Yo Framework Morphia. Kotlin DSL on top of Dagger and Vertx"
-//        version {
-//            desc = "Yo Framework Morphia version ${project.version}."
-//        }
-//    }
-//}
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework Morphia. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Morphia version ${project.version}."
+        }
+    }
+}

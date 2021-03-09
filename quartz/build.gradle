@@ -4,15 +4,16 @@ plugins {
 }
 
 dependencies {
+    api project(':core')
     implementation "org.quartz-scheduler:quartz:$quartzVersion"
 }
 
-//bintray {
-//    pkg {
-//        name = "${project.name}"
-//        desc = "Yo Framework Scheduler. Kotlin DSL on top of Dagger and Vertx"
-//        version {
-//            desc = "Yo Framework Scheduler version ${project.version}."
-//        }
-//    }
-//}
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework Scheduler. Kotlin DSL on top of Dagger and Vertx"
+        version {
+            desc = "Yo Framework Scheduler version ${project.version}."
+        }
+    }
+}

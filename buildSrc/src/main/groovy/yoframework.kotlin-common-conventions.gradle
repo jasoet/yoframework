@@ -1,6 +1,9 @@
 plugins {
+    id "java-library"
     id "org.jetbrains.kotlin.jvm"
     id "org.jetbrains.kotlin.kapt"
+    id "com.jfrog.bintray"
+    id "io.gitlab.arturbosch.detekt"
     id "idea"
     id "maven-publish"
     id "jacoco"
@@ -80,24 +83,6 @@ tasks {
         }
     }
 
-//    detekt {
-//        toolVersion = "1.15.0"
-//        input = files("src/main/kotlin")
-//        buildUponDefaultConfig = true
-//        parallel = true
-//        debug = false
-//        ignoreFailures = false
-//        config = files("$rootDir/detekt.yml")
-//
-//        reports {
-//            html.enabled = true
-//            xml.enabled = false
-//            txt.enabled = false
-//            sarif.enabled = false
-//        }
-//    }
-//    tasks.detekt.jvmTarget = "1.8"
-//
     test {
         finalizedBy jacocoTestReport
 
@@ -138,6 +123,95 @@ tasks {
 
             testSourceDirs += file('build/generated/source/kaptKotlin/test')
             sourceDirs += file('build/generated/source/kaptKotlin/main')
+        }
+    }
+}
+
+task compile(dependsOn: "testClasses")
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+detekt {
+    toolVersion = "1.15.0"
+    input = files("src/main/kotlin")
+    buildUponDefaultConfig = true
+    parallel = true
+    debug = false
+    ignoreFailures = false
+    config = files("$rootDir/detekt.yml")
+
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        txt.enabled = false
+        sarif.enabled = false
+    }
+}
+tasks.detekt.jvmTarget = "1.8"
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "jasoet"
+            name "Deny Prasetyo"
+            email "jasoet87@gmail.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/jasoet/yoframework"
+    }
+}
+
+publishing {
+    publications {
+        YoPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            groupId 'id.yoframework'
+            artifactId "${project.name}"
+            version "${version}"
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Thin Kotlin DSL on top of Dagger and Vert.x')
+                root.appendNode('name', 'Yo Framework')
+                root.appendNode('url', 'https://yoframework.id')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = "${bintrayUser}"
+    key = "${bintrayApiKey}"
+    publications = ['YoPublication']
+    publish = true
+    override = true
+    pkg {
+        repo = 'yoframework'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/jasoet/yoframework'
+        issueTrackerUrl = 'https://github.com/jasoet/yoframework/issues'
+        labels = ['kotlin', 'vertx', 'dsl']
+        publicDownloadNumbers = true
+        version {
+            name = "${project.version}"
+            vcsTag = "${project.version}"
         }
     }
 }

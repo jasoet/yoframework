@@ -21,7 +21,7 @@ import arrow.core.getOrElse
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.web.controller.Controller
 import id.yoframework.web.extension.startHttpServer
-import io.vertx.kotlin.core.http.HttpServerOptions
+import io.vertx.kotlin.core.http.httpServerOptionsOf
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 open class WebVerticle(
@@ -55,7 +55,7 @@ open class WebVerticle(
             val compressionLevel = resolveCompressionLevel()
             log.info("HTTP Compression Level set to $compressionLevel")
 
-            val serverOptions = HttpServerOptions().apply {
+            val serverOptions = httpServerOptionsOf().apply {
                 isCompressionSupported = compressionSupported
                 setCompressionLevel(compressionLevel)
             }

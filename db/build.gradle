@@ -3,12 +3,16 @@ plugins {
     id 'yoframework.kotlin-db-conventions'
 }
 
-//bintray {
-//    pkg {
-//        name = "${project.name}"
-//        desc = "Yo Framework DB. RDMS support library for yo framework"
-//        version {
-//            desc = "Yo Framework DB version ${project.version}."
-//        }
-//    }
-//}
+dependencies {
+    api project(':core')
+}
+
+bintray {
+    pkg {
+        name = "${project.name}"
+        desc = "Yo Framework DB. RDBMS support library for Yo Framework"
+        version {
+            desc = "Yo Framework DB version ${project.version}."
+        }
+    }
+}
