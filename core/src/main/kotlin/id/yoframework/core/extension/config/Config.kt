@@ -30,6 +30,7 @@ fun propertiesConfig(path: String): ConfigStoreOptions {
     return configStoreOptionsOf(
         type = "file",
         format = "properties",
+        optional = true,
         config = json {
             obj("path" to path)
         }
@@ -40,6 +41,7 @@ fun jsonConfig(path: String): ConfigStoreOptions {
     return configStoreOptionsOf(
         type = "file",
         format = "json",
+        optional = true,
         config = json {
             obj("path" to path)
         }
@@ -50,6 +52,7 @@ fun yamlConfig(path: String): ConfigStoreOptions {
     return configStoreOptionsOf(
         type = "file",
         format = "yaml",
+        optional = true,
         config = json {
             obj("path" to path)
         }
