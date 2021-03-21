@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
+    api "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
 }
 
 bintray {

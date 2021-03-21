@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "com.jcraft:jsch:${jschVersion}"
+    api "com.jcraft:jsch:${jschVersion}"
 }
 
 bintray {

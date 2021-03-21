@@ -5,8 +5,8 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "org.mongodb.morphia:morphia:${morphiaVersion}"
-    implementation "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
+    api "org.mongodb.morphia:morphia:${morphiaVersion}"
+    api "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
 }
 
 bintray {

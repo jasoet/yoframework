@@ -16,7 +16,6 @@
 
 package id.yoframework.core.extension.time
 
-import java.time.DateTimeException
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -65,10 +64,6 @@ fun String.fromUnixTimestamp(): LocalDateTime {
 }
 
 fun LocalDate?.toFormat(pattern: String): String? {
-    return try {
-        this?.format(DateTimeFormatter.ofPattern(pattern))
-    } catch (e: DateTimeException) {
-        return null
-    }
+    return this?.format(DateTimeFormatter.ofPattern(pattern))
 }
 

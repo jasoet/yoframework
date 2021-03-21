@@ -45,11 +45,17 @@ operator fun <T : Any> Query<T>.invoke(expression: Query<T>.() -> ExpressionList
     return expression(this).query()
 }
 
-fun Database.generateMigrationFile(platform: Platform, prefix: String): String? {
+fun Database.generateMigrationFile(
+    platform: Platform,
+    prefix: String,
+    pathToResources: String
+): String? {
     val ebean = this
     val dbMigration = DbMigration.create().apply {
-        setApplyPrefix("V")
         setServer(ebean)
+        setApplyPrefix("V")
+        setPathToResources(pathToResources)
+        setMigrationPath("dbmigration")
         addPlatform(platform, prefix)
     }
     return dbMigration.generateMigration()

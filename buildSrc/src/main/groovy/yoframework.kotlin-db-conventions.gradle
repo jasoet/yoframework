@@ -4,6 +4,8 @@ plugins {
 }
 
 dependencies {
-    implementation "com.zaxxer:HikariCP:$hikariCPVersion"
-    implementation "org.flywaydb:flyway-core:$flywayVersion"
+    api "com.zaxxer:HikariCP:$hikariCPVersion"
+    api "org.flywaydb:flyway-core:$flywayVersion"
 }
+
+

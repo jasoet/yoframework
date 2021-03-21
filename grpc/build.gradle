@@ -6,8 +6,8 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "io.vertx:vertx-grpc:$vertxVersion"
-//    implementation "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePluginVersion"
+    api "io.vertx:vertx-grpc:$vertxVersion"
+//    api "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePluginVersion"
 }
 
 bintray {

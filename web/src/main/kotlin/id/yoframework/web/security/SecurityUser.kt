@@ -43,4 +43,8 @@ class SecurityUser(private val model: SecurityModel, private val accesses: List<
     override fun principal(): JsonObject {
         return model.toJsonObject()
     }
+
+    companion object {
+        const val serialVersionUID = 1L
+    }
 }

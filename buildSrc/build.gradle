@@ -10,7 +10,7 @@ plugins {
 
 def kotlinVersion = '1.4.31'
 def bintrayVersion = '1.8.5'
-def detektVersion = '1.15.0'
+def detektVersion = '1.16.0'
 
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    implementation "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
-    implementation "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
+    api "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    api "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
+    api "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
 }

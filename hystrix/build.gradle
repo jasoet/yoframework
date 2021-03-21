@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "com.netflix.hystrix:hystrix-core:$hystrixVersion"
+    api "com.netflix.hystrix:hystrix-core:$hystrixVersion"
 }
 
 bintray {

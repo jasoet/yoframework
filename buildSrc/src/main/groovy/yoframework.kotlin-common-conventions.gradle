@@ -25,21 +25,21 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
-    implementation "io.arrow-kt:arrow-core:$arrowVersion"
-    implementation "io.arrow-kt:arrow-typeclasses:$arrowVersion"
+    api "io.arrow-kt:arrow-core:$arrowVersion"
+    api "io.arrow-kt:arrow-typeclasses:$arrowVersion"
 
-    implementation "io.arrow-kt:arrow-instances-data:$arrowVersion"
-    implementation "io.arrow-kt:arrow-instances-core:$arrowVersion"
+    api "io.arrow-kt:arrow-instances-data:$arrowVersion"
+    api "io.arrow-kt:arrow-instances-core:$arrowVersion"
 
-    implementation "io.arrow-kt:arrow-data:$arrowVersion"
-    implementation "io.arrow-kt:arrow-syntax:$arrowVersion"
+    api "io.arrow-kt:arrow-data:$arrowVersion"
+    api "io.arrow-kt:arrow-syntax:$arrowVersion"
     kapt "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
 
-    implementation "com.google.dagger:dagger:$daggerVersion"
+    api "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 
@@ -61,11 +61,11 @@ dependencies {
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_15
+        targetCompatibility = JavaVersion.VERSION_15
 
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "15"
             apiVersion = "1.4"
             languageVersion = "1.4"
             allWarningsAsErrors = true
@@ -75,11 +75,11 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_15
+        targetCompatibility = JavaVersion.VERSION_15
 
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "15"
             apiVersion = "1.4"
             languageVersion = "1.4"
             allWarningsAsErrors = true
@@ -145,12 +145,12 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.15.0"
+    toolVersion = "1.16.0"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
     debug = false
-    ignoreFailures = false
+    ignoreFailures = true
     config = files("$rootDir/detekt.yml")
 
     reports {
@@ -160,7 +160,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "11"
+tasks.detekt.jvmTarget = "13"
 
 def pomConfig = {
     licenses {

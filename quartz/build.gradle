@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "org.quartz-scheduler:quartz:$quartzVersion"
+    api "org.quartz-scheduler:quartz:$quartzVersion"
 }
 
 bintray {

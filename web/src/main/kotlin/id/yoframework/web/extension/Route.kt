@@ -20,12 +20,12 @@ import arrow.core.Try
 import arrow.core.getOrElse
 import id.yoframework.web.controller.Controller
 import id.yoframework.web.default.DefaultErrorHandler
-import id.yoframework.web.exception.orDataError
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.common.template.TemplateEngine
 import io.vertx.ext.web.handler.StaticHandler
+import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -58,11 +58,7 @@ fun Route.serveStatic(webRoot: String): Route {
 
 fun Route.asyncHandler(coroutineContext: CoroutineContext? = null, handler: suspend RoutingContext.() -> Unit): Route {
     return this.handler { routingContext ->
-//        val context = coroutineContext ?: routingContext.vertx().dispatcher()
-
-        // temporarily throw exception if coroutine context is null before update core module version
-        val context = coroutineContext orDataError "Invalid coroutine context."
-
+        val context = coroutineContext ?: routingContext.vertx().dispatcher()
          GlobalScope.launch(context) {
             Try {
                 handler(routingContext)

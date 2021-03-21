@@ -5,13 +5,13 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "commons-codec:commons-codec:${commonsCodecVersion}"
+    api "commons-codec:commons-codec:${commonsCodecVersion}"
 
-    implementation "io.pebbletemplates:pebble:${pebbleVersion}"
-    implementation "de.svenkubiak:jBCrypt:${jBCryptVersion}"
+    api "io.pebbletemplates:pebble:${pebbleVersion}"
+    api "de.svenkubiak:jBCrypt:${jBCryptVersion}"
 
-    implementation "com.google.guava:guava:${guavaVersion}"
-    implementation "de.vandermeer:asciitable:${asciiTableVersion}"
+    api "com.google.guava:guava:${guavaVersion}"
+    api "de.vandermeer:asciitable:${asciiTableVersion}"
 }
 
 bintray {

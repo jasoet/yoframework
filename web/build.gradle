@@ -5,11 +5,11 @@ plugins {
 
 dependencies {
     api project(':core')
-    implementation "io.pebbletemplates:pebble:${pebbleVersion}"
+    api "io.pebbletemplates:pebble:${pebbleVersion}"
     
-    implementation "io.vertx:vertx-web:$vertxVersion"
-    implementation "io.vertx:vertx-web-client:$vertxVersion"
-    implementation "io.vertx:vertx-web-templ-pebble:$vertxVersion"
+    api "io.vertx:vertx-web:$vertxVersion"
+    api "io.vertx:vertx-web-client:$vertxVersion"
+    api "io.vertx:vertx-web-templ-pebble:$vertxVersion"
 }
 
 bintray {

@@ -3,11 +3,11 @@ ext {
     bintrayUser = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
     bintrayApiKey = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
 
-    kotlinVersion = "1.4.30"
+    kotlinVersion = "1.4.31"
     vertxVersion = '3.9.5'
     pebbleVersion = '3.1.5'
 
-    coroutineVersion = "1.4.2"
+    coroutineVersion = "1.4.3"
     arrowVersion = "0.7.2"
 
     logbackVersion = '1.2.3'
@@ -30,10 +30,7 @@ ext {
     guavaVersion = '23.5-jre'
     asciiTableVersion = '0.3.2'
 
-    ebeanVersion = "12.6.7"
-    ebeanQueryBeanVersion = "12.6.7"
-    ebeanElasticVersion = "12.5.0"
-
+    ebeanVersion = "12.8.0"
     jdbiVersion = "3.0.1"
     hikariCPVersion = "4.0.2"
     flywayVersion = "7.5.3"
