@@ -30,10 +30,10 @@ ext {
     guavaVersion = '23.5-jre'
     asciiTableVersion = '0.3.2'
 
-    ebeanVersion = "12.8.0"
+    ebeanVersion = "12.9.1"
     jdbiVersion = "3.0.1"
-    hikariCPVersion = "4.0.2"
-    flywayVersion = "7.5.3"
+    hikariCPVersion = "4.0.3"
+    flywayVersion = "7.9.2"
 
     restAssuredVersion = '3.0.3'
     embeddedMongoVersion = '2.0.0'
