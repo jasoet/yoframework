@@ -46,7 +46,7 @@ fun Long.toLocalDateTime(): LocalDateTime {
 }
 
 fun LocalDateTime.toMilliSeconds(): Long {
-    return this.atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()
+    return this.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 }
 
 @Throws(DateTimeParseException::class)

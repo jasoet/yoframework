@@ -10,16 +10,6 @@ dependencies {
 //    api "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePluginVersion"
 }
 
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework GRPC. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework GRPC version ${project.version}."
-        }
-    }
-}
-
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:$protocVersion"

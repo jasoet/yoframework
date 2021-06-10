@@ -11,13 +11,3 @@ dependencies {
     api "io.vertx:vertx-web-client:$vertxVersion"
     api "io.vertx:vertx-web-templ-pebble:$vertxVersion"
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Web. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Web version ${project.version}."
-        }
-    }
-}

@@ -31,10 +31,13 @@ import java.nio.file.Paths
 
 fun String.resourceToBuffer(): Buffer {
     val inputStream = javaClass.getResourceAsStream(this)
-    val byteArray = ByteArray(inputStream.available())
-
-    inputStream.use {
-        it.read(byteArray)
+    val byteArray = inputStream?.let {
+        ByteArray(inputStream.available())
+    }
+    byteArray?.let {
+        inputStream.use { i ->
+            i.read(byteArray)
+        }
     }
     return Buffer.buffer(byteArray)
 }

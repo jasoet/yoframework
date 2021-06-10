@@ -13,13 +13,3 @@ dependencies {
     api "com.google.guava:guava:${guavaVersion}"
     api "de.vandermeer:asciitable:${asciiTableVersion}"
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Extra. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Extra version ${project.version}."
-        }
-    }
-}

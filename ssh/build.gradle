@@ -7,13 +7,3 @@ dependencies {
     api project(':core')
     api "com.jcraft:jsch:${jschVersion}"
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework SSH. SSH Client helper using jsch library."
-        version {
-            desc = "Yo Framework SSH version ${project.version}."
-        }
-    }
-}

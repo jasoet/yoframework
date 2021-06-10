@@ -6,13 +6,3 @@ plugins {
 dependencies {
     api project(':core')
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework DB. RDBMS support library for Yo Framework"
-        version {
-            desc = "Yo Framework DB version ${project.version}."
-        }
-    }
-}

@@ -22,13 +22,3 @@ ebean {
     kotlin = true
     debugLevel = 1
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework EBean. OLTP DB ORM Support for Yo Framework"
-        version {
-            desc = "Yo Framework Ebean version ${project.version}."
-        }
-    }
-}

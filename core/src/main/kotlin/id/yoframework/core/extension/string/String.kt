@@ -25,7 +25,7 @@ fun randomAlpha(count: Int): String {
 }
 
 fun String.slugify(): String {
-    return this.toLowerCase()
+    return this.lowercase()
         .replace("[^a-z0-9]".toRegex(), " ")
         .replace("\\s+".toRegex(), " ")
         .replace(" ", "-")

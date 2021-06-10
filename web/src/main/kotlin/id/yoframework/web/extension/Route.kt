@@ -26,6 +26,7 @@ import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.common.template.TemplateEngine
 import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -56,6 +57,7 @@ fun Route.serveStatic(webRoot: String): Route {
     })
 }
 
+@DelicateCoroutinesApi
 fun Route.asyncHandler(coroutineContext: CoroutineContext? = null, handler: suspend RoutingContext.() -> Unit): Route {
     return this.handler { routingContext ->
         val context = coroutineContext ?: routingContext.vertx().dispatcher()
@@ -69,10 +71,12 @@ fun Route.asyncHandler(coroutineContext: CoroutineContext? = null, handler: susp
     }
 }
 
+@DelicateCoroutinesApi
 fun Route.jsonHandler(coroutineContext: CoroutineContext? = null, handler: suspend RoutingContext.() -> Any): Route {
     return this.asyncHandler(coroutineContext) { this.json(handler(this)) }
 }
 
+@DelicateCoroutinesApi
 fun Route.templateHandler(
     coroutineContext: CoroutineContext? = null,
     engine: TemplateEngine,

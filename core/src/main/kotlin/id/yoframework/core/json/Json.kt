@@ -57,7 +57,7 @@ fun <T : Any> JsonObject?.toValue(clazz: KClass<T>): T? {
  * Reified version of [toValue]
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.
  *
- * @see id.yoframework.core.extension.json.toValue
+ * @see id.yoframework.core.json.toValue
  */
 inline fun <reified T : Any> JsonObject?.toValue(): T? {
     return this.toValue(T::class)
@@ -179,7 +179,7 @@ inline fun <reified T : Any> JsonObject.getTry(
     key: String, exceptionMessage: (String) -> String = { "$it is required!" }
 ): Try<T> {
     return Try {
-        this.getNested<T>(key) ?: throw IllegalArgumentException(exceptionMessage(key))
+        this.getNested(key) ?: throw IllegalArgumentException(exceptionMessage(key))
     }
 }
 

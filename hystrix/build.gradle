@@ -7,13 +7,3 @@ dependencies {
     api project(':core')
     api "com.netflix.hystrix:hystrix-core:$hystrixVersion"
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Hystrix. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Hystrix version ${project.version}."
-        }
-    }
-}

@@ -7,13 +7,3 @@ dependencies {
     api project(':core')
     api "org.jdbi:jdbi3-kotlin-sqlobject:${jdbiVersion}"
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework JDBI. Yo support for JDBI Library."
-        version {
-            desc = "Yo Framework JDBI version ${project.version}."
-        }
-    }
-}

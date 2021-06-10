@@ -7,5 +7,3 @@ dependencies {
     api "com.zaxxer:HikariCP:$hikariCPVersion"
     api "org.flywaydb:flyway-core:$flywayVersion"
 }
-
-

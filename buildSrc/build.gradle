@@ -5,11 +5,7 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
-//apply plugin: 'com.jfrog.bintray'
-//apply plugin: 'io.gitlab.arturbosch.detekt'
-
-def kotlinVersion = '1.4.31'
-def bintrayVersion = '1.8.5'
+def kotlinVersion = '1.5.10'
 def detektVersion = '1.16.0'
 
 repositories {
@@ -19,6 +15,5 @@ repositories {
 
 dependencies {
     api "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    api "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayVersion"
     api "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
 }

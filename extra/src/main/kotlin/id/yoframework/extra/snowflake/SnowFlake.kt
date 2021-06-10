@@ -90,6 +90,6 @@ fun parse(id: Long): SnowFlakeId {
 }
 
 fun parse(alpha: String): SnowFlakeId {
-    val id = java.lang.Long.parseLong(alpha.toLowerCase(), SnowFlake.ALPHA_NUMERIC_BASE)
+    val id = java.lang.Long.parseLong(alpha.lowercase(), SnowFlake.ALPHA_NUMERIC_BASE)
     return parse(id)
 }

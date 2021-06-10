@@ -2,7 +2,6 @@ plugins {
     id "java-library"
     id "org.jetbrains.kotlin.jvm"
     id "org.jetbrains.kotlin.kapt"
-    id "com.jfrog.bintray"
     id "io.gitlab.arturbosch.detekt"
     id "idea"
     id "maven-publish"
@@ -12,16 +11,6 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter {
-        content {
-            // just allow to include kotlinx projects
-            // detekt needs 'kotlinx-html' for the html report
-            includeGroup "org.jetbrains.kotlinx"
-        }
-    }
-    maven {
-        url "https://dl.bintray.com/jasoet/yoframework"
-    }
 }
 
 dependencies {
@@ -61,13 +50,13 @@ dependencies {
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_15
-        targetCompatibility = JavaVersion.VERSION_15
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
 
         kotlinOptions {
-            jvmTarget = "15"
-            apiVersion = "1.4"
-            languageVersion = "1.4"
+            jvmTarget = "16"
+            apiVersion = "1.5"
+            languageVersion = "1.5"
             allWarningsAsErrors = true
             incremental = true
             useIR = true
@@ -75,13 +64,13 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_15
-        targetCompatibility = JavaVersion.VERSION_15
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
 
         kotlinOptions {
-            jvmTarget = "15"
-            apiVersion = "1.4"
-            languageVersion = "1.4"
+            jvmTarget = "16"
+            apiVersion = "1.5"
+            languageVersion = "1.5"
             allWarningsAsErrors = true
             incremental = true
             useIR = true
@@ -201,24 +190,3 @@ publishing {
         }
     }
 }
-
-bintray {
-    user = "${bintrayUser}"
-    key = "${bintrayApiKey}"
-    publications = ['YoPublication']
-    publish = true
-    override = true
-    pkg {
-        repo = 'yoframework'
-        licenses = ['Apache-2.0']
-        vcsUrl = 'https://github.com/jasoet/yoframework'
-        issueTrackerUrl = 'https://github.com/jasoet/yoframework/issues'
-        labels = ['kotlin', 'vertx', 'dsl']
-        publicDownloadNumbers = true
-        version {
-            name = "${project.version}"
-            vcsTag = "${project.version}"
-        }
-    }
-}
-

@@ -16,6 +16,7 @@
 
 package id.yoframework.quartz
 
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.quartz.CalendarIntervalScheduleBuilder
@@ -31,6 +32,7 @@ import org.quartz.SimpleTrigger
 import org.quartz.TriggerBuilder
 import kotlin.coroutines.CoroutineContext
 
+@DelicateCoroutinesApi
 fun job(coroutineContext: CoroutineContext, executable: suspend (JobExecutionContext) -> Unit): Job {
     return Job { jobContext ->
         GlobalScope.launch(coroutineContext) {

@@ -38,7 +38,4 @@ data class NumericErrors<out T : Number>(
     override val message: String,
     val errors: List<NumericError<T>>,
     val value: T? = null
-) :
-    ValidationError(message) {
-    val messages: List<String> = errors.map { it.message }
-}
+) : ValidationError(message)

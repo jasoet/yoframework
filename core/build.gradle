@@ -2,13 +2,3 @@ plugins {
     // Apply the core convention plugin for shared build configuration between module / subprojects.
     id 'yoframework.kotlin-core-conventions'
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Core. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Core version ${project.version}."
-        }
-    }
-}

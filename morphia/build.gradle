@@ -8,13 +8,3 @@ dependencies {
     api "org.mongodb.morphia:morphia:${morphiaVersion}"
     api "org.mongodb.morphia:morphia-validation:${morphiaVersion}"
 }
-
-bintray {
-    pkg {
-        name = "${project.name}"
-        desc = "Yo Framework Morphia. Kotlin DSL on top of Dagger and Vertx"
-        version {
-            desc = "Yo Framework Morphia version ${project.version}."
-        }
-    }
-}

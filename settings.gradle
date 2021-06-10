@@ -1,7 +1,6 @@
-if (JavaVersion.current() != JavaVersion.VERSION_15) {
-    throw new GradleException("This build must be run with java 15")
+if (JavaVersion.current() < JavaVersion.VERSION_1_8) {
+    throw new GradleException("This build must be run at least with java 8")
 }
 
 rootProject.name = 'yoframework'
 include 'core', 'db', 'extra', 'quartz', 'web', 'morphia', 'ebean', 'grpc', 'hystrix', 'ssh', 'jdbi'
-
