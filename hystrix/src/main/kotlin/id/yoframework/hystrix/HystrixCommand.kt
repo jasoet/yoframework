@@ -23,6 +23,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+@Suppress("BlockingMethodInNonBlockingContext")
 open class HystrixCommand<T : Any>(
     configSetter: Setter,
     private val operation: () -> T,
@@ -49,3 +50,5 @@ open class HystrixCommand<T : Any>(
         }
     }
 }
+
+

@@ -11,6 +11,9 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url "https://maven.pkg.github.com/jasoet/yoframework"
+    }
 }
 
 dependencies {
@@ -50,11 +53,11 @@ dependencies {
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_16
-        targetCompatibility = JavaVersion.VERSION_16
+        sourceCompatibility = JavaVersion.VERSION_15
+        targetCompatibility = JavaVersion.VERSION_15
 
         kotlinOptions {
-            jvmTarget = "16"
+            jvmTarget = "15"
             apiVersion = "1.5"
             languageVersion = "1.5"
             allWarningsAsErrors = true
@@ -64,11 +67,11 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_16
-        targetCompatibility = JavaVersion.VERSION_16
+        sourceCompatibility = JavaVersion.VERSION_15
+        targetCompatibility = JavaVersion.VERSION_15
 
         kotlinOptions {
-            jvmTarget = "16"
+            jvmTarget = "15"
             apiVersion = "1.5"
             languageVersion = "1.5"
             allWarningsAsErrors = true
@@ -95,11 +98,11 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.6"
+        toolVersion = "0.8.7"
     }
 
     jacocoTestReport {
-        dependsOn test // tests are required to run before generating the report
+        dependsOn test // tests are enabled to run before generating the report
         reports {
             html.enabled true
             xml.enabled false
@@ -134,7 +137,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.16.0"
+    toolVersion = "1.17.1"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
@@ -149,7 +152,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "13"
+tasks.detekt.jvmTarget = "15"
 
 def pomConfig = {
     licenses {
@@ -166,7 +169,6 @@ def pomConfig = {
             email "jasoet87@gmail.com"
         }
     }
-
     scm {
         url "https://github.com/jasoet/yoframework"
     }
@@ -182,11 +184,23 @@ publishing {
             version "${version}"
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'Thin Kotlin DSL on top of Dagger and Vert.x')
                 root.appendNode('name', 'Yo Framework')
+                root.appendNode('description', 'Thin Kotlin DSL on top of Dagger and Vert.x')
                 root.appendNode('url', 'https://yoframework.id')
                 root.children().last() + pomConfig
             }
         }
     }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/jasoet/yoframework"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
+

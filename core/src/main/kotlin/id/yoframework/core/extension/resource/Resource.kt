@@ -16,6 +16,7 @@
 
 package id.yoframework.core.extension.resource
 
+import id.yoframework.core.exception.DataInconsistentException
 import id.yoframework.core.extension.logger.logger
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.json.JsonObject
@@ -31,15 +32,17 @@ import java.nio.file.Paths
 
 fun String.resourceToBuffer(): Buffer {
     val inputStream = javaClass.getResourceAsStream(this)
-    val byteArray = inputStream?.let {
-        ByteArray(inputStream.available())
-    }
-    byteArray?.let {
-        inputStream.use { i ->
-            i.read(byteArray)
+    val byteArray = inputStream?.let { s ->
+        val bArray = ByteArray(s.available())
+        s.use { i ->
+            i.read(bArray)
         }
     }
-    return Buffer.buffer(byteArray)
+    return if (byteArray != null) {
+        Buffer.buffer(byteArray)
+    } else {
+        throw DataInconsistentException("Invalid string value.")
+    }
 }
 
 fun String.pathToByteArray(): ByteArray {
@@ -56,8 +59,10 @@ fun String.readFileLine(): List<String> {
 fun String.loadJsonObject(): JsonObject {
     val logger = logger(JsonObject::class)
     return try {
-        val inputStream = InputStreamReader(javaClass.getResourceAsStream(this), StandardCharsets.UTF_8)
-        val jsonString = inputStream.useLines { it.joinToString("") }
+        val stream = javaClass.getResourceAsStream(this)
+        val inputStream = stream?.let { InputStreamReader(it, StandardCharsets.UTF_8) }
+        val jsonString = inputStream?.useLines { it.joinToString("") }
+
         logger.debug("Load config from $this")
         JsonObject(jsonString)
     } catch (e: IOException) {
@@ -84,7 +89,9 @@ fun String.toBuffer(): Buffer {
 
 fun randomPort(): Int {
     val socket = ServerSocket(0)
+
     val port = socket.localPort
     socket.close()
+
     return port
 }
