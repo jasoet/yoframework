@@ -41,7 +41,8 @@ jobs:
 
       - name: Publish to maven local cache
         run: ./gradlew localPublish
-#      - name: Publish package to GPR
-#        run: gradle publish
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish package to GPR
+        run: ./gradlew publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
