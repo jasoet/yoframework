@@ -1,7 +1,10 @@
 name: Publish Yo Fw package to GitHub Packages
 on:
-  release:
-    types: [created]
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 jobs:
   publish:
     runs-on: ubuntu-20.04
@@ -10,11 +13,35 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v2
+
+      - name: Cache Gradle Packages
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-gradle-packages
+        with:
+          # gradle cache & wrapper files are stored in `~/.gradle` on Linux/macOS
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/build.gradle') }}
+
       - uses: actions/setup-java@v2
         with:
-          java-version: '16'
+          java-version: '15'
           distribution: 'adopt-openj9'
-      - name: Publish package
-        run: gradle publish
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compiles the production code
+        run: ./gradlew clean compile
+
+      - name: Runs all tests code
+        run: ./gradlew test
+
+      - name: Runs detekt check for static code analysis
+        run: ./gradlew detekt
+
+      - name: Publish to maven local cache
+        run: ./gradlew localPublish
+#      - name: Publish package to GPR
+#        run: gradle publish
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

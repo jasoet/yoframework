@@ -55,6 +55,3 @@ task compile(dependsOn: ["core:testClasses", "db:testClasses", "extra:testClasse
 
 task localPublish(dependsOn: ["core:publishToMavenLocal", "db:publishToMavenLocal", "extra:publishToMavenLocal", "hystrix:publishToMavenLocal", "quartz:publishToMavenLocal", "web:publishToMavenLocal", "morphia:publishToMavenLocal", "ebean:publishToMavenLocal", "grpc:publishToMavenLocal", "ssh:publishToMavenLocal", "jdbi:publishToMavenLocal"])
 
-task artifactUpload(dependsOn: ["core:bintrayUpload", "db:bintrayUpload", "extra:bintrayUpload", "hystrix:bintrayUpload", "quartz:bintrayUpload", "web:bintrayUpload", "morphia:bintrayUpload", "ebean:bintrayUpload", "grpc:bintrayUpload", "ssh:bintrayUpload", "jdbi:bintrayUpload"])
-
-task upload(dependsOn: ["localPublish", "artifactUpload"])
