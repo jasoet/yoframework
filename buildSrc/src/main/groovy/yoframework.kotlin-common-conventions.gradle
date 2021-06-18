@@ -12,11 +12,17 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven {
-        url "https://maven.pkg.github.com/jasoet/yoframework"
+//        url "https://maven.pkg.github.com/jasoet/yoframework"
+        url "https://jitpack.io"
     }
 }
 
+group = 'com.github.jasoet'
+
 dependencies {
+
+    implementation "com.github.jasoet:yoframework:$version"
+
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
