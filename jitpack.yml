@@ -6,4 +6,4 @@ before_install:
 install:
   - if ! ./ensure-java-15 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
   - java -version
-  - ./gradlew clean compile test publish
+  - ./gradlew clean compile test
