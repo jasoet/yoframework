@@ -185,7 +185,7 @@ publishing {
         YoPublication(MavenPublication) {
             from components.java
             artifact sourcesJar
-            groupId 'id.yoframework'
+            groupId 'com.github.danurahadi.yoframework'
             artifactId "${project.name}"
             version "${version}"
             pom.withXml {
@@ -198,15 +198,15 @@ publishing {
         }
     }
 
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = "https://maven.pkg.github.com/jasoet/yoframework"
-            credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
-            }
-        }
-    }
+//    repositories {
+//        maven {
+//            name = "GitHubPackages"
+//            url = "https://maven.pkg.github.com/jasoet/yoframework"
+//            credentials {
+//                username = System.getenv("GITHUB_ACTOR")
+//                password = System.getenv("GITHUB_TOKEN")
+//            }
+//        }
+//    }
 }
 
