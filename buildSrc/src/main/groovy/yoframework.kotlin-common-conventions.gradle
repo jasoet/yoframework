@@ -17,11 +17,11 @@ repositories {
     }
 }
 
-group = 'com.github.jasoet'
+group = 'com.github.danurahadi'
 
 dependencies {
 
-    implementation "com.github.jasoet:yoframework:$version"
+    implementation "com.github.danurahadi:yoframework:$version"
 
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
