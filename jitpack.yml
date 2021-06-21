@@ -1,9 +1,8 @@
 jdk:
   - openjdk15
 before_install:
-  - sudo chmod +x ensure-java-15
   - ./ensure-java-15 install
 install:
   - if ! ./ensure-java-15 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
   - java -version
-  - ./gradlew clean compile test detekt publish
+  - ./gradlew clean compile test detekt localPublish
