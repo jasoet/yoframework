@@ -17,7 +17,7 @@ repositories {
     }
 }
 
-group = 'com.github.danurahadi'
+group = 'com.github.jasoet'
 
 dependencies {
 
@@ -183,7 +183,7 @@ publishing {
         YoPublication(MavenPublication) {
             from components.java
             artifact sourcesJar
-            groupId 'com.github.danurahadi.yoframework'
+            groupId 'com.github.jasoet.yoframework'
             artifactId "${project.name}"
             version "${version}"
             pom.withXml {
