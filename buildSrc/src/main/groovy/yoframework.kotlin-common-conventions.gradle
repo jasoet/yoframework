@@ -11,6 +11,7 @@ plugins {
 repositories {
     mavenLocal()
     mavenCentral()
+    google()
     maven {
 //        url "https://maven.pkg.github.com/jasoet/yoframework"
         url "https://jitpack.io"
@@ -57,11 +58,11 @@ dependencies {
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_15
-        targetCompatibility = JavaVersion.VERSION_15
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
 
         kotlinOptions {
-            jvmTarget = "15"
+            jvmTarget = "11"
             apiVersion = "1.5"
             languageVersion = "1.5"
             allWarningsAsErrors = true
@@ -71,11 +72,11 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_15
-        targetCompatibility = JavaVersion.VERSION_15
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
 
         kotlinOptions {
-            jvmTarget = "15"
+            jvmTarget = "11"
             apiVersion = "1.5"
             languageVersion = "1.5"
             allWarningsAsErrors = true
