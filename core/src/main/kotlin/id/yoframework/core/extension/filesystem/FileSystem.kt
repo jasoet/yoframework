@@ -20,10 +20,10 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.core.file.FileSystem
 import io.vertx.kotlin.coroutines.awaitResult
 
-suspend fun FileSystem.readFile(path: String): Buffer {
+suspend fun FileSystem.readFileAsync(path: String): Buffer {
     return awaitResult { this.readFile(path, it) }
 }
 
-suspend fun FileSystem.writeFile(path: String, data: Buffer): Void {
+suspend fun FileSystem.writeFileAsync(path: String, data: Buffer): Void {
     return awaitResult { this.writeFile(path, data, it) }
 }

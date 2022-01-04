@@ -26,8 +26,7 @@ import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.common.template.TemplateEngine
 import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.kotlin.coroutines.dispatcher
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
@@ -57,11 +56,13 @@ fun Route.serveStatic(webRoot: String): Route {
     })
 }
 
-@DelicateCoroutinesApi
-fun Route.asyncHandler(coroutineContext: CoroutineContext? = null, handler: suspend RoutingContext.() -> Unit): Route {
+fun Route.asyncHandler(
+    coroutineContext: CoroutineContext? = null,
+    handler: suspend RoutingContext.() -> Unit
+): Route {
     return this.handler { routingContext ->
         val context = coroutineContext ?: routingContext.vertx().dispatcher()
-         GlobalScope.launch(context) {
+        CoroutineScope(context).launch {
             Try {
                 handler(routingContext)
             }.getOrElse {
@@ -71,22 +72,32 @@ fun Route.asyncHandler(coroutineContext: CoroutineContext? = null, handler: susp
     }
 }
 
-@DelicateCoroutinesApi
-fun Route.jsonHandler(coroutineContext: CoroutineContext? = null, handler: suspend RoutingContext.() -> Any): Route {
-    return this.asyncHandler(coroutineContext) { this.json(handler(this)) }
+fun Route.jsonAsyncHandler(
+    coroutineContext: CoroutineContext? = null,
+    handler: suspend RoutingContext.() -> Any
+): Route {
+    return this.asyncHandler(coroutineContext) { this.wireJson(handler(this)) }
 }
 
-@DelicateCoroutinesApi
+fun Route.syncHandler(handler: RoutingContext.() -> Unit): Route {
+    return this.handler { routingContext ->
+        handler(routingContext)
+    }
+}
+
+fun Route.jsonHandler(handler: RoutingContext.() -> Any): Route {
+    return this.syncHandler { this.wireJson(handler(this)) }
+}
+
 fun Route.templateHandler(
-    coroutineContext: CoroutineContext? = null,
     engine: TemplateEngine,
     templateName: String
 ): Route {
-    return this.asyncHandler(coroutineContext) {
+    return this.asyncHandler {
         this.text(render(engine, templateName))
     }
 }
 
-fun Router.subRoute(path: String, subController: Controller): Router {
+fun Router.subRoute(path: String, subController: Controller): Route {
     return this.mountSubRouter(path, subController.create())
 }

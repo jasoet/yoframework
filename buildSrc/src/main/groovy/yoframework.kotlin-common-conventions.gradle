@@ -58,13 +58,13 @@ dependencies {
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
 
         kotlinOptions {
-            jvmTarget = "11"
-            apiVersion = "1.5"
-            languageVersion = "1.5"
+            jvmTarget = "17"
+            apiVersion = "1.6"
+            languageVersion = "1.6"
             allWarningsAsErrors = true
             incremental = true
             useIR = true
@@ -72,13 +72,13 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
 
         kotlinOptions {
-            jvmTarget = "11"
-            apiVersion = "1.5"
-            languageVersion = "1.5"
+            jvmTarget = "17"
+            apiVersion = "1.6"
+            languageVersion = "1.6"
             allWarningsAsErrors = true
             incremental = true
             useIR = true
@@ -142,7 +142,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.17.1"
+    toolVersion = "1.19.0"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true

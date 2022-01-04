@@ -16,13 +16,10 @@
 
 package id.yoframework.core.extension.logger
 
-import id.yoframework.core.extension.system.clazz
-import io.vertx.core.logging.SLF4JLogDelegateFactory
 import net.logstash.logback.marker.Markers
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
-import io.vertx.core.logging.LoggerFactory as VertxLoggerFactory
 
 inline fun <reified T : Any> logger(): Logger {
     return LoggerFactory.getLogger(T::class.java)
@@ -34,10 +31,6 @@ fun logger(clz: KClass<*>): Logger {
 
 fun logger(name: String): Logger {
     return LoggerFactory.getLogger(name)
-}
-
-fun useLogback() {
-    System.setProperty(VertxLoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME, clazz<SLF4JLogDelegateFactory>().name)
 }
 
 sealed class LogType

@@ -25,7 +25,7 @@ import io.vertx.ext.web.common.template.TemplateEngine
 import io.vertx.kotlin.core.json.Json
 import io.vertx.kotlin.coroutines.awaitResult
 
-fun RoutingContext.json(obj: Any) {
+fun RoutingContext.wireJson(obj: Any) {
     val response = this.response()
     response.putHeader("Content-Type", "application/json; charset=utf-8")
         .putHeader("Access-Control-Allow-Origin", "*")
@@ -38,7 +38,7 @@ fun RoutingContext.text(obj: Any, contentType: String = "text/plain") {
         .end(obj.toString())
 }
 
-fun RoutingContext.json(headers: Map<String, String> = emptyMap(), message: Any) {
+fun RoutingContext.wireJson(headers: Map<String, String> = emptyMap(), message: Any) {
     this.response().apply {
         headers.entries.fold(this) { response, entries ->
             response.putHeader(entries.key, entries.value)
@@ -58,9 +58,10 @@ fun RoutingContext.ok(message: String = "", headers: Map<String, String> = empty
     }
 }
 
-fun RoutingContext.prettyJson(obj: Any) {
+fun RoutingContext.wirePrettyJson(obj: Any) {
     val response = this.response()
     response.putHeader("Content-Type", "application/json; charset=utf-8")
+        .putHeader("Access-Control-Allow-Origin", "*")
         .end(Json.encodePrettily(obj))
 }
 

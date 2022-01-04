@@ -28,6 +28,7 @@ import id.yoframework.core.json.getExcept
 import id.yoframework.core.json.getTry
 import id.yoframework.core.module.CoreModule
 import io.vertx.core.json.JsonObject
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.newFixedThreadPoolContext
 import javax.inject.Named
@@ -92,6 +93,7 @@ class MorphiaModule {
     @Singleton
     @Named("morphiaThreadPool")
     @ObsoleteCoroutinesApi
+    @DelicateCoroutinesApi
     fun morphiaThreadPool(config: JsonObject): CoroutineContext {
         val mongoThreadPoolSize = config.getInteger("MORPHIA_THREAD_POOL_SIZE", DEFAULT_THREAD_POOL)
         log.info("Initialize Mongo Database with thread pool size $mongoThreadPoolSize")

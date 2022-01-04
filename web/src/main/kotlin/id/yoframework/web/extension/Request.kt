@@ -18,7 +18,6 @@ package id.yoframework.web.extension
 
 import arrow.core.Try
 import arrow.core.getOrElse
-import id.yoframework.web.security.SecurityUser
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.RoutingContext
@@ -43,10 +42,10 @@ fun RoutingContext.principal(): JsonObject? {
     return this.user()?.principal()
 }
 
-@Suppress("deprecation")
-fun RoutingContext.securityUser(): SecurityUser? {
-    return this.user() as? SecurityUser
-}
+//@Suppress("deprecation")
+//fun RoutingContext.securityUser(): SecurityUser? {
+//    return this.user() as? SecurityUser
+//}
 
 fun RoutingContext.getRemoteIpAddress(): String {
     return this.request()?.remoteAddress()?.host() ?: ""
