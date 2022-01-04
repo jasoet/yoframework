@@ -1,8 +1,8 @@
 #jdk:
 #  - openjdk9
 before_install:
-  - ./ensure-java-11 install
-  - if ! ./ensure-java-11 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
+  - ./ensure-java-17 install
+  - if ! ./ensure-java-17 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
 install:
   - java -version
   - ./gradlew clean compile test detekt localPublish
