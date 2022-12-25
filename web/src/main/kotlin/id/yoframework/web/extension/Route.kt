@@ -51,9 +51,7 @@ fun Route.serveStatic(): Route {
 }
 
 fun Route.serveStatic(webRoot: String): Route {
-    return this.handler(StaticHandler.create().apply {
-        setWebRoot(webRoot)
-    })
+    return this.handler(StaticHandler.create(webRoot))
 }
 
 fun Route.asyncHandler(
@@ -99,5 +97,5 @@ fun Route.templateHandler(
 }
 
 fun Router.subRoute(path: String, subController: Controller): Route {
-    return this.mountSubRouter(path, subController.create())
+    return this.route(path).subRouter(subController.create())
 }

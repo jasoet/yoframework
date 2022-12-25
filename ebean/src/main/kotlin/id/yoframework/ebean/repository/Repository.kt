@@ -46,24 +46,29 @@ open class Repository<T : Model, in I : Any>(
     }
 
     open fun save(o: T, transaction: Transaction? = null) {
-        return ebean.save(o, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.save(o, ebeanTransaction)
     }
 
     open fun saveAll(list: List<T>, transaction: Transaction? = null): Int {
-        return ebean.saveAll(list, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.saveAll(list, ebeanTransaction)
     }
 
     open fun insert(o: T, transaction: Transaction? = null) {
-        return ebean.insert(o, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.insert(o, ebeanTransaction)
     }
 
     open fun insertAll(list: List<T>, transaction: Transaction? = null) {
-        return ebean.insertAll(list, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.insertAll(list, ebeanTransaction)
     }
 
     open fun update(code: I, o: T, transaction: Transaction? = null): Boolean {
         return if (exists(code)) {
-            ebean.update(o, transaction)
+            val ebeanTransaction = transaction ?: ebean.beginTransaction()
+            ebean.update(o, ebeanTransaction)
             true
         } else {
             false
@@ -71,27 +76,33 @@ open class Repository<T : Model, in I : Any>(
     }
 
     open fun updateAll(transaction: Transaction? = null) {
-        return ebean.updateAll(findAll(), transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.updateAll(findAll(), ebeanTransaction)
     }
 
     open fun updateAll(list: List<T>, transaction: Transaction? = null) {
-        return ebean.updateAll(list, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.updateAll(list, ebeanTransaction)
     }
 
     open fun delete(o: T, transaction: Transaction? = null): Boolean {
-        return ebean.delete(o, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.delete(o, ebeanTransaction)
     }
 
     open fun deleteAll(transaction: Transaction? = null): Int {
-        return ebean.deleteAll(findAll(), transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.deleteAll(findAll(), ebeanTransaction)
     }
 
     open fun deleteAll(list: List<T>, transaction: Transaction? = null): Int {
-        return ebean.deleteAll(list, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.deleteAll(list, ebeanTransaction)
     }
 
     open fun deleteById(id: I, transaction: Transaction? = null): Int {
-        return ebean.delete(clazz.java, id, transaction)
+        val ebeanTransaction = transaction ?: ebean.beginTransaction()
+        return ebean.delete(clazz.java, id, ebeanTransaction)
     }
 
 }

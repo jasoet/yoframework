@@ -5,8 +5,8 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
-def kotlinVersion = '1.6.10'
-def detektVersion = '1.19.0'
+def kotlinVersion = '1.7.22'
+def detektVersion = '1.20.0'
 
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.

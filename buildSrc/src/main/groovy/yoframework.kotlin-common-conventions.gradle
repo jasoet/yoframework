@@ -63,11 +63,13 @@ tasks {
 
         kotlinOptions {
             jvmTarget = "17"
-            apiVersion = "1.6"
-            languageVersion = "1.6"
+            apiVersion = "1.7"
+            languageVersion = "1.7"
             allWarningsAsErrors = true
-            incremental = true
-            useIR = true
+            freeCompilerArgs = [
+//                "-Xuse-k2", "-Xbackend-threads=2"
+//                "-Xbackend-threads=2"
+            ]
         }
     }
 
@@ -77,11 +79,12 @@ tasks {
 
         kotlinOptions {
             jvmTarget = "17"
-            apiVersion = "1.6"
-            languageVersion = "1.6"
+            apiVersion = "1.7"
+            languageVersion = "1.7"
             allWarningsAsErrors = true
-            incremental = true
-            useIR = true
+            freeCompilerArgs = [
+//                "-Xbackend-threads=2"
+            ]
         }
     }
 
@@ -142,7 +145,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.19.0"
+    toolVersion = "1.20.0"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
@@ -157,7 +160,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "1.8"
+tasks.detekt.jvmTarget = "11"
 
 def pomConfig = {
     licenses {
