@@ -63,11 +63,13 @@ tasks {
 
         kotlinOptions {
             jvmTarget = "17"
-            apiVersion = "1.6"
-            languageVersion = "1.6"
+            apiVersion = "1.7"
+            languageVersion = "1.7"
             allWarningsAsErrors = true
-            incremental = true
-            useIR = true
+//            freeCompilerArgs = [
+////                "-Xuse-k2", "-Xbackend-threads=2"
+////                "-Xbackend-threads=2"
+//            ]
         }
     }
 
@@ -77,11 +79,13 @@ tasks {
 
         kotlinOptions {
             jvmTarget = "17"
-            apiVersion = "1.6"
-            languageVersion = "1.6"
+            apiVersion = "1.7"
+            languageVersion = "1.7"
             allWarningsAsErrors = true
-            incremental = true
-            useIR = true
+//            freeCompilerArgs = [
+////                "-Xuse-k2", "-Xbackend-threads=2"
+////                "-Xbackend-threads=2"
+//            ]
         }
     }
 
