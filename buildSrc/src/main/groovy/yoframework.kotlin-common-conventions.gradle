@@ -23,7 +23,7 @@ group = 'com.github.jasoet'
 dependencies {
 
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
     api "io.arrow-kt:arrow-core:$arrowVersion"
@@ -56,35 +56,30 @@ dependencies {
     }
 }
 
-tasks {
-    compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+kotlin {
+    jvmToolchain(19)
+}
 
+tasks {
+
+    compileKotlin {
         kotlinOptions {
-            jvmTarget = "17"
-            apiVersion = "1.7"
-            languageVersion = "1.7"
+            apiVersion = "1.8"
+            languageVersion = "1.8"
             allWarningsAsErrors = true
 //            freeCompilerArgs = [
 ////                "-Xuse-k2", "-Xbackend-threads=2"
-////                "-Xbackend-threads=2"
 //            ]
         }
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-
         kotlinOptions {
-            jvmTarget = "17"
-            apiVersion = "1.7"
-            languageVersion = "1.7"
+            apiVersion = "1.8"
+            languageVersion = "1.8"
             allWarningsAsErrors = true
 //            freeCompilerArgs = [
 ////                "-Xuse-k2", "-Xbackend-threads=2"
-////                "-Xbackend-threads=2"
 //            ]
         }
     }
@@ -107,7 +102,7 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.7"
+        toolVersion = "0.8.8"
     }
 
     jacocoTestReport {
@@ -146,7 +141,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.19.0"
+    toolVersion = "1.22.0"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
@@ -161,7 +156,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "1.8"
+tasks.detekt.jvmTarget = "11"
 
 def pomConfig = {
     licenses {

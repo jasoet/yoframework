@@ -1,7 +1,7 @@
 plugins {
     // Apply the db convention plugin for shared build configuration between module / subprojects.
     id 'yoframework.kotlin-db-conventions'
-    id 'io.ebean' version '12.11.2'
+    id 'io.ebean' version '13.11.0'
 }
 
 dependencies {

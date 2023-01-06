@@ -31,11 +31,11 @@ fun RoutingContext.param(key: String): String? {
 }
 
 fun RoutingContext.jsonBody(): JsonObject? {
-    return Try { bodyAsJson }.getOrElse { null }
+    return Try { body().asJsonObject() }.getOrElse { null }
 }
 
 fun RoutingContext.jsonArrayBody(): JsonArray? {
-    return Try { bodyAsJsonArray }.getOrElse { null }
+    return Try { body().asJsonArray() }.getOrElse { null }
 }
 
 fun RoutingContext.principal(): JsonObject? {
