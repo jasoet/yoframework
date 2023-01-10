@@ -7,6 +7,7 @@ ext {
 
     coroutineVersion = "1.6.4"
     arrowVersion = "0.7.2"
+    detektVersion = "1.22.0"
 
     logbackVersion = '1.2.10'
     logstashLogbackEncoderVersion = '7.0.1'

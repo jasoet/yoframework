@@ -54,6 +54,8 @@ dependencies {
     testRuntimeOnly("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
+
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
 }
 
 kotlin {

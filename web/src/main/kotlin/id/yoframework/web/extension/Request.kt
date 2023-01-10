@@ -42,10 +42,10 @@ fun RoutingContext.principal(): JsonObject? {
     return this.user()?.principal()
 }
 
-//@Suppress("deprecation")
-//fun RoutingContext.securityUser(): SecurityUser? {
+// @Suppress("deprecation")
+// fun RoutingContext.securityUser(): SecurityUser? {
 //    return this.user() as? SecurityUser
-//}
+// }
 
 fun RoutingContext.getRemoteIpAddress(): String {
     return this.request()?.remoteAddress()?.host() ?: ""

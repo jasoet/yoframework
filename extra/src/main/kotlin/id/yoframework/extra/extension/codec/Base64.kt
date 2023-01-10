@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package  id.yoframework.extra.extension.codec
+package id.yoframework.extra.extension.codec
 
 import id.yoframework.core.extension.string.abbreviate
 import org.apache.commons.codec.binary.Base64

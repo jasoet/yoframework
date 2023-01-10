@@ -24,7 +24,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-
 fun Int.toYear(): Year {
     return Year.of(this)
 }
@@ -66,4 +65,3 @@ fun String.fromUnixTimestamp(): LocalDateTime {
 fun LocalDate?.toFormat(pattern: String): String? {
     return this?.format(DateTimeFormatter.ofPattern(pattern))
 }
-

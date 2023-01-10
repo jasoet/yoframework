@@ -30,7 +30,6 @@ fun Vertx.buildGrpcServer(
     vararg services: BindableService,
     configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }
 ): VertxServer {
-
     return VertxServerBuilder
         .forAddress(this, host, port)
         .let {
@@ -61,4 +60,3 @@ fun Vertx.buildGrpcChannel(
     return configuration(VertxChannelBuilder.forAddress(this, host, port))
         .build()
 }
-

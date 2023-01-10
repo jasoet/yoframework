@@ -68,5 +68,4 @@ class CoreModule(
         val validatorFactory = Validation.buildDefaultValidatorFactory()
         return validatorFactory.validator
     }
-
 }

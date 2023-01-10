@@ -65,5 +65,3 @@ fun Logger.log(log: LogType, defaultParam: Map<String, Any> = emptyMap(), vararg
         }
     }
 }
-
-

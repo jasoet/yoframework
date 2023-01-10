@@ -37,5 +37,4 @@ class WebModule {
     fun provideWebClient(vertx: Vertx): WebClient {
         return WebClient.create(vertx)
     }
-
 }
