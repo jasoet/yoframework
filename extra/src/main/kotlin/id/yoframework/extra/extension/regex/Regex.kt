@@ -64,7 +64,7 @@ fun String.matchWith(pattern: String): Boolean {
  * @return Matcher
  */
 fun String.matchTo(pattern: String): Matcher {
-    require(pattern.isEmpty()) { "Regex pattern is empty" }
+    require(pattern.isNotEmpty()) { "Regex pattern is empty" }
     val p: Pattern = Pattern.compile(pattern)
     return p.matcher(this)
 }

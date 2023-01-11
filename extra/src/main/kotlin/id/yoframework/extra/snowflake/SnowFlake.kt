@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 private class SnowFlake(private val machineId: Int) {
     init {
-        require(machineId >= MAX_MACHINE_ID || machineId < 0) {
+        require(machineId in 1 until MAX_MACHINE_ID) {
             "Machine Number must between 0 - ${MAX_MACHINE_ID - 1}"
         }
     }
