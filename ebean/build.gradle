@@ -1,7 +1,7 @@
 plugins {
     // Apply the db convention plugin for shared build configuration between module / subprojects.
     id 'yoframework.kotlin-db-conventions'
-    id 'io.ebean' version '13.6.4'
+    id 'io.ebean' version '13.20.1'
 }
 
 dependencies {
@@ -12,7 +12,7 @@ dependencies {
     api "io.ebean:ebean-querybean:$ebeanVersion"
 
     api "io.ebean:ebean-ddl-generator:$ebeanVersion"
-    api "io.ebean:ebean-autotune:$ebeanVersion"
+    api "io.ebean:ebean-autotune:$ebeanAutotuneVersion"
 
     api "com.zaxxer:HikariCP:$hikariCPVersion"
     api "org.flywaydb:flyway-core:$flywayVersion"

@@ -1,8 +1,8 @@
 package id.yoframework.extra.extension.pebble
 
-import com.mitchellbosecke.pebble.PebbleEngine
 import id.yoframework.core.extension.resource.tmpDir
 import id.yoframework.core.extension.vertx.buildVertx
+import io.pebbletemplates.pebble.PebbleEngine
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
 import io.vertx.kotlin.coroutines.awaitResult

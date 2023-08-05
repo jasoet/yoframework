@@ -58,13 +58,13 @@ dependencies {
 
 tasks {
     compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_20
+        targetCompatibility = JavaVersion.VERSION_20
 
         kotlinOptions {
-            jvmTarget = "17"
-            apiVersion = "1.7"
-            languageVersion = "1.7"
+            jvmTarget = "20"
+            apiVersion = "1.9"
+            languageVersion = "1.9"
             allWarningsAsErrors = true
             freeCompilerArgs = [
 //                "-Xuse-k2", "-Xbackend-threads=2"
@@ -74,13 +74,13 @@ tasks {
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_20
+        targetCompatibility = JavaVersion.VERSION_20
 
         kotlinOptions {
-            jvmTarget = "17"
-            apiVersion = "1.7"
-            languageVersion = "1.7"
+            jvmTarget = "20"
+            apiVersion = "1.9"
+            languageVersion = "1.9"
             allWarningsAsErrors = true
             freeCompilerArgs = [
 //                "-Xbackend-threads=2"
@@ -106,16 +106,15 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.7"
+        toolVersion = "0.8.9"
     }
 
     jacocoTestReport {
         dependsOn test // tests are enabled to run before generating the report
         reports {
-            html.enabled true
-            xml.enabled false
-            csv.enabled false
-            html.destination file("${buildDir}/jacocoHtml")
+            xml.required = false
+            csv.required = false
+            html.outputLocation = file("${buildDir}/jacocoHtml")
         }
     }
 
@@ -136,7 +135,7 @@ tasks {
 task compile(dependsOn: "testClasses")
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
 
@@ -145,7 +144,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.20.0"
+    toolVersion = "1.23.0"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
@@ -160,21 +159,21 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "11"
+tasks.detekt.jvmTarget = "17"
 
 def pomConfig = {
     licenses {
         license {
-            name "The Apache Software License, Version 2.0"
-            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-            distribution "repo"
+            name = "The Apache Software License, Version 2.0"
+            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution = "repo"
         }
     }
     developers {
         developer {
-            id "jasoet"
-            name "Deny Prasetyo"
-            email "jasoet87@gmail.com"
+            id = "jasoet"
+            name = "Deny Prasetyo"
+            email = "jasoet87@gmail.com"
         }
     }
     scm {
