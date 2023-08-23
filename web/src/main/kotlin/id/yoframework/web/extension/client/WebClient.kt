@@ -50,7 +50,6 @@ suspend fun WebClient.postForm(
     val payload = formData.toList().fold(MultiMap.caseInsensitiveMultiMap()) { form, (key, value) ->
         form.set(key, value)
     }
-
     return awaitResult {
         this.postAbs(absoluteURI).apply { headers().addAll(header) }.sendForm(payload, it)
     }
@@ -86,4 +85,3 @@ fun HttpResponse<Buffer>.jsonBody(): JsonObject? {
 fun HttpResponse<Buffer>.jsonArrayBody(): JsonArray? {
     return this.bodyAsJsonArray()
 }
-

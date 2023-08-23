@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SnowFlake.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">extra</a> &gt; <a href="index.source.html" class="el_package">id.yoframework.extra.snowflake</a> &gt; <span class="el_source">SnowFlake.kt</span></div><h1>SnowFlake.kt</h1><pre class="source lang-java linenums">/*
+ * Copyright (C)2018 - Deny Prasetyo &lt;jasoet87@gmail.com&gt;
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package id.yoframework.extra.snowflake
+
+import com.google.common.cache.CacheBuilder
+import id.yoframework.core.extension.time.toLocalDateTime
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
+
+<span class="nc" id="L25">private class SnowFlake(private val machineId: Int) {</span>
+<span class="nc" id="L26">    init {</span>
+<span class="nc bnc" id="L27" title="All 6 branches missed.">        require(machineId in 1 until MAX_MACHINE_ID) {</span>
+<span class="nc" id="L28">            &quot;Machine Number must between 0 - ${MAX_MACHINE_ID - 1}&quot;</span>
+        }
+<span class="nc" id="L30">    }</span>
+
+    fun nextId(): Long {
+<span class="nc" id="L33">        synchronized(this) {</span>
+<span class="nc" id="L34">            val currentTs = System.currentTimeMillis()</span>
+<span class="nc" id="L35">            val ts = currentTs - EPOCH</span>
+<span class="nc" id="L36">            val max = MAX_INCREMENT - 2</span>
+
+<span class="nc bnc" id="L38" title="All 2 branches missed.">            if (ATOMIC_INCREMENT.get() &gt;= max) {</span>
+<span class="nc" id="L39">                ATOMIC_INCREMENT.set(0)</span>
+            }
+<span class="nc" id="L41">            val i = ATOMIC_INCREMENT.incrementAndGet()</span>
+<span class="nc" id="L42">            return (ts shl TIME_STAMP_SHIFT) or (this.machineId shl MACHINE_ID_SHIFT).toLong() or i.toLong()</span>
+        }
+    }
+
+    companion object {
+<span class="nc" id="L47">        private val ATOMIC_INCREMENT = AtomicInteger(0)</span>
+        const val EPOCH = 1420045200000L
+        const val MAX_MACHINE_ID = 64
+        const val ALPHA_NUMERIC_BASE = 36
+        const val TIME_STAMP_SHIFT = 22
+        const val MACHINE_ID_SHIFT = 16
+        const val MAX_INCREMENT = 16384
+    }
+}
+
+<span class="nc" id="L57">data class SnowFlakeId(</span>
+<span class="nc" id="L58">    val timestamp: LocalDateTime,</span>
+<span class="nc" id="L59">    val machineId: Int,</span>
+<span class="nc" id="L60">    val increment: Int</span>
+)
+
+<span class="nc" id="L63">private val cache = CacheBuilder.newBuilder()</span>
+<span class="nc" id="L64">    .expireAfterAccess(2, TimeUnit.MINUTES)</span>
+<span class="nc" id="L65">    .build&lt;Int, SnowFlake&gt;()</span>
+
+<span class="nc" id="L67">fun nextId(machineId: Int = 42): Long {</span>
+<span class="nc" id="L68">    val cached = cache.getIfPresent(machineId)</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">    val snowFlake = if (cached == null) {</span>
+<span class="nc" id="L70">        val newSnowFlake = SnowFlake(machineId)</span>
+<span class="nc" id="L71">        cache.put(machineId, newSnowFlake)</span>
+<span class="nc" id="L72">        newSnowFlake</span>
+    } else {
+<span class="nc" id="L74">        cached</span>
+    }
+<span class="nc" id="L76">    return snowFlake.nextId()</span>
+}
+
+<span class="nc" id="L79">fun nextAlpha(machineId: Int = 42): String {</span>
+<span class="nc" id="L80">    val id = nextId(machineId)</span>
+<span class="nc" id="L81">    return id.toString(SnowFlake.ALPHA_NUMERIC_BASE)</span>
+}
+
+fun parse(id: Long): SnowFlakeId {
+<span class="nc" id="L85">    val ts = (id shr SnowFlake.TIME_STAMP_SHIFT) + SnowFlake.EPOCH</span>
+<span class="nc" id="L86">    val max = SnowFlake.MAX_MACHINE_ID - 1L</span>
+<span class="nc" id="L87">    val machineId = (id shr SnowFlake.MACHINE_ID_SHIFT) and max</span>
+<span class="nc" id="L88">    val i = id and max</span>
+<span class="nc" id="L89">    return SnowFlakeId(ts.toLocalDateTime(), machineId.toInt(), i.toInt())</span>
+}
+
+fun parse(alpha: String): SnowFlakeId {
+<span class="nc" id="L93">    val id = java.lang.Long.parseLong(alpha.lowercase(), SnowFlake.ALPHA_NUMERIC_BASE)</span>
+<span class="nc" id="L94">    return parse(id)</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -43,7 +43,6 @@ fun createHikariPoolDataSource(
     driver: String,
     config: HikariConfig.() -> Unit = {}
 ): HikariDataSource {
-
     val hikariConfig = HikariConfig()
 
     hikariConfig.poolName = name

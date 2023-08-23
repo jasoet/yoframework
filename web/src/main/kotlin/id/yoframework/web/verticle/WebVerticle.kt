@@ -21,16 +21,19 @@ import arrow.core.getOrElse
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.web.controller.Controller
 import id.yoframework.web.extension.startHttpServer
+import io.vertx.core.Vertx
 import io.vertx.kotlin.core.http.httpServerOptionsOf
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 open class WebVerticle(
+    private val vertx: Vertx,
     private val controller: Controller,
     private val serverName: String = "HttpServer",
     private val portConfigName: String = "HTTP_PORT",
     private val compressionSupportConfig: String = "HTTP_COMPRESSION_SUPPORTED",
     private val compressionLevelConfig: String = "HTTP_COMPRESSION_LEVEL",
 ) : CoroutineVerticle() {
+
     private val log = logger(WebVerticle::class)
 
     open fun resolvePort(): Int {

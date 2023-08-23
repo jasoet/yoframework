@@ -93,8 +93,11 @@ inline fun <reified T : Number> JsonObject.equalTo(key: String, target: T): Vali
     }
 }
 
-inline fun <reified T : Number> JsonObject.greaterThan(key: String, target: T, equals: Boolean = false)
-        : Validated<ValidationError, T> {
+inline fun <reified T : Number> JsonObject.greaterThan(
+    key: String,
+    target: T,
+    equals: Boolean = false
+): Validated<ValidationError, T> {
     val value = this.saveGet(T::class, key) ?: return NumericError<T>(
         "$key is not exists ",
         Numeric.GreaterThan(target, equals)
@@ -109,8 +112,11 @@ inline fun <reified T : Number> JsonObject.greaterThan(key: String, target: T, e
     }
 }
 
-inline fun <reified T : Number> JsonObject.lessThan(key: String, target: T, equals: Boolean = false)
-        : Validated<ValidationError, T> {
+inline fun <reified T : Number> JsonObject.lessThan(
+    key: String,
+    target: T,
+    equals: Boolean = false
+): Validated<ValidationError, T> {
     val value = this.saveGet(T::class, key) ?: return NumericError<T>(
         "$key is not exists ",
         Numeric.LessThan(target, equals)
@@ -143,7 +149,10 @@ inline fun <reified T : Number> JsonObject.numeric(
             }
         }
         .filter { it.isInvalid }
-        .map { @Suppress("UNCHECKED_CAST") (it as Invalid<NumericError<T>>).e }
+        .map {
+            @Suppress("UNCHECKED_CAST")
+            (it as Invalid<NumericError<T>>).e
+        }
 
     return if (errors.isNotEmpty()) {
         NumericErrors("$key is invalid", errors).invalid()

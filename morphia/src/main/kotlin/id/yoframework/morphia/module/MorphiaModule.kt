@@ -63,7 +63,9 @@ class MorphiaModule {
             MongoClient(server)
         } else {
             val credentials = MongoCredential.createScramSha1Credential(
-                mongoUsername, databaseName, mongoPassword.toCharArray()
+                mongoUsername,
+                databaseName,
+                mongoPassword.toCharArray()
             )
             val credentialsList = listOf(credentials)
             log.info("Initialize MongoClient with $host:$port")

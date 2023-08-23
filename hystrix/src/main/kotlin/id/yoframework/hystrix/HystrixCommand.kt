@@ -50,5 +50,3 @@ open class HystrixCommand<T : Any>(
         }
     }
 }
-
-

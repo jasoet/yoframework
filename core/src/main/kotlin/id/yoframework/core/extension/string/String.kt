@@ -42,4 +42,3 @@ private const val DEFAULT_WIDTH: Int = 42
 fun String.abbreviate(width: Int = DEFAULT_WIDTH): String {
     return StringUtils.abbreviate(this, width)
 }
-

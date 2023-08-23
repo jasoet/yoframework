@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>String.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">id.yoframework.core.extension.string</a> &gt; <span class="el_source">String.kt</span></div><h1>String.kt</h1><pre class="source lang-java linenums">/*
+ * Copyright (C)2018 - Deny Prasetyo &lt;jasoet87@gmail.com&gt;
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package id.yoframework.core.extension.string
+
+import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.lang3.StringUtils
+import java.security.MessageDigest
+
+fun randomAlpha(count: Int): String {
+<span class="nc" id="L24">    return RandomStringUtils.randomAlphanumeric(count)</span>
+}
+
+fun String.slugify(): String {
+<span class="nc" id="L28">    return this.lowercase()</span>
+<span class="nc" id="L29">        .replace(&quot;[^a-z0-9]&quot;.toRegex(), &quot; &quot;)</span>
+<span class="nc" id="L30">        .replace(&quot;\\s+&quot;.toRegex(), &quot; &quot;)</span>
+<span class="nc" id="L31">        .replace(&quot; &quot;, &quot;-&quot;)</span>
+}
+
+fun String.shaHash(): String {
+<span class="nc" id="L35">    val messageDigest = MessageDigest.getInstance(&quot;SHA-256&quot;)</span>
+<span class="nc" id="L36">    messageDigest.update(this.toByteArray())</span>
+<span class="nc" id="L37">    return String(messageDigest.digest())</span>
+}
+
+private const val DEFAULT_WIDTH: Int = 42
+
+<span class="nc" id="L42">fun String.abbreviate(width: Int = DEFAULT_WIDTH): String {</span>
+<span class="nc" id="L43">    return StringUtils.abbreviate(this, width)</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

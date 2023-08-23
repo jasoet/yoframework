@@ -7,6 +7,7 @@ ext {
 
     coroutineVersion = "1.7.3"
     arrowVersion = "0.7.2"
+    detektVersion = "1.22.0"
 
     logbackVersion = '1.4.8'
     logstashLogbackEncoderVersion = '7.4'
@@ -28,7 +29,7 @@ ext {
     guavaVersion = '23.5-jre'
     asciiTableVersion = '0.3.2'
 
-    ebeanVersion = "13.20.1"
+    ebeanVersion = "13.21.0"
     ebeanAutotuneVersion = "13.18.0"
     jdbiVersion = "3.39.1"
     hikariCPVersion = "5.0.1"
@@ -40,7 +41,7 @@ ext {
     hystrixVersion = "1.5.18"
     jschVersion = "0.1.55"
 
-    protocVersion = "3.5.1"
+    protocVersion = "3.21.12"
     vertxProtocGenVersion = "1.9.0"
 
     mockitoVersion = "5.4.0"
@@ -50,9 +51,8 @@ ext {
     kluentVersion = "1.73"
 }
 
-task clean(dependsOn: ["core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean"])
+tasks.register('clean') { dependsOn "core:clean", "db:clean", "extra:clean", "hystrix:clean", "quartz:clean", "web:clean", "morphia:clean", "ebean:clean", "grpc:clean", "ssh:clean", "jdbi:clean" }
 
-task compile(dependsOn: ["core:testClasses", "db:testClasses", "extra:testClasses", "hystrix:testClasses", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses", "ssh:testClasses", "jdbi:testClasses"])
+tasks.register('compile') { dependsOn "core:testClasses", "db:testClasses", "extra:testClasses", "hystrix:testClasses", "quartz:testClasses", "web:testClasses", "morphia:testClasses", "ebean:testClasses", "grpc:testClasses", "ssh:testClasses", "jdbi:testClasses" }
 
-task localPublish(dependsOn: ["core:publishToMavenLocal", "db:publishToMavenLocal", "extra:publishToMavenLocal", "hystrix:publishToMavenLocal", "quartz:publishToMavenLocal", "web:publishToMavenLocal", "morphia:publishToMavenLocal", "ebean:publishToMavenLocal", "grpc:publishToMavenLocal", "ssh:publishToMavenLocal", "jdbi:publishToMavenLocal"])
-
+tasks.register('localPublish') { dependsOn "core:publishToMavenLocal", "db:publishToMavenLocal", "extra:publishToMavenLocal", "hystrix:publishToMavenLocal", "quartz:publishToMavenLocal", "web:publishToMavenLocal", "morphia:publishToMavenLocal", "ebean:publishToMavenLocal", "grpc:publishToMavenLocal", "ssh:publishToMavenLocal", "jdbi:publishToMavenLocal" }

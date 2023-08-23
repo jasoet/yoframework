@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Base32.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">extra</a> &gt; <a href="index.source.html" class="el_package">id.yoframework.extra.extension.codec</a> &gt; <span class="el_source">Base32.kt</span></div><h1>Base32.kt</h1><pre class="source lang-java linenums">/*
+ * Copyright (C)2018 - Deny Prasetyo &lt;jasoet87@gmail.com&gt;
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package id.yoframework.extra.extension.codec
+
+import id.yoframework.core.extension.string.abbreviate
+import org.apache.commons.codec.binary.Base32
+import org.apache.commons.codec.binary.StringUtils
+import org.apache.commons.lang3.SerializationException
+import org.apache.commons.lang3.SerializationUtils
+import java.io.Serializable
+
+<span class="nc" id="L26">private val base32Codec = Base32()</span>
+
+fun String.base32Encode(): String {
+<span class="nc" id="L29">    return base32Codec.encodeToString(this.toByteArray())</span>
+}
+
+fun String.base32EncodeToByteArray(): ByteArray {
+<span class="nc" id="L33">    return base32Codec.encode(this.toByteArray())</span>
+}
+
+fun &lt;T : Serializable&gt; T.base32Encode(): String {
+<span class="nc" id="L37">    return base32Codec.encodeToString(this.serializeToByteArray())</span>
+}
+
+fun &lt;T : Serializable&gt; T.base32EncodeToByteArray(): ByteArray {
+<span class="nc" id="L41">    return base32Codec.encode(this.serializeToByteArray())</span>
+}
+
+fun ByteArray.base32EncodeToString(): String {
+<span class="nc" id="L45">    return base32Codec.encodeAsString(this)</span>
+}
+
+fun ByteArray.base32Encode(): ByteArray {
+<span class="nc" id="L49">    return base32Codec.encode(this)</span>
+}
+
+fun String.base32Decode(): String {
+<span class="nc" id="L53">    return StringUtils.newStringUtf8(base32Codec.decode(this))</span>
+}
+
+@Throws(DecodeBase32Exception::class)
+fun &lt;T : Serializable&gt; String.base32DecodeToObject(): T {
+<span class="nc" id="L58">    return try {</span>
+<span class="nc" id="L59">        SerializationUtils.deserialize(base32Codec.decode(this))</span>
+<span class="nc" id="L60">    } catch (e: SerializationException) {</span>
+<span class="nc" id="L61">        throw DecodeBase32Exception(&quot;Exception when Decode ${this.abbreviate()} &quot;, e)</span>
+    }
+}
+
+@Throws(DecodeBase32Exception::class)
+fun &lt;T : Serializable&gt; ByteArray.base32DecodeToObject(): T {
+<span class="nc" id="L67">    return try {</span>
+<span class="nc" id="L68">        SerializationUtils.deserialize(base32Codec.decode(this))</span>
+<span class="nc" id="L69">    } catch (e: SerializationException) {</span>
+<span class="nc" id="L70">        throw DecodeBase32Exception(&quot;Exception when Decode ${this.size} bytes &quot;, e)</span>
+    }
+}
+
+<span class="nc" id="L74">class DecodeBase32Exception(message: String, cause: Throwable) : Exception(message, cause)</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

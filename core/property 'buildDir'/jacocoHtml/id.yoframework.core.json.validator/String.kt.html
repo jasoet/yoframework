@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>String.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">id.yoframework.core.json.validator</a> &gt; <span class="el_source">String.kt</span></div><h1>String.kt</h1><pre class="source lang-java linenums">/*
+ * Copyright (C)2018 - Deny Prasetyo &lt;jasoet87@gmail.com&gt;
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package id.yoframework.core.json.validator
+
+import arrow.data.Validated
+import arrow.data.invalid
+import arrow.data.valid
+import id.yoframework.core.json.get
+import id.yoframework.core.json.validator.config.Length
+import id.yoframework.core.json.validator.error.EmailError
+import id.yoframework.core.json.validator.error.FormatError
+import id.yoframework.core.json.validator.error.LengthError
+import id.yoframework.core.json.validator.error.ValidationError
+import io.vertx.core.json.JsonObject
+
+fun JsonObject.format(key: String, format: Regex): Validated&lt;ValidationError, String&gt; {
+<span class="nc bnc" id="L31" title="All 2 branches missed.">    val value = this[key] ?: &quot;&quot;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">    return if (format.matchEntire(value) != null) {</span>
+<span class="nc" id="L33">        value.valid()</span>
+    } else {
+<span class="nc" id="L35">        FormatError(</span>
+<span class="nc" id="L36">            &quot;$key doesn't match pattern [$format]&quot;,</span>
+<span class="nc" id="L37">            format.toString(),</span>
+<span class="nc" id="L38">            value</span>
+<span class="nc" id="L39">        ).invalid()</span>
+    }
+}
+
+fun JsonObject.email(key: String): Validated&lt;ValidationError, String&gt; {
+<span class="nc" id="L44">    val emailRegex = &quot;^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$&quot;.toRegex()</span>
+<span class="nc" id="L45">    return this.format(key, emailRegex).leftMap {</span>
+<span class="nc" id="L46">        EmailError(&quot;$key is not a valid email&quot;)</span>
+    }
+}
+
+fun JsonObject.length(key: String, config: Length): Validated&lt;ValidationError, String&gt; {
+<span class="nc bnc" id="L51" title="All 2 branches missed.">    val value = this[key] ?: &quot;&quot;</span>
+<span class="nc" id="L52">    val length = value.length</span>
+<span class="nc" id="L53">    val valid = when (config) {</span>
+<span class="nc bnc" id="L54" title="All 4 branches missed.">        is Length.Exactly -&gt; length == config.value</span>
+<span class="nc bnc" id="L55" title="All 4 branches missed.">        is Length.Maximum -&gt; length &lt;= config.value</span>
+<span class="nc bnc" id="L56" title="All 4 branches missed.">        is Length.Minimum -&gt; length &gt;= config.value</span>
+<span class="nc bnc" id="L57" title="All 4 branches missed.">        is Length.Range -&gt; length &gt;= config.from &amp;&amp; length &lt;= config.to</span>
+    }
+<span class="nc bnc" id="L59" title="All 2 branches missed.">    return if (valid) value.valid() else LengthError(&quot;$key length is invalid&quot;, config).invalid()</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

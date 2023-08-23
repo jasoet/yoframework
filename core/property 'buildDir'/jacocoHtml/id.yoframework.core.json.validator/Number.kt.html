@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Number.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">id.yoframework.core.json.validator</a> &gt; <span class="el_source">Number.kt</span></div><h1>Number.kt</h1><pre class="source lang-java linenums">/*
+ * Copyright (C)2018 - Deny Prasetyo &lt;jasoet87@gmail.com&gt;
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package id.yoframework.core.json.validator
+
+import arrow.data.Invalid
+import arrow.data.Validated
+import arrow.data.invalid
+import arrow.data.valid
+import id.yoframework.core.json.validator.config.Numeric
+import id.yoframework.core.json.validator.error.NotExistError
+import id.yoframework.core.json.validator.error.NumericError
+import id.yoframework.core.json.validator.error.NumericErrors
+import id.yoframework.core.json.validator.error.ValidationError
+import io.vertx.core.json.JsonObject
+import kotlin.reflect.KClass
+
+fun &lt;T : Number&gt; T.compareTo(clazz: KClass&lt;T&gt;, value: T): Int {
+<span class="nc" id="L32">    return when {</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        clazz.isInstance(Byte::class) -&gt; (this as Byte).compareTo(value as Byte)</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        clazz.isInstance(Long::class) -&gt; (this as Long).compareTo(value as Long)</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        clazz.isInstance(Char::class) -&gt; (this as Char).compareTo(value as Char)</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        clazz.isInstance(Double::class) -&gt; (this as Double).compareTo(value as Double)</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        clazz.isInstance(Float::class) -&gt; (this as Float).compareTo(value as Float)</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        clazz.isInstance(Int::class) -&gt; (this as Int).compareTo(value as Int)</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        clazz.isInstance(Short::class) -&gt; (this as Short).compareTo(value as Short)</span>
+<span class="nc" id="L40">        else -&gt; throw IllegalArgumentException(&quot;${clazz.qualifiedName} is not supported!&quot;)</span>
+    }
+}
+
+fun JsonObject.odd(key: String): Validated&lt;NumericError&lt;Int&gt;, Int&gt; {
+<span class="nc bnc" id="L45" title="All 2 branches missed.">    val value = this.saveGet(Int::class, key) ?: return NumericError&lt;Int&gt;(</span>
+<span class="nc" id="L46">        &quot;$key is not exists &quot;,</span>
+<span class="nc" id="L47">        Numeric.Odd</span>
+<span class="nc" id="L48">    ).invalid()</span>
+
+<span class="nc bnc" id="L50" title="All 2 branches missed.">    return if (value.rem(2) != 0) {</span>
+<span class="nc" id="L51">        value.valid()</span>
+    } else {
+<span class="nc" id="L53">        NumericError(&quot;$key is not odd&quot;, Numeric.Odd, value).invalid()</span>
+    }
+}
+
+fun JsonObject.even(key: String): Validated&lt;NumericError&lt;Int&gt;, Int&gt; {
+<span class="nc bnc" id="L58" title="All 2 branches missed.">    val value = this.saveGet(Int::class, key) ?: return NumericError&lt;Int&gt;(</span>
+<span class="nc" id="L59">        &quot;$key is not exists &quot;,</span>
+<span class="nc" id="L60">        Numeric.Even</span>
+<span class="nc" id="L61">    ).invalid()</span>
+
+<span class="nc bnc" id="L63" title="All 2 branches missed.">    return if (value.rem(2) == 0) {</span>
+<span class="nc" id="L64">        value.valid()</span>
+    } else {
+<span class="nc" id="L66">        NumericError(&quot;$key is not even&quot;, Numeric.Even, value).invalid()</span>
+    }
+}
+
+fun JsonObject.divisibleBy(key: String, divisor: Int): Validated&lt;ValidationError, Int&gt; {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">    val value = this.saveGet(Int::class, key) ?: return NumericError&lt;Int&gt;(</span>
+<span class="nc" id="L72">        &quot;$key is not exists &quot;,</span>
+<span class="nc" id="L73">        Numeric.DivisibleBy(divisor)</span>
+<span class="nc" id="L74">    ).invalid()</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">    return if (value.rem(divisor) == 0) {</span>
+<span class="nc" id="L77">        value.valid()</span>
+    } else {
+<span class="nc" id="L79">        NumericError(&quot;$key is not divisible by $divisor&quot;, Numeric.DivisibleBy(divisor), value).invalid()</span>
+    }
+}
+
+inline fun &lt;reified T : Number&gt; JsonObject.equalTo(key: String, target: T): Validated&lt;ValidationError, T&gt; {
+    val value = this.saveGet(T::class, key) ?: return NumericError&lt;T&gt;(
+        &quot;$key is not exists &quot;,
+        Numeric.EqualTo(target)
+    ).invalid()
+
+    return if (value.compareTo(T::class, target) == 0) {
+        value.valid()
+    } else {
+        NumericError(&quot;$key is not equalTo $target&quot;, Numeric.EqualTo(target), value).invalid()
+    }
+}
+
+<span class="nc" id="L96">inline fun &lt;reified T : Number&gt; JsonObject.greaterThan(</span>
+    key: String,
+    target: T,
+<span class="nc" id="L99">    equals: Boolean = false</span>
+): Validated&lt;ValidationError, T&gt; {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">    val value = this.saveGet(T::class, key) ?: return NumericError&lt;T&gt;(</span>
+<span class="nc" id="L102">        &quot;$key is not exists &quot;,</span>
+<span class="nc" id="L103">        Numeric.GreaterThan(target, equals)</span>
+<span class="nc" id="L104">    ).invalid()</span>
+
+<span class="nc" id="L106">    val comparison = value.compareTo(T::class, target)</span>
+<span class="nc bnc" id="L107" title="All 6 branches missed.">    return if (comparison &gt; 0 || (equals &amp;&amp; comparison == 0)) {</span>
+<span class="nc" id="L108">        value.valid()</span>
+    } else {
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        val message = &quot;greaterThan${if (equals) &quot;OrEqualTo&quot; else &quot;&quot;}&quot;</span>
+<span class="nc" id="L111">        NumericError(&quot;$key is not $message $target&quot;, Numeric.GreaterThan(target, equals), value).invalid()</span>
+    }
+}
+
+<span class="nc" id="L115">inline fun &lt;reified T : Number&gt; JsonObject.lessThan(</span>
+    key: String,
+    target: T,
+<span class="nc" id="L118">    equals: Boolean = false</span>
+): Validated&lt;ValidationError, T&gt; {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">    val value = this.saveGet(T::class, key) ?: return NumericError&lt;T&gt;(</span>
+<span class="nc" id="L121">        &quot;$key is not exists &quot;,</span>
+<span class="nc" id="L122">        Numeric.LessThan(target, equals)</span>
+<span class="nc" id="L123">    ).invalid()</span>
+
+<span class="nc" id="L125">    val comparison = value.compareTo(T::class, target)</span>
+<span class="nc bnc" id="L126" title="All 6 branches missed.">    return if (comparison &gt; 0 || (equals &amp;&amp; comparison == 0)) {</span>
+<span class="nc" id="L127">        value.valid()</span>
+    } else {
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        val message = &quot;lessThan${if (equals) &quot;OrEqualTo&quot; else &quot;&quot;}&quot;</span>
+<span class="nc" id="L130">        NumericError(&quot;$key is not $message $target&quot;, Numeric.LessThan(target, equals), value).invalid()</span>
+    }
+}
+
+inline fun &lt;reified T : Number&gt; JsonObject.numeric(
+    key: String,
+    vararg configs: Numeric
+): Validated&lt;ValidationError, T&gt; {
+    val value = this.saveGet(T::class, key) ?: return NotExistError(&quot;$key is not exists &quot;).invalid()
+
+    val errors = configs.toList()
+        .map {
+            when (it) {
+                is Numeric.GreaterThan&lt;*&gt; -&gt; this.greaterThan(key, it.value, it.equals)
+                is Numeric.LessThan&lt;*&gt; -&gt; this.lessThan(key, it.value, it.equals)
+                is Numeric.EqualTo&lt;*&gt; -&gt; this.equalTo(key, it.value)
+                is Numeric.DivisibleBy -&gt; this.divisibleBy(key, it.value)
+                Numeric.Even -&gt; this.even(key)
+                Numeric.Odd -&gt; this.odd(key)
+            }
+        }
+        .filter { it.isInvalid }
+        .map {
+            @Suppress(&quot;UNCHECKED_CAST&quot;)
+            (it as Invalid&lt;NumericError&lt;T&gt;&gt;).e
+        }
+
+    return if (errors.isNotEmpty()) {
+        NumericErrors(&quot;$key is invalid&quot;, errors).invalid()
+    } else {
+        value.valid()
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

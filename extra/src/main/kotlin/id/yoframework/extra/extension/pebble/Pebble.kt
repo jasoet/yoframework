@@ -38,7 +38,6 @@ object Pebble {
             engine.value()
         }
     }
-
 }
 
 fun Pebble.compileStringTemplate(templateString: String, strictMode: Boolean = false): PebbleTemplate {

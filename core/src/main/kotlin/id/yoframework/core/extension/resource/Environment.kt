@@ -33,7 +33,9 @@ fun <T : Any> env(clazz: KClass<T>, key: String, defaultValue: T? = null): T {
             clazz.isSubclassOf(Boolean::class) -> value.toBoolean() as T
             else -> throw IllegalArgumentException("${clazz.qualifiedName} Not Supported")
         }
-    } else defaultValue ?: throw IllegalArgumentException("Illegal: $key not found and default value is null!")
+    } else {
+        defaultValue ?: throw IllegalArgumentException("Illegal: $key not found and default value is null!")
+    }
 }
 
 inline fun <reified T : Any> env(key: String, defaultValue: T? = null): T {

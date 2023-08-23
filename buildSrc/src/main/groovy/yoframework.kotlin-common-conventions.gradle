@@ -23,7 +23,7 @@ group = 'com.github.jasoet'
 dependencies {
 
     api "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
 
     api "io.arrow-kt:arrow-core:$arrowVersion"
@@ -54,37 +54,32 @@ dependencies {
     testRuntimeOnly("org.jetbrains.spek:spek-junit-platform-engine:$spekVersion") {
         exclude group: 'org.jetbrains.kotlin'
     }
+
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
+}
+
+kotlin {
+    jvmToolchain(20)
 }
 
 tasks {
-    compileKotlin {
-        sourceCompatibility = JavaVersion.VERSION_20
-        targetCompatibility = JavaVersion.VERSION_20
 
+    compileKotlin {
         kotlinOptions {
-            jvmTarget = "20"
             apiVersion = "1.9"
             languageVersion = "1.9"
             allWarningsAsErrors = true
-            freeCompilerArgs = [
-//                "-Xuse-k2", "-Xbackend-threads=2"
-//                "-Xbackend-threads=2"
-            ]
         }
     }
 
     compileTestKotlin {
-        sourceCompatibility = JavaVersion.VERSION_20
-        targetCompatibility = JavaVersion.VERSION_20
-
         kotlinOptions {
-            jvmTarget = "20"
             apiVersion = "1.9"
             languageVersion = "1.9"
             allWarningsAsErrors = true
-            freeCompilerArgs = [
-//                "-Xbackend-threads=2"
-            ]
+//            freeCompilerArgs = [
+////                "-Xuse-k2", "-Xbackend-threads=2"
+//            ]
         }
     }
 
@@ -114,7 +109,7 @@ tasks {
         reports {
             xml.required = false
             csv.required = false
-            html.outputLocation = file("${buildDir}/jacocoHtml")
+            html.outputLocation = file("${getLayout().getBuildDirectory()}/jacocoHtml")
         }
     }
 
@@ -132,9 +127,10 @@ tasks {
     }
 }
 
-task compile(dependsOn: "testClasses")
+tasks.register('compile') { dependsOn "testClasses" }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+tasks.register('sourcesJar', Jar) {
+    dependsOn classes
     archiveClassifier = 'sources'
     from sourceSets.main.allSource
 }
@@ -162,6 +158,9 @@ detekt {
 tasks.detekt.jvmTarget = "17"
 
 def pomConfig = {
+    name = "Yo Framework"
+    description = "Thin Kotlin DSL on top of Dagger and Vert.x"
+    url = "https://yoframework.id"
     licenses {
         license {
             name = "The Apache Software License, Version 2.0"
@@ -177,7 +176,7 @@ def pomConfig = {
         }
     }
     scm {
-        url "https://github.com/jasoet/yoframework"
+        url = "https://github.com/jasoet/yoframework"
     }
 }
 
@@ -189,13 +188,7 @@ publishing {
             groupId 'com.github.jasoet.yoframework'
             artifactId "${project.name}"
             version "${version}"
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('name', 'Yo Framework')
-                root.appendNode('description', 'Thin Kotlin DSL on top of Dagger and Vert.x')
-                root.appendNode('url', 'https://yoframework.id')
-                root.children().last() + pomConfig
-            }
+            pom pomConfig
         }
     }
 
@@ -210,4 +203,3 @@ publishing {
 //        }
 //    }
 }
-

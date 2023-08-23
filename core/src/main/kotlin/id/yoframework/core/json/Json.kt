@@ -27,6 +27,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
 private val log = logger("Json Extension")
+
 /**
  * Convert [JsonObject] to [T] object, and throws [IllegalArgumentException] if failed.
  * Require [com.fasterxml.jackson.module.kotlin.KotlinModule] installed on Json.mapper.

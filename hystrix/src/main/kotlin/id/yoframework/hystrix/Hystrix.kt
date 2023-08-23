@@ -51,7 +51,6 @@ fun buildObservableCommandConfig(
         .applyIf(commandPropertiesDefault) {
             andCommandPropertiesDefaults(it)
         }
-
 }
 
 fun buildCommandConfig(
@@ -61,7 +60,6 @@ fun buildCommandConfig(
     commandProperties: CommandPropertiesSetter? = null,
     threadPoolProperties: ThreadPoolPropertiesSetter? = null
 ): HystrixCommand.Setter {
-
     return HystrixCommand.Setter
         .withGroupKey(groupKey)
         .applyIf(commandKey) {
@@ -76,7 +74,6 @@ fun buildCommandConfig(
         .applyIf(threadPoolProperties) {
             andThreadPoolPropertiesDefaults(it)
         }
-
 }
 
 fun buildCommandProperties(

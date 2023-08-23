@@ -52,11 +52,11 @@ data class RequestException(
 }
 
 infix fun <T> T?.orNotFound(message: String): T {
-    return this ?: throw  NullObjectException(message)
+    return this ?: throw NullObjectException(message)
 }
 
 infix fun <T> T?.orBadRequest(message: String): T {
-    return this ?: throw  BadRequestException(message)
+    return this ?: throw BadRequestException(message)
 }
 
 infix fun <T> T?.orUnauthorized(message: String): T {

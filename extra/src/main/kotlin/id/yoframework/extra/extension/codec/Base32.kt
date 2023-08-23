@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package  id.yoframework.extra.extension.codec
+package id.yoframework.extra.extension.codec
 
 import id.yoframework.core.extension.string.abbreviate
 import org.apache.commons.codec.binary.Base32
@@ -32,7 +32,6 @@ fun String.base32Encode(): String {
 fun String.base32EncodeToByteArray(): ByteArray {
     return base32Codec.encode(this.toByteArray())
 }
-
 
 fun <T : Serializable> T.base32Encode(): String {
     return base32Codec.encodeToString(this.serializeToByteArray())
