@@ -9,7 +9,7 @@ if [ "$JV" != 19 ]; then
 		echo "Installing sdkman..."
 		curl -s "https://get.sdkman.io" | bash
 		source ~/.sdkman/bin/sdkman-init.sh
-		sdk install java 19.0.1-zulu
+		sdk install java 20.0.2-zulu
 		;;
 	use)
 		echo "must source ~/.sdkman/bin/sdkman-init.sh"
