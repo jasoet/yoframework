@@ -1,3 +1,9 @@
+buildscript {
+    dependencies {
+        classpath "org.flywaydb:flyway-database-postgresql:$flywayVersion"
+    }
+}
+
 plugins {
     // Apply the db convention plugin for shared build configuration between module / subprojects.
     id 'yoframework.kotlin-db-conventions'

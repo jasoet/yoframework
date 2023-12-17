@@ -16,7 +16,14 @@
 
 package id.yoframework.ssh
 
-import com.jcraft.jsch.*
+import com.jcraft.jsch.Channel
+import com.jcraft.jsch.ChannelDirectTCPIP
+import com.jcraft.jsch.ChannelExec
+import com.jcraft.jsch.ChannelForwardedTCPIP
+import com.jcraft.jsch.ChannelSftp
+import com.jcraft.jsch.ChannelShell
+import com.jcraft.jsch.JSch
+import com.jcraft.jsch.Session
 import id.yoframework.core.extension.resource.homeDir
 import java.io.File
 import java.io.File.separator
@@ -33,7 +40,7 @@ enum class ChannelType(val type: String) {
     DIRECT_TCP_IP("direct-tcpip"),
     FORWARDED_TCP_IP("forwarded-tcpip"),
     SFTP("sftp"),
-    SUBSYSTEM("subsystem");
+    SUBSYSTEM("subsystem")
 }
 
 fun privateKeyLocation(homeDir: String = homeDir(), path: String = ".ssh${separator}id_rsa"): String {

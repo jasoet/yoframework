@@ -1,7 +1,6 @@
 .gradle/
 build/
 classes/
-
 .github/
 
 # Ignore Gradle GUI config
