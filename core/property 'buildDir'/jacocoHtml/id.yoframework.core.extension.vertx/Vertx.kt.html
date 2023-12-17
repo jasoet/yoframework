@@ -16,48 +16,42 @@
 
 package id.yoframework.core.extension.vertx
 
-import io.vertx.core.DeploymentOptions
-import io.vertx.core.Promise
-import io.vertx.core.Verticle
-import io.vertx.core.Vertx
-import io.vertx.core.VertxException
-import io.vertx.core.VertxOptions
+import io.vertx.core.*
 import io.vertx.core.http.HttpServer
 import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 
 @Deprecated(&quot;This function is deprecated and use ext function startHttpServer() on Web module instead.&quot;)
 suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -&gt; Unit): HttpServer {
-<span class="nc" id="L37">    val httpServer = this.createHttpServer()</span>
-<span class="nc" id="L38">        .requestHandler(handler)</span>
-<span class="nc" id="L39">    return awaitResult { httpServer.listen(port, it) }</span>
+<span class="nc" id="L28">    val httpServer = this.createHttpServer()</span>
+<span class="nc" id="L29">        .requestHandler(handler)</span>
+<span class="nc" id="L30">    return awaitResult { httpServer.listen(port, it) }</span>
 }
 
-<span class="nc" id="L42">suspend fun Vertx.deployVerticle(verticle: Verticle, config: JsonObject, worker: Boolean = false): String {</span>
-<span class="nc" id="L43">    val option = DeploymentOptions().apply {</span>
-<span class="nc" id="L44">        this.config = config</span>
-<span class="nc" id="L45">        this.isWorker = worker</span>
-<span class="nc" id="L46">    }</span>
-
-<span class="nc" id="L48">    return awaitResult { this.deployVerticle(verticle, option, it) }</span>
+<span class="nc" id="L33">suspend fun Vertx.deployVerticle(verticle: Verticle, config: JsonObject, worker: Boolean = false): String {</span>
+<span class="nc" id="L34">    val option = DeploymentOptions().apply {</span>
+<span class="nc" id="L35">        this.config = config</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (worker) {</span>
+<span class="nc" id="L37">            this.setThreadingModel(ThreadingModel.WORKER)</span>
+        } else {
+<span class="nc" id="L39">            this.setThreadingModel(ThreadingModel.EVENT_LOOP)</span>
+        }
+<span class="nc" id="L41">    }</span>
+<span class="nc" id="L42">    return awaitResult { this.deployVerticle(verticle, option, it) }</span>
 }
 
 suspend fun buildClusteredVertx(option: VertxOptions): Vertx {
-<span class="nc" id="L52">    return awaitResult { Vertx.clusteredVertx(option, it) }</span>
+<span class="nc" id="L46">    return awaitResult { Vertx.clusteredVertx(option, it) }</span>
 }
 
 fun buildVertx(option: VertxOptions): Vertx {
-<span class="fc" id="L56">    return Vertx.vertx(option)</span>
+<span class="fc" id="L50">    return Vertx.vertx(option)</span>
 }
 
 fun buildVertx(): Vertx {
-<span class="fc" id="L60">    return buildVertx(VertxOptions())</span>
+<span class="fc" id="L54">    return buildVertx(VertxOptions())</span>
 }
 
 /**
@@ -66,23 +60,23 @@ fun buildVertx(): Vertx {
  */
 @ExperimentalCoroutinesApi
 fun &lt;T&gt; Deferred&lt;T&gt;.toPromise(promise: Promise&lt;T&gt;) {
-<span class="nc" id="L69">    invokeOnCompletion {</span>
-<span class="nc" id="L70">        try {</span>
-<span class="nc" id="L71">            promise.complete(getCompleted())</span>
-<span class="nc" id="L72">        } catch (t: IllegalStateException) {</span>
-<span class="nc" id="L73">            promise.fail(VertxException(t))</span>
+<span class="nc" id="L63">    invokeOnCompletion {</span>
+<span class="nc" id="L64">        try {</span>
+<span class="nc" id="L65">            promise.complete(getCompleted())</span>
+<span class="nc" id="L66">        } catch (t: IllegalStateException) {</span>
+<span class="nc" id="L67">            promise.fail(VertxException(t))</span>
         }
-<span class="nc" id="L75">    }</span>
-<span class="nc" id="L76">}</span>
+<span class="nc" id="L69">    }</span>
+<span class="nc" id="L70">}</span>
 
-@ExperimentalCoroutinesApi
-<span class="nc" id="L79">suspend fun &lt;T&gt; Promise&lt;T&gt;.executeAsync(op: suspend () -&gt; T) {</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">    val deferred = coroutineScope {</span>
-<span class="nc" id="L81">        async(start = CoroutineStart.LAZY) {</span>
-<span class="nc" id="L82">            op()</span>
-        }
+<span class="nc" id="L72">@ExperimentalCoroutinesApi</span>
+suspend fun &lt;T&gt; Promise&lt;T&gt;.executeAsync(op: suspend () -&gt; T) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">    val deferred = coroutineScope {</span>
+<span class="nc" id="L75">        async(start = CoroutineStart.LAZY) {</span>
+<span class="nc" id="L76">            op()</span>
+<span class="nc" id="L77">        }</span>
     }
-<span class="nc" id="L85">    deferred.toPromise(this)</span>
-<span class="nc" id="L86">    deferred.start()</span>
-<span class="nc" id="L87">}</span>
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
+<span class="nc" id="L79">    deferred.toPromise(this)</span>
+<span class="nc" id="L80">    deferred.start()</span>
+<span class="nc" id="L81">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

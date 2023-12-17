@@ -85,11 +85,7 @@ class EBeanModule {
     @Provides
     @Singleton
     fun ebeanServer(dataSource: DataSource): Database {
-        val config = DatabaseConfig().apply {
-            name = "ebeands"
-            setDataSource(dataSource)
-        }
-
+        val config = DatabaseConfig().setName("ebeands").setDataSource(dataSource)
         return DatabaseFactory.create(config)
     }
 }

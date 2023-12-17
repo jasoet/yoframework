@@ -16,21 +16,12 @@
 
 package id.yoframework.core.extension.vertx
 
-import io.vertx.core.DeploymentOptions
-import io.vertx.core.Promise
-import io.vertx.core.Verticle
-import io.vertx.core.Vertx
-import io.vertx.core.VertxException
-import io.vertx.core.VertxOptions
+import io.vertx.core.*
 import io.vertx.core.http.HttpServer
 import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.coroutines.awaitResult
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 
 @Deprecated("This function is deprecated and use ext function startHttpServer() on Web module instead.")
 suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -> Unit): HttpServer {
@@ -42,9 +33,12 @@ suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -> Un
 suspend fun Vertx.deployVerticle(verticle: Verticle, config: JsonObject, worker: Boolean = false): String {
     val option = DeploymentOptions().apply {
         this.config = config
-        this.isWorker = worker
+        if (worker) {
+            this.setThreadingModel(ThreadingModel.WORKER)
+        } else {
+            this.setThreadingModel(ThreadingModel.EVENT_LOOP)
+        }
     }
-
     return awaitResult { this.deployVerticle(verticle, option, it) }
 }
 

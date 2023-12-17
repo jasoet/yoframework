@@ -36,7 +36,7 @@ fun String.resourceToBuffer(): Buffer {
 <span class="nc" id="L36">        val bArray = ByteArray(s.available())</span>
 <span class="nc" id="L37">        s.use { i -&gt;</span>
 <span class="nc" id="L38">            i.read(bArray)</span>
-        }
+<span class="nc" id="L39">        }</span>
     }
 <span class="nc bnc" id="L41" title="All 2 branches missed.">    return if (byteArray != null) {</span>
 <span class="nc" id="L42">        Buffer.buffer(byteArray)</span>
@@ -95,4 +95,4 @@ fun randomPort(): Int {
 
 <span class="nc" id="L96">    return port</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

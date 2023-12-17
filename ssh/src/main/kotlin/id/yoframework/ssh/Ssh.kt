@@ -1,7 +1,7 @@
 /*
  * Copyright (C)2018 - Deny Prasetyo <jasoet87@gmail.com>
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -16,14 +16,7 @@
 
 package id.yoframework.ssh
 
-import com.jcraft.jsch.Channel
-import com.jcraft.jsch.ChannelDirectTCPIP
-import com.jcraft.jsch.ChannelExec
-import com.jcraft.jsch.ChannelForwardedTCPIP
-import com.jcraft.jsch.ChannelSftp
-import com.jcraft.jsch.ChannelShell
-import com.jcraft.jsch.JSch
-import com.jcraft.jsch.Session
+import com.jcraft.jsch.*
 import id.yoframework.core.extension.resource.homeDir
 import java.io.File
 import java.io.File.separator

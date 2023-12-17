@@ -20,7 +20,7 @@ import id.yoframework.core.extension.logger.logger
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
-@Suppress(&quot;UNCHECKED_CAST&quot;)
+<span class="nc" id="L23">@Suppress(&quot;UNCHECKED_CAST&quot;)</span>
 <span class="nc" id="L24">fun &lt;T : Any&gt; env(clazz: KClass&lt;T&gt;, key: String, defaultValue: T? = null): T {</span>
 <span class="nc" id="L25">    val value: String? = System.getenv(key)</span>
 <span class="nc bnc" id="L26" title="All 2 branches missed.">    return if (value != null) {</span>
@@ -51,4 +51,4 @@ import kotlin.reflect.full.isSubclassOf
 <span class="nc" id="L51">        logger.info(&quot;Exception occurred ${e.message}, Operation ignored!&quot;)</span>
     }
 <span class="nc" id="L53">}</span>
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

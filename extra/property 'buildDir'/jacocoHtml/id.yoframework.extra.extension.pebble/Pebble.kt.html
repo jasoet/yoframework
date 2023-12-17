@@ -34,7 +34,7 @@ object Pebble {
 <span class="nc" id="L34">    fun engine(strictMode: Boolean = false): PebbleEngine {</span>
 <span class="nc bnc" id="L35" title="All 2 branches missed.">        return if (strictMode) {</span>
 <span class="nc" id="L36">            strictEngine.value()</span>
-<span class="nc" id="L37">        } else {</span>
+        } else {
 <span class="nc" id="L38">            engine.value()</span>
         }
     }
@@ -55,4 +55,4 @@ object Pebble {
 <span class="nc" id="L55">    this.evaluate(result, parameters, locale)</span>
 <span class="nc" id="L56">    return result.toString()</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

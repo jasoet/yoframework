@@ -31,12 +31,10 @@ inline fun <R : Any> Database.transaction(
         operation(existingTransaction)
     } else {
         val transaction = this.beginTransaction()
-        try {
+        transaction.use { txn ->
             val result = operation(transaction)
-            this.commitTransaction()
+            txn.commit()
             result
-        } finally {
-            this.endTransaction()
         }
     }
 }

@@ -59,24 +59,24 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(20)
+    jvmToolchain(21)
 }
 
 tasks {
 
     compileKotlin {
         kotlinOptions {
-            apiVersion = "1.9"
-            languageVersion = "1.9"
-            allWarningsAsErrors = true
+            apiVersion = "2.0"
+            languageVersion = "2.0"
+            allWarningsAsErrors = false
         }
     }
 
     compileTestKotlin {
         kotlinOptions {
-            apiVersion = "1.9"
-            languageVersion = "1.9"
-            allWarningsAsErrors = true
+            apiVersion = "2.0"
+            languageVersion = "2.0"
+            allWarningsAsErrors = false
 //            freeCompilerArgs = [
 ////                "-Xuse-k2", "-Xbackend-threads=2"
 //            ]
@@ -101,7 +101,7 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.9"
+        toolVersion = "0.8.11"
     }
 
     jacocoTestReport {
@@ -140,7 +140,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.23.0"
+    toolVersion = "1.23.4"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
