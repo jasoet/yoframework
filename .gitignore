@@ -2,6 +2,7 @@
 build/
 classes/
 .github/
+property\ \'buildDir\'/
 
 # Ignore Gradle GUI config
 gradle-app.setting

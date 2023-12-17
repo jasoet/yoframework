@@ -5,7 +5,7 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
-def kotlinVersion = '1.9.21'
+def kotlinVersion = '2.0.0-Beta2'
 def detektVersion = '1.23.4'
 
 repositories {

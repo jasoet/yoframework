@@ -1,11 +1,11 @@
 ext {
     version = project.property('version')
 
-    kotlinVersion = "1.9.21"
+    kotlinVersion = "2.0.0-Beta2"
     vertxVersion = '4.5.1'
     pebbleVersion = '3.2.1'
 
-    coroutineVersion = "1.7.3"
+    coroutineVersion = "1.8.0-RC"
     arrowVersion = "0.7.2"
     detektVersion = "1.23.4"
 
