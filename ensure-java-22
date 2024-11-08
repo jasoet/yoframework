@@ -1,15 +1,15 @@
 #!/bin/bash
 
-JV=$(java -version 2>&1 >/dev/null | head -1)
-echo "$JV" | sed -E 's/^.*version "([^".]*)\.[^"]*".*$/\1/'
+JV=`java -version 2>&1 >/dev/null | head -1`
+echo $JV | sed -E 's/^.*version "([^".]*)\.[^"]*".*$/\1/'
 
-if [ "$JV" != 11 ]; then
+if [ "$JV" != 22 ]; then
 	case "$1" in
 	install)
 		echo "Installing sdkman..."
 		curl -s "https://get.sdkman.io" | bash
 		source ~/.sdkman/bin/sdkman-init.sh
-		sdk install java 18.0.1-zulu
+		sdk install java 22.0.2-zulu
 		;;
 	use)
 		echo "must source ~/.sdkman/bin/sdkman-init.sh"

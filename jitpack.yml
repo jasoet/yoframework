@@ -1,8 +1,6 @@
-#jdk:
-#  - openjdk17
 before_install:
-  - ./ensure-java-21 install
-  - if ! ./ensure-java-21 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
+  - ./ensure-java-22 install
+  - if ! ./ensure-java-22 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
 install:
   - java -version
   - ./gradlew clean compile test detekt localPublish

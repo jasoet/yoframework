@@ -59,7 +59,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(22)
 }
 
 tasks {
@@ -101,7 +101,7 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.11"
+        toolVersion = "0.8.12"
     }
 
     jacocoTestReport {
@@ -140,7 +140,7 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.23.6"
+    toolVersion = "1.23.7"
     input = files("src/main/kotlin")
     buildUponDefaultConfig = true
     parallel = true
@@ -155,7 +155,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "17"
+tasks.detekt.jvmTarget = "21"
 
 def pomConfig = {
     name = "Yo Framework"

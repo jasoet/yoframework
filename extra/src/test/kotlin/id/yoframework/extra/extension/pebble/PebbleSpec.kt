@@ -68,7 +68,7 @@ object PebbleSpec : Spek({
             }
 
             it("should able to compile file template") {
-                val randomSuffix = RandomStringUtils.randomAlphabetic(12)
+                val randomSuffix = RandomStringUtils.secureStrong()
                 val location = "${tmpDir()}/test_template-$randomSuffix.peb"
                 val templateString =
                     """
