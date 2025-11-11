@@ -1,6 +1,6 @@
 before_install:
-  - ./ensure-java-22 install
-  - if ! ./ensure-java-22 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
+  - ./ensure-java-24 install
+  - if ! ./ensure-java-24 use; then source ~/.sdkman/bin/sdkman-init.sh; fi
 install:
   - java -version
   - ./gradlew clean compile test detekt localPublish

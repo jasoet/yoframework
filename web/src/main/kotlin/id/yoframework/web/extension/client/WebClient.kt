@@ -24,12 +24,10 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.client.HttpRequest
 import io.vertx.ext.web.client.HttpResponse
 import io.vertx.ext.web.client.WebClient
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 
 suspend fun WebClient.get(absoluteURI: String, header: Map<String, String>): HttpResponse<Buffer> {
-    return awaitResult {
-        this.getAbs(absoluteURI).apply { headers().addAll(header) }.send(it)
-    }
+    return this.getAbs(absoluteURI).apply { headers().addAll(header) }.send().coAwait()
 }
 
 suspend fun WebClient.post(
@@ -37,9 +35,7 @@ suspend fun WebClient.post(
     body: JsonObject,
     header: Map<String, String> = emptyMap()
 ): HttpResponse<Buffer> {
-    return awaitResult {
-        this.postAbs(absoluteURI).apply { headers().addAll(header) }.sendJsonObject(body, it)
-    }
+    return this.postAbs(absoluteURI).apply { headers().addAll(header) }.sendJsonObject(body).coAwait()
 }
 
 suspend fun WebClient.postForm(
@@ -50,28 +46,23 @@ suspend fun WebClient.postForm(
     val payload = formData.toList().fold(MultiMap.caseInsensitiveMultiMap()) { form, (key, value) ->
         form.set(key, value)
     }
-    return awaitResult {
-        this.postAbs(absoluteURI).apply { headers().addAll(header) }.sendForm(payload, it)
-    }
+    return this.postAbs(absoluteURI).apply { headers().addAll(header) }.sendForm(payload).coAwait()
 }
 
 suspend fun <T : Any> HttpRequest<T>.sendJson(body: Any, header: Map<String, String> = emptyMap()): HttpResponse<T> {
-    return awaitResult {
-        headers().addAll(header)
-        method(HttpMethod.POST)
-        sendJson(body, it)
-    }
+    headers().addAll(header)
+    method(HttpMethod.POST)
+    return sendJson(body)
+        .coAwait()
 }
 
 suspend fun <T : Any> HttpRequest<T>.sendJsonObject(
     body: JsonObject,
     header: Map<String, String> = emptyMap()
 ): HttpResponse<T> {
-    return awaitResult {
-        headers().addAll(header)
-        method(HttpMethod.POST)
-        sendJsonObject(body, it)
-    }
+    headers().addAll(header)
+    method(HttpMethod.POST)
+    return sendJsonObject(body).coAwait()
 }
 
 inline fun <reified T : Any> HttpResponse<Buffer>.toValue(): T {

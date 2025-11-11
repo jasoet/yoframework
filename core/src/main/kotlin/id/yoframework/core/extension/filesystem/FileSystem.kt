@@ -18,12 +18,12 @@ package id.yoframework.core.extension.filesystem
 
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.file.FileSystem
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 
 suspend fun FileSystem.readFileAsync(path: String): Buffer {
-    return awaitResult { this.readFile(path, it) }
+    return this.readFile(path).coAwait()
 }
 
 suspend fun FileSystem.writeFileAsync(path: String, data: Buffer): Void {
-    return awaitResult { this.writeFile(path, data, it) }
+    return this.writeFile(path, data).coAwait()
 }

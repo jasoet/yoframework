@@ -21,7 +21,7 @@ import io.vertx.core.http.HttpServer
 import io.vertx.core.http.HttpServerOptions
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 
 suspend fun Vertx.startHttpServer(
     router: Router,
@@ -30,7 +30,7 @@ suspend fun Vertx.startHttpServer(
 ): HttpServer {
     val httpServer = this.createHttpServer(httpServerOptions)
         .requestHandler(router)
-    return awaitResult { httpServer.listen(port, it) }
+    return httpServer.listen(port).coAwait()
 }
 
 typealias ErrorHandler = (RoutingContext, Throwable) -> Unit

@@ -5,7 +5,7 @@ import id.yoframework.core.extension.vertx.buildVertx
 import io.pebbletemplates.pebble.PebbleEngine
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.shouldNotBeNull
 import org.amshove.kluent.shouldNotBeNullOrBlank
@@ -66,7 +66,7 @@ object TemplateSpec : Spek({
 
             val templateLocation = runBlocking {
                 val fileSystem = vertx.fileSystem()
-                awaitResult<Void> { fileSystem.writeFile(location, Buffer.buffer(templateString), it) }
+                fileSystem.writeFile(location, Buffer.buffer(templateString)).coAwait()
                 location
             }
 

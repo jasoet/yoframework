@@ -23,22 +23,13 @@ import io.vertx.core.Verticle
 import io.vertx.core.Vertx
 import io.vertx.core.VertxException
 import io.vertx.core.VertxOptions
-import io.vertx.core.http.HttpServer
-import io.vertx.core.http.HttpServerRequest
 import io.vertx.core.json.JsonObject
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-
-@Deprecated("This function is deprecated and use ext function startHttpServer() on Web module instead.")
-suspend fun Vertx.createHttpServer(port: Int, handler: (HttpServerRequest) -> Unit): HttpServer {
-    val httpServer = this.createHttpServer()
-        .requestHandler(handler)
-    return awaitResult { httpServer.listen(port, it) }
-}
 
 suspend fun Vertx.deployVerticle(verticle: Verticle, config: JsonObject, worker: Boolean = false): String {
     val option = DeploymentOptions().apply {
@@ -49,15 +40,15 @@ suspend fun Vertx.deployVerticle(verticle: Verticle, config: JsonObject, worker:
             this.setThreadingModel(ThreadingModel.EVENT_LOOP)
         }
     }
-    return awaitResult { this.deployVerticle(verticle, option, it) }
+    return this.deployVerticle(verticle, option).coAwait()
 }
 
-suspend fun buildClusteredVertx(option: VertxOptions): Vertx {
-    return awaitResult { Vertx.clusteredVertx(option, it) }
+suspend fun buildClusteredVertx(options: VertxOptions): Vertx {
+    return Vertx.builder().with(options).buildClustered().coAwait()
 }
 
-fun buildVertx(option: VertxOptions): Vertx {
-    return Vertx.vertx(option)
+fun buildVertx(options: VertxOptions): Vertx {
+    return Vertx.builder().with(options).build()
 }
 
 fun buildVertx(): Vertx {

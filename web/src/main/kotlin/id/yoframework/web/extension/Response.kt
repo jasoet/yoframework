@@ -23,7 +23,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.common.template.TemplateEngine
 import io.vertx.kotlin.core.json.Json
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 
 fun RoutingContext.wireJson(obj: Any) {
     val response = this.response()
@@ -75,9 +75,9 @@ suspend fun RoutingContext.sendFile(fileName: String, offset: Long): Void? {
 
 suspend fun RoutingContext.sendFile(fileName: String, offset: Long, length: Long): Void? {
     val response = this.response()
-    return awaitResult { response.sendFile(fileName, offset, length, it) }
+    return response.sendFile(fileName, offset, length).coAwait()
 }
 
 suspend fun RoutingContext.render(engine: TemplateEngine, templateName: String): Buffer {
-    return awaitResult { engine.render(this.data(), templateName, it) }
+    return engine.render(this.data(), templateName).coAwait()
 }

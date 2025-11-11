@@ -4,7 +4,7 @@ import id.yoframework.core.extension.resource.tmpDir
 import id.yoframework.core.extension.vertx.buildVertx
 import io.vertx.core.Vertx
 import io.vertx.core.buffer.Buffer
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeNull
@@ -91,7 +91,7 @@ object PebbleSpec : Spek({
 
                 val templateLocation = runBlocking {
                     val fileSystem = vertx.fileSystem()
-                    awaitResult<Void> { fileSystem.writeFile(location, Buffer.buffer(templateString), it) }
+                    fileSystem.writeFile(location, Buffer.buffer(templateString)).coAwait()
                     location
                 }
 

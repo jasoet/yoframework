@@ -24,7 +24,7 @@ import io.vertx.kotlin.config.configRetrieverOptionsOf
 import io.vertx.kotlin.config.configStoreOptionsOf
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
-import io.vertx.kotlin.coroutines.awaitResult
+import io.vertx.kotlin.coroutines.coAwait
 
 fun propertiesConfig(path: String): ConfigStoreOptions {
     return configStoreOptionsOf(
@@ -68,5 +68,5 @@ suspend fun Vertx.retrieveConfig(vararg stores: ConfigStoreOptions): JsonObject 
     )
 
     val retriever = ConfigRetriever.create(this, options)
-    return awaitResult { retriever.getConfig(it) }
+    return retriever.config.coAwait()
 }

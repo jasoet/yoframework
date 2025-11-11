@@ -3,6 +3,7 @@ build/
 classes/
 .github/
 property\ \'buildDir\'/
+.kotlin/
 
 # Ignore Gradle GUI config
 gradle-app.setting

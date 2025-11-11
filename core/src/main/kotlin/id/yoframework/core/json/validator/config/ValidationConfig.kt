@@ -28,6 +28,6 @@ sealed class Numeric {
     class LessThan<out T : Number>(val value: T, val equals: Boolean = false) : Numeric()
     class EqualTo<out T : Number>(val value: T) : Numeric()
     class DivisibleBy(val value: Int) : Numeric()
-    object Odd : Numeric()
-    object Even : Numeric()
+    data object Odd : Numeric()
+    data object Even : Numeric()
 }

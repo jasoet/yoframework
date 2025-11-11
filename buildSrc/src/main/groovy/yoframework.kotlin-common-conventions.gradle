@@ -59,23 +59,23 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(22)
+    jvmToolchain(24)
 }
 
 tasks {
 
     compileKotlin {
         kotlinOptions {
-            apiVersion = "2.0"
-            languageVersion = "2.0"
+            apiVersion = "2.2"
+            languageVersion = "2.2"
             allWarningsAsErrors = false
         }
     }
 
     compileTestKotlin {
         kotlinOptions {
-            apiVersion = "2.0"
-            languageVersion = "2.0"
+            apiVersion = "2.2"
+            languageVersion = "2.2"
             allWarningsAsErrors = false
 //            freeCompilerArgs = [
 ////                "-Xuse-k2", "-Xbackend-threads=2"
@@ -101,7 +101,7 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.12"
+        toolVersion = "0.8.13"
     }
 
     jacocoTestReport {
@@ -110,19 +110,6 @@ tasks {
             xml.required = false
             csv.required = false
             html.outputLocation = file("${getLayout().getBuildDirectory()}/jacocoHtml")
-        }
-    }
-
-    idea {
-        module {
-            downloadJavadoc = true
-            downloadSources = true
-
-            testSourceDirs += file('build/generated/source/kapt/test')
-            sourceDirs += file('build/generated/source/kapt/main')
-
-            testSourceDirs += file('build/generated/source/kaptKotlin/test')
-            sourceDirs += file('build/generated/source/kaptKotlin/main')
         }
     }
 }
@@ -155,7 +142,7 @@ detekt {
         sarif.enabled = false
     }
 }
-tasks.detekt.jvmTarget = "21"
+tasks.detekt.jvmTarget = "22"
 
 def pomConfig = {
     name = "Yo Framework"

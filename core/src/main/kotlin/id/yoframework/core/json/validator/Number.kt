@@ -32,7 +32,6 @@ fun <T : Number> T.compareTo(clazz: KClass<T>, value: T): Int {
     return when {
         clazz.isInstance(Byte::class) -> (this as Byte).compareTo(value as Byte)
         clazz.isInstance(Long::class) -> (this as Long).compareTo(value as Long)
-        clazz.isInstance(Char::class) -> (this as Char).compareTo(value as Char)
         clazz.isInstance(Double::class) -> (this as Double).compareTo(value as Double)
         clazz.isInstance(Float::class) -> (this as Float).compareTo(value as Float)
         clazz.isInstance(Int::class) -> (this as Int).compareTo(value as Int)

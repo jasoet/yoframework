@@ -1,7 +1,7 @@
 plugins {
     // Apply the core convention plugin for shared build configuration between module / subprojects.
     id 'yoframework.kotlin-core-conventions'
-    id 'com.google.protobuf' version '0.8.15'
+    id 'com.google.protobuf' version '0.9.5'
 }
 
 dependencies {

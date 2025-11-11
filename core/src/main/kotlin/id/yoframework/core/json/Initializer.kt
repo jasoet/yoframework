@@ -31,7 +31,7 @@ fun KJson.enable() {
         registerModule(JavaTimeModule())
     }
 
-    DatabindCodec.prettyMapper().apply {
+    DatabindCodec.mapper().apply {
         registerKotlinModule()
         registerModule(ParameterNamesModule())
         registerModule(JavaTimeModule())

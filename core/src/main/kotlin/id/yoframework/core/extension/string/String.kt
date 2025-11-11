@@ -19,9 +19,19 @@ package id.yoframework.core.extension.string
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.commons.lang3.StringUtils
 import java.security.MessageDigest
+import java.util.*
+import java.util.random.RandomGenerator
 
 fun randomAlpha(count: Int): String {
-    return RandomStringUtils.randomAlphanumeric(count)
+    return RandomStringUtils.random(
+        count,
+        0,
+        0,
+        true,
+        false,
+        null,
+        Random.from(RandomGenerator.getDefault())
+    )
 }
 
 fun String.slugify(): String {

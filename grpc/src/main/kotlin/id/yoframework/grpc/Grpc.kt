@@ -22,7 +22,6 @@ import io.vertx.core.Vertx
 import io.vertx.grpc.VertxChannelBuilder
 import io.vertx.grpc.VertxServer
 import io.vertx.grpc.VertxServerBuilder
-import io.vertx.kotlin.coroutines.awaitResult
 
 fun Vertx.buildGrpcServer(
     host: String,
@@ -45,11 +44,11 @@ fun Vertx.buildGrpcServer(
 }
 
 suspend fun VertxServer.startServer() {
-    awaitResult<Void> { this.start(it) }
+    this.start()
 }
 
 suspend fun VertxServer.shutdownServer() {
-    awaitResult<Void> { this.shutdown(it) }
+    this.shutdown()
 }
 
 fun Vertx.buildGrpcChannel(

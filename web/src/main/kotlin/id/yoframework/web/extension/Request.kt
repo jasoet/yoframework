@@ -39,7 +39,7 @@ fun RoutingContext.jsonArrayBody(): JsonArray? {
 }
 
 fun RoutingContext.principal(): JsonObject? {
-    return this.user()?.principal()
+    return this.user().principal()
 }
 
 // @Suppress("deprecation")
