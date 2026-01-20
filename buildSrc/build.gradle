@@ -5,8 +5,8 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
-def kotlinVersion = '2.2.21'
-def detektVersion = '1.23.7'
+def kotlinVersion = '2.3.0'
+//def detektVersion = '2.0.0-alpha.1'
 
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
@@ -15,5 +15,5 @@ repositories {
 
 dependencies {
     api "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    api "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
+//    api "dev.detekt:detekt-gradle-plugin:$detektVersion"
 }

@@ -25,11 +25,11 @@ processors:
 console-reports:
   active: true
   exclude:
-    - 'ProjectStatisticsReport'
-    - 'ComplexityReport'
-    - 'NotificationReport'
-    - 'IssuesReport'
-    - 'FileBasedIssuesReport'
+     - 'ProjectStatisticsReport'
+     - 'ComplexityReport'
+     - 'NotificationReport'
+     - 'IssuesReport'
+     - 'FileBasedIssuesReport'
   #  - 'LiteIssuesReport'
 
 comments:
@@ -150,7 +150,7 @@ complexity:
     allowedWithLengthLessThan: 5
     ignoreStringsRegex: '$^'
   TooManyFunctions:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**']
     allowedFunctionsPerFile: 11
     allowedFunctionsPerClass: 11

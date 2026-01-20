@@ -30,7 +30,8 @@ object Command
 
 /**
  * Execute command in form of List<String>.
- * Able to handle standard input source from File, InputStream and String and able to handle standard output source to File and OutputStream
+ * Able to handle standard input source from File, InputStream and String
+ * and able to handle standard output source to File and OutputStream
  * This function is suspendable.
  *
  * @param input Standard input for command, able to receive File, InputStream and String input.

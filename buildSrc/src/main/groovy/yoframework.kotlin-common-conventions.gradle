@@ -1,8 +1,8 @@
 plugins {
     id "java-library"
     id "org.jetbrains.kotlin.jvm"
-    id "org.jetbrains.kotlin.kapt"
-    id "io.gitlab.arturbosch.detekt"
+    id "com.google.devtools.ksp"
+    id "dev.detekt"
     id "idea"
     id "maven-publish"
     id "jacoco"
@@ -13,7 +13,6 @@ repositories {
     mavenCentral()
     google()
     maven {
-//        url "https://maven.pkg.github.com/jasoet/yoframework"
         url "https://jitpack.io"
     }
 }
@@ -34,11 +33,11 @@ dependencies {
 
     api "io.arrow-kt:arrow-data:$arrowVersion"
     api "io.arrow-kt:arrow-syntax:$arrowVersion"
-    kapt "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
+    ksp "io.arrow-kt:arrow-annotations-processor:$arrowVersion"
 
     api "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
+    ksp "com.google.dagger:dagger-compiler:$daggerVersion"
+    kspTest "com.google.dagger:dagger-compiler:$daggerVersion"
 
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
@@ -55,27 +54,27 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin'
     }
 
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion"
+//    detektPlugins "dev.detekt:detekt-formatting:$detektVersion"
 }
 
 kotlin {
-    jvmToolchain(24)
+    jvmToolchain(25)
 }
 
 tasks {
 
     compileKotlin {
         kotlinOptions {
-            apiVersion = "2.2"
-            languageVersion = "2.2"
+            apiVersion = "2.3"
+            languageVersion = "2.3"
             allWarningsAsErrors = false
         }
     }
 
     compileTestKotlin {
         kotlinOptions {
-            apiVersion = "2.2"
-            languageVersion = "2.2"
+            apiVersion = "2.3"
+            languageVersion = "2.3"
             allWarningsAsErrors = false
 //            freeCompilerArgs = [
 ////                "-Xuse-k2", "-Xbackend-threads=2"
@@ -127,22 +126,65 @@ artifacts {
 }
 
 detekt {
-    toolVersion = "1.23.7"
-    input = files("src/main/kotlin")
-    buildUponDefaultConfig = true
-    parallel = true
-    debug = false
-    ignoreFailures = true
-    config = files("$rootDir/detekt.yml")
+    // Version of detekt that will be used. When unspecified the latest detekt
+    // version found will be used. Override to stay on the same version.
+    toolVersion = "2.0.0-alpha.1"
 
-    reports {
-        html.enabled = true
-        xml.enabled = false
-        txt.enabled = false
-        sarif.enabled = false
-    }
+    // The directories where detekt looks for source files.
+    // Defaults to `files("src/main/java", "src/test/java", "src/main/kotlin", "src/test/kotlin")`.
+    source = files(
+            "src/main/kotlin",
+            "gensrc/main/kotlin"
+    )
+
+    // Builds the AST in parallel. Rules are always executed in parallel.
+    // Can lead to speedups in larger projects. `false` by default.
+    parallel = true
+
+    // Define the detekt configuration(s) you want to use.
+    // Defaults to the default detekt configuration.
+    config.setFrom("$rootDir/detekt.yml")
+
+    // Applies the config files on top of detekt's default config file. `false` by default.
+    buildUponDefaultConfig = true
+
+    // Turns on all the rules. `false` by default.
+    allRules = false
+
+    // Specifying a baseline file. All findings stored in this file in subsequent runs of detekt.
+//    baseline = file("path/to/baseline.xml")
+
+    // Disables all default detekt rulesets and will only run detekt with custom rules
+    // defined in plugins passed in with `detektPlugins` configuration. `false` by default.
+    disableDefaultRuleSets = false
+
+    // Adds debug output during task execution. `false` by default.
+    debug = false
+
+    // If set to `true` the build does not fail when there are any issues.
+    // Defaults to `false`.
+    ignoreFailures = true
+
+    // The build fails when there is at least one issue with this severity (or above).
+    // If set to `Never`, the task will not fail regardless of the number of issues and their severities.
+    // If `ignoreFailures` is set to `true`, the value of this property is ignored.
+    // Defaults to `Error`
+//    failOnSeverity = dev.detekt.gradle.extensions.FailOnSeverity.Error
+
+    // Android: Don't create tasks for the specified build types (e.g. "release")
+    ignoredBuildTypes = ["release"]
+
+    // Android: Don't create tasks for the specified build flavor (e.g. "production")
+    ignoredFlavors = ["production"]
+
+    // Android: Don't create tasks for the specified build variants (e.g. "productionRelease")
+    ignoredVariants = ["productionRelease"]
+
+    // Specify the base path for file paths in the formatted reports.
+    // If not set, all file paths reported will be absolute file path.
+    basePath = projectDir
 }
-tasks.detekt.jvmTarget = "22"
+tasks.detekt.jvmTarget = "24"
 
 def pomConfig = {
     name = "Yo Framework"

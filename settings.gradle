@@ -1,5 +1,5 @@
-if (JavaVersion.current() < JavaVersion.VERSION_17) {
-    throw new GradleException("This build must be run at least with java 17")
+if (JavaVersion.current() < JavaVersion.VERSION_21) {
+    throw new GradleException("This build must be run at least with java 21")
 }
 
 rootProject.name = 'yoframework'
