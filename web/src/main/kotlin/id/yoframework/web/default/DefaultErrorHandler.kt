@@ -36,7 +36,7 @@ object DefaultErrorHandler : ErrorHandler {
     private const val DEFAULT_ERROR_CODE = 500
     private val log = logger(DefaultErrorHandler::class)
 
-    private fun mapException(context: RoutingContext, e: Throwable): Int {
+    private fun mapException(context: RoutingContext, e: Throwable?): Int {
         return when (e) {
             is FileNotFoundException,
             is NullObjectException,
@@ -60,11 +60,11 @@ object DefaultErrorHandler : ErrorHandler {
         }
     }
 
-    override fun invoke(context: RoutingContext, e: Throwable) {
+    override fun invoke(context: RoutingContext, e: Throwable?) {
         val code = mapException(context, e)
 
         if (code.toString().startsWith("5")) {
-            log.error(e.message)
+            log.error(e?.message)
         }
 
         val acceptHeader = context.header("Accept") ?: ""
@@ -78,13 +78,13 @@ object DefaultErrorHandler : ErrorHandler {
                 )
             } else {
                 mapOf(
-                    "message" to (e.message ?: ""),
-                    "errors" to (e.message ?: "")
+                    "message" to (e?.message ?: ""),
+                    "errors" to (e?.message ?: "")
                 )
             }
             context.response().setStatusCode(code).end(Json.encode(result))
         } else {
-            context.response().setStatusCode(code).end(e.message ?: "")
+            context.response().setStatusCode(code).end(e?.message ?: "")
         }
     }
 }

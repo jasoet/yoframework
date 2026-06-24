@@ -58,23 +58,23 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(25)
+    jvmToolchain(26)
 }
 
 tasks {
 
     compileKotlin {
         kotlinOptions {
-            apiVersion = "2.3"
-            languageVersion = "2.3"
+            apiVersion = "2.4"
+            languageVersion = "2.4"
             allWarningsAsErrors = false
         }
     }
 
     compileTestKotlin {
         kotlinOptions {
-            apiVersion = "2.3"
-            languageVersion = "2.3"
+            apiVersion = "2.4"
+            languageVersion = "2.4"
             allWarningsAsErrors = false
 //            freeCompilerArgs = [
 ////                "-Xuse-k2", "-Xbackend-threads=2"
@@ -100,7 +100,7 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.13"
+        toolVersion = "0.8.14"
     }
 
     jacocoTestReport {

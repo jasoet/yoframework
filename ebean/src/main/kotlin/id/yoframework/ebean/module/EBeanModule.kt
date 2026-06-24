@@ -23,8 +23,6 @@ import id.yoframework.core.json.getTry
 import id.yoframework.core.module.CoreModule
 import id.yoframework.db.createHikariPoolDataSource
 import io.ebean.Database
-import io.ebean.DatabaseFactory
-import io.ebean.config.DatabaseConfig
 import io.vertx.core.json.JsonObject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -85,7 +83,7 @@ class EBeanModule {
     @Provides
     @Singleton
     fun ebeanServer(dataSource: DataSource): Database {
-        val config = DatabaseConfig().setName("ebeands").setDataSource(dataSource)
-        return DatabaseFactory.create(config)
+        val databaseBuilder = Database.builder().name("ebeands").dataSource(dataSource)
+        return databaseBuilder.build()
     }
 }

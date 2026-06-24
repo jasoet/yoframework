@@ -1,12 +1,14 @@
 plugins {
     // Apply the core convention plugin for shared build configuration between module / subprojects.
     id 'yoframework.kotlin-core-conventions'
-    id 'com.google.protobuf' version '0.9.5'
+    id 'com.google.protobuf' version '0.10.0'
 }
 
 dependencies {
     api project(':core')
-    api "io.vertx:vertx-grpc:$vertxVersion"
+    api "io.vertx:vertx-grpc-server:$vertxVersion"
+    api "io.vertx:vertx-grpc-client:$vertxVersion"
+    api "io.vertx:vertx-grpcio-client:$vertxVersion"
 //    api "com.google.protobuf:protobuf-gradle-plugin:$protobufGradlePluginVersion"
 }
 

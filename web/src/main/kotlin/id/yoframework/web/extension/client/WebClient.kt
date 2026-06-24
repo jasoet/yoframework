@@ -65,7 +65,7 @@ suspend fun <T : Any> HttpRequest<T>.sendJsonObject(
     return sendJsonObject(body).coAwait()
 }
 
-inline fun <reified T : Any> HttpResponse<Buffer>.toValue(): T {
+inline fun <reified T : Any> HttpResponse<Buffer>.toValue(): T? {
     return this.bodyAsJson(T::class.java)
 }
 

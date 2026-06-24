@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 - Deny Protease <jasoet87@gmail.com>
+ * Copyright (C) 2018 - Deny Prasetyo <jasoet87@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,21 +20,21 @@ import id.yoframework.core.extension.logger.logger
 import id.yoframework.grpc.buildGrpcServer
 import id.yoframework.grpc.shutdownServer
 import id.yoframework.grpc.startServer
-import io.grpc.BindableService
 import io.vertx.core.VertxException
-import io.vertx.grpc.VertxServer
-import io.vertx.grpc.VertxServerBuilder
+import io.vertx.core.http.HttpServer
+import io.vertx.core.http.HttpServerOptions
+import io.vertx.grpc.server.Service
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 open class GrpcServerVerticle(
     private val host: String,
     private val port: Int,
-    private vararg val services: BindableService,
-    private val configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }
+    private vararg val services: Service,
+    private val options: HttpServerOptions = HttpServerOptions(),
 ) : CoroutineVerticle() {
 
     private val log = logger<GrpcServerVerticle>()
-    private lateinit var server: VertxServer
+    private lateinit var server: HttpServer
 
     override suspend fun start() {
         try {
@@ -45,10 +45,10 @@ open class GrpcServerVerticle(
                 log.debug("${it::class.qualifiedName}")
             }
 
-            server = vertx.buildGrpcServer(host, port, *services, configuration = configuration)
+            server = vertx.buildGrpcServer(options, *services)
             log.debug("Starting Grpc Server")
 
-            server.startServer()
+            server.startServer(port)
             log.debug("Grpc Server Started on $host:$port")
         } catch (e: VertxException) {
             log.error("Grpc Server Failed to Start ${e.message}", e)

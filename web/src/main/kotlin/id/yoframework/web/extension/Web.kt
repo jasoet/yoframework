@@ -33,4 +33,4 @@ suspend fun Vertx.startHttpServer(
     return httpServer.listen(port).coAwait()
 }
 
-typealias ErrorHandler = (RoutingContext, Throwable) -> Unit
+typealias ErrorHandler = (RoutingContext, Throwable?) -> Unit

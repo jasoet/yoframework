@@ -16,46 +16,47 @@
 
 package id.yoframework.grpc
 
-import io.grpc.BindableService
-import io.grpc.ManagedChannel
 import io.vertx.core.Vertx
-import io.vertx.grpc.VertxChannelBuilder
-import io.vertx.grpc.VertxServer
-import io.vertx.grpc.VertxServerBuilder
+import io.vertx.core.http.HttpServer
+import io.vertx.core.http.HttpServerOptions
+import io.vertx.core.net.SocketAddress
+import io.vertx.grpc.client.GrpcClient
+import io.vertx.grpc.server.GrpcServer
+import io.vertx.grpc.server.Service
+import io.vertx.grpcio.client.GrpcIoClientChannel
+import io.vertx.kotlin.coroutines.coAwait
 
-fun Vertx.buildGrpcServer(
-    host: String,
-    port: Int,
-    vararg services: BindableService,
-    configuration: (VertxServerBuilder) -> VertxServerBuilder = { it }
-): VertxServer {
-    return VertxServerBuilder
-        .forAddress(this, host, port)
+suspend fun Vertx.buildGrpcServer(
+    options: HttpServerOptions = HttpServerOptions(),
+    vararg services: Service,
+): HttpServer {
+    val grpcServer = GrpcServer.server(this)
         .let {
             services.toList()
                 .fold(it) { builder, service ->
                     builder.addService(service)
                 }
         }
-        .let {
-            configuration(it)
-        }
-        .build()
+    return this
+        .createHttpServer(options)
+        .requestHandler(grpcServer)
 }
 
-suspend fun VertxServer.startServer() {
-    this.start()
+suspend fun HttpServer.startServer(port: Int) {
+    this
+        .listen(port)
+        .coAwait()
 }
 
-suspend fun VertxServer.shutdownServer() {
+suspend fun HttpServer.shutdownServer() {
     this.shutdown()
 }
 
 fun Vertx.buildGrpcChannel(
     host: String,
     port: Int,
-    configuration: (VertxChannelBuilder) -> VertxChannelBuilder = { it }
-): ManagedChannel {
-    return configuration(VertxChannelBuilder.forAddress(this, host, port))
-        .build()
+): GrpcIoClientChannel {
+    val client = GrpcClient.client(this)
+    return GrpcIoClientChannel(client, SocketAddress.inetSocketAddress(port, host))
 }
+
