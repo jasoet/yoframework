@@ -7,7 +7,7 @@ ext {
     version = project.property('version')
 
     kotlinVersion = "2.4.0"
-    vertxVersion = '5.1.2'
+    vertxVersion = '5.0.5'
     pebbleVersion = '3.2.1'
 
     coroutineVersion = "1.11.0"
